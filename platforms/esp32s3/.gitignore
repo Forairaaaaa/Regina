@@ -1,0 +1,10 @@
+build
+.cache
+.vscode
+build.clang
+managed_components
+
+/components
+/output
+
+sdkconfig.old
