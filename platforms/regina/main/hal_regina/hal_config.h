@@ -15,29 +15,43 @@
  *
  */
 // LCD
-#define HAL_PIN_LCD_MOSI 35
-#define HAL_PIN_LCD_MISO -1
-#define HAL_PIN_LCD_SCLK 36
-#define HAL_PIN_LCD_DC 34
-#define HAL_PIN_LCD_CS 37
-#define HAL_PIN_LCD_RST 33
-#define HAL_PIN_LCD_BUSY -1
-#define HAL_PIN_LCD_BL 38
+#define HAL_PIN_OLED_CS 9
+#define HAL_PIN_OLED_DC 18
+#define HAL_PIN_OLED_RST 19
+#define HAL_PIN_OLED_SDA 20
+#define HAL_PIN_OLED_SCL 21
 
 // Button
-#define HAL_PIN_SIDE_BTN 0
+#define HAL_PIN_BTN_A 16
+#define HAL_PIN_BTN_B 3
+#define HAL_PIN_BTN_C 2
+#define HAL_PIN_BTN_D 8
 
-// Encoder
-#define HAL_PIN_ENCODER_A 3
-#define HAL_PIN_ENCODER_S 2
-#define HAL_PIN_ENCODER_B 1
+// Dial
+#define HAL_PIN_DIAL_CE 0
+#define HAL_PIN_DIAL_PL 6
+#define HAL_PIN_DIAL_CLK 7
+#define HAL_PIN_DIAL_OUTPUT 1
 
 // I2C
-#define HAL_PIN_I2C_SCL 6
-#define HAL_PIN_I2C_SDA 5
+#define HAL_PIN_I2C_SCL 10
+#define HAL_PIN_I2C_SDA 11
 
 // Buzzer
-#define HAL_PIN_BUZZ 14
+#define HAL_PIN_BUZZ 22
+
+// Mic
+#define HAL_PIN_MIC 4
+
+// IMU
+#define HAL_PIN_IMU_INT1 23
+#define HAL_PIN_IMU_INT2 17
+
+// RTC
+#define HAL_PIN_RTC_INT 15
+
+// PMU
+#define HAL_PIN_PMU_INT 5
 
 // HAL internal display logger
 #define HAL_LOGGER_INIT()                                                                                                      \
