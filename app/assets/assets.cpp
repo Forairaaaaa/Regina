@@ -8,19 +8,19 @@
  * @copyright Copyright (c) 2024
  *
  */
+#include <mooncake.h>
 #include "assets.h"
 #include "localization/types.h"
-#include "spdlog/spdlog.h"
+#include "fonts/fonts.h"
+#include "images/images.h"
+#ifndef ESP_PLATFORM
+#include <iostream>
+#include <fstream>
+#endif
 #include <algorithm>
 #include <cstring>
 #include <iterator>
 #include <string>
-#ifndef ESP_PLATFORM
-#include "fonts/fonts.h"
-#include "images/images.h"
-#include <iostream>
-#include <fstream>
-#endif
 
 AssetPool* AssetPool::_asset_pool = nullptr;
 
