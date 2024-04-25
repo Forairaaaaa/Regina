@@ -26,15 +26,15 @@ echo "> :)"
 # Add your submodule fetching here
 # ...
 
-# # ESP32S3
-# echo "> fetching submodules for esp32s3 build.."
+# Regina
+echo "> fetching submodules for regina build.."
 
-# cd $root_dir
-# mkdir platforms/esp32s3/components
-# cd platforms/esp32s3/components
-# echo "> $(pwd)"
+cd $root_dir
+mkdir platforms/regina/components
+cd platforms/regina/components
+echo "> $(pwd)"
 
-# git clone https://github.com/bblanchon/ArduinoJson.git
-# git clone https://github.com/Forairaaaaa/arduino_lite.git
+git clone https://github.com/bblanchon/ArduinoJson.git
+git clone https://github.com/Forairaaaaa/arduino_lite.git
 
-# echo "> done"
+echo "> done"

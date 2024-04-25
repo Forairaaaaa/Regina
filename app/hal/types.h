@@ -83,13 +83,8 @@ namespace CONFIG
     // Default config
     struct SystemConfig_t
     {
-        uint8_t brightness = 255;
-        uint8_t orientation = 0;
         std::string wifiSsid = "";
         std::string wifiPassword = "";
-        bool beepOn = true;
-        bool reverseEncoder = false;
-        LocaleCode_t localeCode = locale_code_en;
     };
 } // namespace CONFIG
 
