@@ -11,7 +11,6 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
-#include <LovyanGFX.hpp>
 
 /* ----------------------- Add your font declare here ----------------------- */
 

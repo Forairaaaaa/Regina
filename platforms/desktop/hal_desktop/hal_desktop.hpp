@@ -9,17 +9,13 @@
  *
  */
 #pragma once
-#include "spdlog/spdlog.h"
+#include <mooncake.h>
+#include <M5GFX.h>
+#include "LGFX_AutoDetect_sdl.hpp"
+#include <hal/hal.h>
 #include <cmath>
 #include <string>
 #include <vector>
-#include "lgfx/v1/LGFX_Sprite.hpp"
-#include "lgfx/v1/platforms/sdl/common.hpp"
-#define LGFX_USE_V1
-#include <hal/hal.h>
-#include "lgfx/v1/lgfx_fonts.hpp"
-#include <LGFX_AUTODETECT.hpp>
-#include <LovyanGFX.hpp>
 #include <random>
 
 class HAL_Desktop : public HAL

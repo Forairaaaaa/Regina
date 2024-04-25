@@ -9,7 +9,7 @@
  *
  */
 #pragma once
-#include <LovyanGFX.hpp>
+#include <M5GFX.h>
 #include <cstdint>
 
 /**

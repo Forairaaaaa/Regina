@@ -8,21 +8,21 @@ add_definitions(-DLGFX_SDL)
 # ビルド対象にするファイルを指定する;
 # LovyanGFXのあるパスと位置関係を変えた場合は相対パス記述を環境に合わせて調整すること;
 file(GLOB Target_Files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS 
-    dependencies/LovyanGFX/src/lgfx/Fonts/efont/*.c
-    dependencies/LovyanGFX/src/lgfx/Fonts/IPA/*.c
-    dependencies/LovyanGFX/src/lgfx/utility/*.c
-    dependencies/LovyanGFX/src/lgfx/v1/*.cpp
-    dependencies/LovyanGFX/src/lgfx/v1/misc/*.cpp
-    dependencies/LovyanGFX/src/lgfx/v1/panel/Panel_Device.cpp
-    dependencies/LovyanGFX/src/lgfx/v1/panel/Panel_FrameBufferBase.cpp
-    dependencies/LovyanGFX/src/lgfx/v1/platforms/sdl/*.cpp
+    dependencies/M5GFX/src/lgfx/Fonts/efont/*.c
+    dependencies/M5GFX/src/lgfx/Fonts/IPA/*.c
+    dependencies/M5GFX/src/lgfx/utility/*.c
+    dependencies/M5GFX/src/lgfx/v1/*.cpp
+    dependencies/M5GFX/src/lgfx/v1/misc/*.cpp
+    dependencies/M5GFX/src/lgfx/v1/panel/Panel_Device.cpp
+    dependencies/M5GFX/src/lgfx/v1/panel/Panel_FrameBufferBase.cpp
+    dependencies/M5GFX/src/lgfx/v1/platforms/sdl/*.cpp
     )
 # add_executable (LGFX_SDL ${Target_Files})
 add_library(lovyangfx ${Target_Files})
 
 # includeするファイルのパスを指定する;
 # LovyanGFXのあるパスと位置関係を変えた場合は相対パス記述を環境に合わせて調整すること;
-target_include_directories(lovyangfx PUBLIC dependencies/LovyanGFX/src/)
+target_include_directories(lovyangfx PUBLIC dependencies/M5GFX/src/)
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
