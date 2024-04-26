@@ -23,6 +23,7 @@ void HAL_Regina::_rtc_init()
     if (!_rtc->begin())
     {
         spdlog::error("init failed!");
+        delete _rtc;
     }
 
     _adjust_sys_time();

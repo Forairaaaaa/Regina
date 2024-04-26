@@ -25,12 +25,13 @@ private:
     void _i2c_init();
     void _rtc_init();
     void _adjust_sys_time();
+    void _imu_init();
 
     void _fs_init();
     std::vector<std::string> _ls(const std::string& path);
     void _config_check_valid();
     void _log_out_system_config();
-    
+
     // std::string _get_mac();
 
 public:
@@ -48,6 +49,7 @@ public:
         _seaker_init();
         _i2c_init();
         _rtc_init();
+        _imu_init();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -55,11 +57,9 @@ public:
     /* -------------------------------------------------------------------------- */
     void reboot() override;
     void feedTheDog() override;
-
     bool getButton(GAMEPAD::GamePadButton_t button) override;
-
     void setSystemTime(tm dateTime) override;
-
+    void updateImuData() override;
     void beep(float frequency, uint32_t duration) override;
     void beepStop() override;
 

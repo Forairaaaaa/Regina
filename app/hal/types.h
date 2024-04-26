@@ -35,11 +35,18 @@ namespace GAMEPAD
 /* -------------------------------------------------------------------------- */
 namespace IMU
 {
+    struct Imu3D_t
+    {
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+    };
+
     struct ImuData_t
     {
-        float accelX;
-        float accelY;
-        float accelZ;
+        Imu3D_t accel;
+        Imu3D_t gyro;
+        Imu3D_t mag;
     };
 } // namespace IMU
 
