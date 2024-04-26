@@ -16,16 +16,21 @@ class HAL_Regina : public HAL
 private:
     m5::I2C_Class* _i2c_bus;
 
+    void _watch_dog_init();
     void _disp_init();
     void _gamepad_init();
     // void _encoder_init();
     void _seaker_init();
+
     void _i2c_init();
-    void _watch_dog_init();
+    void _rtc_init();
+    void _adjust_sys_time();
+
     void _fs_init();
     std::vector<std::string> _ls(const std::string& path);
     void _config_check_valid();
     void _log_out_system_config();
+    
     // std::string _get_mac();
 
 public:
@@ -42,7 +47,7 @@ public:
         // _encoder_init();
         _seaker_init();
         _i2c_init();
-        // _power_monitor_init();
+        _rtc_init();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -52,6 +57,8 @@ public:
     void feedTheDog() override;
 
     bool getButton(GAMEPAD::GamePadButton_t button) override;
+
+    void setSystemTime(tm dateTime) override;
 
     void beep(float frequency, uint32_t duration) override;
     void beepStop() override;
