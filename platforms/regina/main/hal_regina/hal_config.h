@@ -31,7 +31,7 @@
 #define HAL_PIN_DIAL_CE 0
 #define HAL_PIN_DIAL_PL 6
 #define HAL_PIN_DIAL_CLK 7
-#define HAL_PIN_DIAL_OUTPUT 1
+#define HAL_PIN_DIAL_DATA 1
 
 // I2C
 #define HAL_PIN_I2C_SCL 10

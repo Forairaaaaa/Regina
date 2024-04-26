@@ -16,7 +16,7 @@ private:
     void _watch_dog_init();
     void _disp_init();
     void _gamepad_init();
-    // void _encoder_init();
+    void _dial_init();
     void _seaker_init();
 
     void _i2c_init();
@@ -38,10 +38,10 @@ public:
     inline void init() override
     {
         _gamepad_init();
+        _dial_init();
         _watch_dog_init();
         _fs_init();
         _disp_init();
-        // _encoder_init();
         _seaker_init();
         _i2c_init();
         _rtc_init();
@@ -63,9 +63,6 @@ public:
     void updateImuData() override;
     void beep(float frequency, uint32_t duration) override;
     void beepStop() override;
-
-    // int getEncoderCount() override;
-    // void resetEncoderCount(int value) override;
 
     void loadSystemConfig() override;
     void saveSystemConfig() override;
