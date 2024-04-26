@@ -15,12 +15,12 @@
 
 class LGFX_Regina : public lgfx::LGFX_Device
 {
-    lgfx::Panel_SSD1306 _panel_instance;
+    lgfx::Panel_SH110x _panel_instance;
     lgfx::Bus_SPI _bus_instance;
     // lgfx::Light_PWM _light_instance;
 
 public:
-    LGFX_Regina(bool highRefreshRate = true)
+    LGFX_Regina()
     {
         {
             auto cfg = _bus_instance.config();
@@ -29,11 +29,9 @@ public:
             cfg.pin_miso = -1;
             cfg.pin_sclk = HAL_PIN_OLED_SCL;
             cfg.pin_dc = HAL_PIN_OLED_DC;
-
-            if (highRefreshRate)
-                cfg.freq_write = 80000000;
-            else
-                cfg.freq_write = 40000000;
+            // cfg.freq_write = 26670000;
+            cfg.freq_write = 30000000;
+            // cfg.freq_write = 80000000;
 
             cfg.spi_3wire = false;
 
@@ -43,15 +41,14 @@ public:
         {
             auto cfg = _panel_instance.config();
 
-            cfg.invert = true;
+            // cfg.invert = true;
             cfg.pin_cs = HAL_PIN_OLED_CS;
             cfg.pin_rst = HAL_PIN_OLED_RST;
             cfg.pin_busy = -1;
+
             cfg.panel_width = 128;
             cfg.panel_height = 64;
-            cfg.offset_x = 0;
-            cfg.offset_y = 0;
-            // cfg.bus_shared   = true;
+            cfg.bus_shared = false;
 
             _panel_instance.config(cfg);
         }
@@ -81,9 +78,39 @@ void HAL_Regina::_disp_init()
         return;
     }
 
-    _data.display = new LGFX_Regina(true);
+    _data.display = new LGFX_Regina;
     _data.display->init();
 
     _data.canvas = new LGFX_SpriteFx(_data.display);
     _data.canvas->createSprite(_data.display->width(), _data.display->height());
+
+    // /* -------------------------------------------------------------------------- */
+    // /*                                    Test                                    */
+    // /* -------------------------------------------------------------------------- */
+    // while (1)
+    // {
+    //     // spdlog::info("www");
+    //     // _data.display->fillScreen(TFT_WHITE);
+    //     // _data.display->setTextColor(TFT_BLACK, TFT_WHITE);
+    //     // _data.display->drawString("www", 0, 0);
+    //     // delay(1000);
+    //     // spdlog::info("bbb");
+    //     // _data.display->fillScreen(TFT_BLACK);
+    //     // _data.display->setTextColor(TFT_WHITE, TFT_BLACK);
+    //     // _data.display->drawString("bbb", 0, 0);
+    //     // delay(1000);
+
+    //     spdlog::info("www");
+    //     _data.canvas->fillScreen(TFT_WHITE);
+    //     _data.canvas->setTextColor(TFT_BLACK, TFT_WHITE);
+    //     _data.canvas->drawString("www", 0, 0);
+    //     _data.canvas->pushSprite(0, 0);
+    //     delay(1000);
+    //     spdlog::info("bbb");
+    //     _data.canvas->fillScreen(TFT_BLACK);
+    //     _data.canvas->setTextColor(TFT_WHITE, TFT_BLACK);
+    //     _data.canvas->drawString("bbb", 0, 0);
+    //     _data.canvas->pushSprite(0, 0);
+    //     delay(1000);
+    // }
 }

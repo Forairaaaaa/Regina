@@ -34,7 +34,7 @@ void AppLauncher::onResume()
 {
     spdlog::info("{} onResume", getAppName());
     HAL::GetCanvas()->setTextScroll(true);
-    HAL::GetCanvas()->setTextColor(TFT_BLUE, TFT_BLACK);
+    HAL::GetCanvas()->setTextColor(TFT_WHITE, TFT_BLACK);
 
     // HAL::GetCanvas()->fillSmoothRoundRect(30, 20, 70, 40, 10, TFT_WHITE);
     HAL::GetCanvas()->fillRoundRect(30, 20, 70, 40, 10, TFT_WHITE);
