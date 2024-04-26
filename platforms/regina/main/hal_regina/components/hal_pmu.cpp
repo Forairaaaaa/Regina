@@ -43,7 +43,7 @@ public:
     {
         const uint8_t reg = 0xB9;
         auto val = readRegister8(reg);
-        val &= 0x01111111;
+        val &= 0b01111111;
         return val;
     }
 
@@ -51,7 +51,7 @@ public:
     {
         const uint8_t reg = 0x01;
         auto val = readRegister8(reg);
-        val &= 0x01000000;
+        val &= 0b01000000;
         return (bool)val;
     }
 };
