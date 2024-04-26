@@ -77,6 +77,7 @@ namespace CONFIG
     // Default config
     struct SystemConfig_t
     {
+        bool mute = false;
         std::string wifiSsid = "";
         std::string wifiPassword = "";
     };

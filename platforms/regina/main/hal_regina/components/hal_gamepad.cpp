@@ -12,6 +12,8 @@
 #include "../hal_config.h"
 #include <mooncake.h>
 #include <driver/gpio.h>
+#include <cstdint>
+#include <vector>
 
 void HAL_Regina::_gamepad_init()
 {

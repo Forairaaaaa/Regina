@@ -19,7 +19,7 @@ private:
     void _disp_init();
     void _gamepad_init();
     // void _encoder_init();
-    // void _seaker_init();
+    void _seaker_init();
     void _i2c_init();
     void _watch_dog_init();
     void _fs_init();
@@ -40,7 +40,7 @@ public:
         _fs_init();
         _disp_init();
         // _encoder_init();
-        // _seaker_init();
+        _seaker_init();
         _i2c_init();
         // _power_monitor_init();
     }
@@ -53,8 +53,8 @@ public:
 
     bool getButton(GAMEPAD::GamePadButton_t button) override;
 
-    // void beep(float frequency, uint32_t duration) override;
-    // void beepStop() override;
+    void beep(float frequency, uint32_t duration) override;
+    void beepStop() override;
 
     // int getEncoderCount() override;
     // void resetEncoderCount(int value) override;
