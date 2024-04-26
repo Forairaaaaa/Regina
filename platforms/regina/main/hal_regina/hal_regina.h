@@ -9,15 +9,18 @@
  *
  */
 #include <hal/hal.h>
+#include <utility/I2C_Class.hpp>
 
 class HAL_Regina : public HAL
 {
 private:
+    m5::I2C_Class* _i2c_bus;
+
     void _disp_init();
     // void _gamepad_init();
     // void _encoder_init();
     // void _seaker_init();
-    // void _i2c_init();
+    void _i2c_init();
     void _watch_dog_init();
     void _fs_init();
     std::vector<std::string> _ls(const std::string& path);
@@ -26,6 +29,8 @@ private:
     // std::string _get_mac();
 
 public:
+    HAL_Regina() : _i2c_bus(nullptr) {}
+
     std::string type() override { return "Regina"; }
 
     inline void init() override
@@ -36,7 +41,7 @@ public:
         _disp_init();
         // _encoder_init();
         // _seaker_init();
-        // _i2c_init();
+        _i2c_init();
         // _power_monitor_init();
         // _vabase_init();
     }
