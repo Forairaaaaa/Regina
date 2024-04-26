@@ -21,18 +21,12 @@ namespace GAMEPAD
 {
     enum GamePadButton_t
     {
-        BTN_START = 0,
-        BTN_SELECT,
-        BTN_UP,
-        BTN_LEFT,
-        BTN_RIGHT,
-        BTN_DOWN,
-        BTN_X,
-        BTN_Y,
-        BTN_A,
+        BTN_A = 0,
         BTN_B,
-        BTN_LEFT_STICK,
-        GAMEPAD_BUTTON_NUM,
+        BTN_C,
+        BTN_D,
+        BTN_PWR,
+        GAMEPAD_BUTTON_NUM
     };
 } // namespace GAMEPAD
 

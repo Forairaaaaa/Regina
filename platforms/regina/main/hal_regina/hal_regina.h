@@ -17,7 +17,7 @@ private:
     m5::I2C_Class* _i2c_bus;
 
     void _disp_init();
-    // void _gamepad_init();
+    void _gamepad_init();
     // void _encoder_init();
     // void _seaker_init();
     void _i2c_init();
@@ -35,7 +35,7 @@ public:
 
     inline void init() override
     {
-        // _gamepad_init();
+        _gamepad_init();
         _watch_dog_init();
         _fs_init();
         _disp_init();
@@ -43,7 +43,6 @@ public:
         // _seaker_init();
         _i2c_init();
         // _power_monitor_init();
-        // _vabase_init();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -52,7 +51,7 @@ public:
     void reboot() override;
     void feedTheDog() override;
 
-    // bool getButton(GAMEPAD::GamePadButton_t button) override;
+    bool getButton(GAMEPAD::GamePadButton_t button) override;
 
     // void beep(float frequency, uint32_t duration) override;
     // void beepStop() override;

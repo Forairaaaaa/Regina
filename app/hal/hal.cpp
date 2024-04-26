@@ -128,7 +128,7 @@ tm* HAL::getLocalTime()
 
 bool HAL::getAnyButton()
 {
-    for (int i = GAMEPAD::BTN_START; i < GAMEPAD::GAMEPAD_BUTTON_NUM; i++)
+    for (int i = GAMEPAD::BTN_A; i < GAMEPAD::GAMEPAD_BUTTON_NUM; i++)
     {
         if (getButton(static_cast<GAMEPAD::GamePadButton_t>(i)))
             return true;
