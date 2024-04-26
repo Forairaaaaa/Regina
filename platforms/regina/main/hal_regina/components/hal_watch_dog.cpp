@@ -55,5 +55,3 @@ void HAL_Regina::feedTheDog()
     // SB idle wdt 😅
     vTaskDelay(1);
 }
-
-void HAL_Regina::reboot() { esp_restart(); }

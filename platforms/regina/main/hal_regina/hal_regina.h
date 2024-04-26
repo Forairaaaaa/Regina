@@ -9,13 +9,10 @@
  *
  */
 #include <hal/hal.h>
-#include <utility/I2C_Class.hpp>
 
 class HAL_Regina : public HAL
 {
 private:
-    m5::I2C_Class* _i2c_bus;
-
     void _watch_dog_init();
     void _disp_init();
     void _gamepad_init();
@@ -26,6 +23,7 @@ private:
     void _rtc_init();
     void _adjust_sys_time();
     void _imu_init();
+    void _pmu_init();
 
     void _fs_init();
     std::vector<std::string> _ls(const std::string& path);
@@ -35,8 +33,6 @@ private:
     // std::string _get_mac();
 
 public:
-    HAL_Regina() : _i2c_bus(nullptr) {}
-
     std::string type() override { return "Regina"; }
 
     inline void init() override
@@ -50,12 +46,17 @@ public:
         _i2c_init();
         _rtc_init();
         _imu_init();
+        _pmu_init();
     }
 
     /* -------------------------------------------------------------------------- */
     /*                             Public api override                            */
     /* -------------------------------------------------------------------------- */
     void reboot() override;
+    void powerOff() override;
+    uint8_t getBatteryPercentage() override;
+    bool isBatteryCharging() override;
+
     void feedTheDog() override;
     bool getButton(GAMEPAD::GamePadButton_t button) override;
     void setSystemTime(tm dateTime) override;

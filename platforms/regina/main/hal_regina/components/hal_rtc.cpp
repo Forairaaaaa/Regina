@@ -19,7 +19,7 @@ void HAL_Regina::_rtc_init()
 {
     spdlog::info("rtc init");
 
-    _rtc = new m5::RTC8563_Class(0x51, 400000, _i2c_bus);
+    _rtc = new m5::RTC8563_Class(0x51, 400000, &m5::In_I2C);
     if (!_rtc->begin())
     {
         spdlog::error("init failed!");

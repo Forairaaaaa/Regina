@@ -11,20 +11,19 @@
 #include "../hal_regina.h"
 #include "../hal_config.h"
 #include <mooncake.h>
-#include <Arduino.h>
+#include <utility/I2C_Class.hpp>
 
 void HAL_Regina::_i2c_init()
 {
     spdlog::info("i2c bus init");
 
     // Init
-    _i2c_bus = new m5::I2C_Class;
-    _i2c_bus->begin(I2C_NUM_0, HAL_PIN_I2C_SDA, HAL_PIN_I2C_SCL);
+    m5::In_I2C.begin(I2C_NUM_0, HAL_PIN_I2C_SDA, HAL_PIN_I2C_SCL);
 
     // Scan
     spdlog::info("start scan:");
     bool scan_list[120];
-    _i2c_bus->scanID(scan_list);
+    m5::In_I2C.scanID(scan_list);
     uint8_t device_num = 0;
     for (int i = 8; i < 0x78; i++)
     {

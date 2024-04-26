@@ -168,20 +168,6 @@ public:
     virtual unsigned long millis() { return lgfx::millis(); }
 
     /**
-     * @brief Power off
-     *
-     */
-    static void PowerOff() { Get()->powerOff(); }
-    virtual void powerOff() {}
-
-    /**
-     * @brief Reboot
-     *
-     */
-    static void Reboot() { Get()->reboot(); }
-    virtual void reboot() {}
-
-    /**
      * @brief Set RTC time
      *
      * @param dateTime
@@ -203,6 +189,41 @@ public:
      */
     static void FeedTheDog() { Get()->feedTheDog(); }
     virtual void feedTheDog() {}
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    Power                                   */
+    /* -------------------------------------------------------------------------- */
+public:
+    /**
+     * @brief Power off
+     *
+     */
+    static void PowerOff() { Get()->powerOff(); }
+    virtual void powerOff() {}
+
+    /**
+     * @brief Reboot
+     *
+     */
+    static void Reboot() { Get()->reboot(); }
+    virtual void reboot() {}
+
+    /**
+     * @brief Get the Battery Percentage
+     *
+     * @return uint8_t
+     */
+    static uint8_t GetBatteryPercentage() { return Get()->getBatteryPercentage(); }
+    virtual uint8_t getBatteryPercentage() { return 0; }
+
+    /**
+     * @brief Is charging right now
+     *
+     * @return true
+     * @return false
+     */
+    static bool IsBatteryCharging() { return Get()->isBatteryCharging(); }
+    virtual bool isBatteryCharging() { return false; }
 
     /* -------------------------------------------------------------------------- */
     /*                                     MSC                                    */

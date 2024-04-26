@@ -23,7 +23,7 @@
 class My_BMI270_Class : public m5::BMI270_Class
 {
 public:
-    My_BMI270_Class(std::uint8_t i2c_addr = 0x68, std::uint32_t freq = 400000, m5::I2C_Class* i2c = nullptr)
+    My_BMI270_Class(std::uint8_t i2c_addr = 0x68, std::uint32_t freq = 400000, m5::I2C_Class* i2c = &m5::In_I2C)
         : m5::BMI270_Class(i2c_addr, freq, i2c)
     {
     }
@@ -66,7 +66,7 @@ void HAL_Regina::_imu_init()
     spdlog::info("imu init");
 
     _imu = new My_BMI270_Class;
-    if (!_imu->begin(_i2c_bus))
+    if (!_imu->begin(&m5::In_I2C))
     {
         spdlog::error("init failed!");
         delete _imu;
