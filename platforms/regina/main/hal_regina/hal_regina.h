@@ -18,6 +18,7 @@ private:
     void _gamepad_init();
     void _dial_init();
     void _seaker_init();
+    // void _mic_init();
 
     void _i2c_init();
     void _rtc_init();
@@ -42,6 +43,7 @@ public:
         _fs_init();
         _disp_init();
         _seaker_init();
+        // _mic_init();
         _i2c_init();
         _rtc_init();
         _imu_init();
