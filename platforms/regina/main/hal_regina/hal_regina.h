@@ -38,7 +38,6 @@ public:
     inline void init() override
     {
         _gamepad_init();
-        _dial_init();
         _watch_dog_init();
         _fs_init();
         _disp_init();
@@ -47,6 +46,7 @@ public:
         _rtc_init();
         _imu_init();
         _pmu_init();
+        _dial_init();
     }
 
     /* -------------------------------------------------------------------------- */
@@ -58,11 +58,15 @@ public:
     bool isBatteryCharging() override;
 
     void feedTheDog() override;
-    bool getButton(GAMEPAD::GamePadButton_t button) override;
     void setSystemTime(tm dateTime) override;
+
+    bool getButton(GAMEPAD::GamePadButton_t button) override;
     void updateImuData() override;
     void beep(float frequency, uint32_t duration) override;
     void beepStop() override;
+    uint8_t getDialValue(DIAL::DialId_t dialId) override;
+    int getDialCount(DIAL::DialId_t dialId) override;
+    void resetDialCount(DIAL::DialId_t dialId) override;
 
     void loadSystemConfig() override;
     void saveSystemConfig() override;

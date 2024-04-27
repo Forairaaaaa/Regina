@@ -12,9 +12,10 @@
 #include "../hal_config.h"
 #include <mooncake.h>
 #include <vector>
+#include <thread>
+#include <mutex>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include <freertos/semphr.h>
 
 class TwoDials
 {
@@ -154,37 +155,102 @@ public:
 };
 
 static TwoDials* _dials = nullptr;
+static std::mutex* _mutex = nullptr;
 
-// static void _two_dial_daemon(void* param)
-// {
-//     while (1)
-//     {
-//     }
-//     vTaskDelete(NULL);
-// }
+static void _dials_daemon(void* param)
+{
+    while (1)
+    {
+        _mutex->lock();
+        _dials->update();
+        _mutex->unlock();
+        vTaskDelay(pdMS_TO_TICKS(20));
+    }
+    vTaskDelete(NULL);
+}
 
 void HAL_Regina::_dial_init()
 {
     spdlog::info("dial init");
 
     _dials = new TwoDials;
-
     _dials->setDialAPinSwaped(true);
-
     _dials->init();
+
+    spdlog::info("create daemon");
+    _mutex = new std::mutex;
+    // This shit works with test, but crash in app layer 😅
+    // std::thread daemon(_dials_daemon);
+    xTaskCreate(_dials_daemon, "dials", 2048, NULL, 5, NULL);
 
     /* -------------------------------------------------------------------------- */
     /*                                    Test                                    */
     /* -------------------------------------------------------------------------- */
-    while (1)
-    {
-        _dials->update();
-        delay(20);
+    // while (1)
+    // {
+    //     _dials->update();
+    //     delay(20);
 
-        spdlog::info(" {} {} | {} {}",
-                     _dials->getDialACount(),
-                     _dials->getDialAValue(),
-                     _dials->getDialBCount(),
-                     _dials->getDialBValue());
-    }
+    //     spdlog::info(" {} {} | {} {}",
+    //                  _dials->getDialACount(),
+    //                  _dials->getDialAValue(),
+    //                  _dials->getDialBCount(),
+    //                  _dials->getDialBValue());
+    // }
+
+    // while (1)
+    // {
+    //     delay(20);
+    //     spdlog::info(" {} {} | {} {}",
+    //                  getDialValue(DIAL::DIAL_A),
+    //                  getDialCount(DIAL::DIAL_A),
+    //                  getDialValue(DIAL::DIAL_B),
+    //                  getDialCount(DIAL::DIAL_B));
+
+    //     if (getAnyButton())
+    //     {
+    //         resetDialCount(DIAL::DIAL_A);
+    //         resetDialCount(DIAL::DIAL_B);
+    //     }
+    // }
+}
+
+uint8_t HAL_Regina::getDialValue(DIAL::DialId_t dialId)
+{
+    int value = 0;
+    _mutex->lock();
+
+    if (dialId == DIAL::DIAL_A)
+        value = _dials->getDialAValue();
+    else if (dialId == DIAL::DIAL_B)
+        value = _dials->getDialBValue();
+
+    _mutex->unlock();
+    return value;
+}
+
+int HAL_Regina::getDialCount(DIAL::DialId_t dialId)
+{
+    int count = 0;
+    _mutex->lock();
+
+    if (dialId == DIAL::DIAL_A)
+        count = _dials->getDialACount();
+    else if (dialId == DIAL::DIAL_B)
+        count = _dials->getDialBCount();
+
+    _mutex->unlock();
+    return count;
+}
+
+void HAL_Regina::resetDialCount(DIAL::DialId_t dialId)
+{
+    _mutex->lock();
+
+    if (dialId == DIAL::DIAL_A)
+        _dials->resetDialACount();
+    else if (dialId == DIAL::DIAL_B)
+        _dials->resetDialBCount();
+
+    _mutex->unlock();
 }

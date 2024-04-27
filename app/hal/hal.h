@@ -352,6 +352,36 @@ public:
     virtual void resetEncoderCount(int value) {}
 
     /* -------------------------------------------------------------------------- */
+    /*                                    Dials                                   */
+    /* -------------------------------------------------------------------------- */
+public:
+    /**
+     * @brief Get dial's current absolute value
+     *
+     * @param dialId
+     * @return uint8_t
+     */
+    static uint8_t GetDialValue(DIAL::DialId_t dialId) { return Get()->getDialValue(dialId); }
+    virtual uint8_t getDialValue(DIAL::DialId_t dialId) { return 0; }
+
+    /**
+     * @brief Get dial's count
+     *
+     * @param dialId
+     * @return int
+     */
+    static int GetDialCount(DIAL::DialId_t dialId) { return Get()->getDialCount(dialId); }
+    virtual int getDialCount(DIAL::DialId_t dialId) { return 0; }
+
+    /**
+     * @brief Reset dial's count to 0
+     *
+     * @param dialId
+     */
+    static void ResetDialCount(DIAL::DialId_t dialId) { Get()->resetDialCount(dialId); }
+    virtual void resetDialCount(DIAL::DialId_t dialId) {}
+
+    /* -------------------------------------------------------------------------- */
     /*                                  Touchpad                                  */
     /* -------------------------------------------------------------------------- */
 public:
