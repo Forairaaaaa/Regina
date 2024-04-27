@@ -98,6 +98,8 @@ namespace CONFIG
     struct SystemConfig_t
     {
         bool mute = false;
+        bool dialAPinSwaped = false;
+        bool dialBPinSwaped = false;
         std::string wifiSsid = "";
         std::string wifiPassword = "";
     };

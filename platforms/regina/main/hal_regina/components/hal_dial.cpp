@@ -174,7 +174,10 @@ void HAL_Regina::_dial_init()
     spdlog::info("dial init");
 
     _dials = new TwoDials;
-    _dials->setDialAPinSwaped(true);
+
+    // Apply config
+    _dials->setDialAPinSwaped(_data.config.dialAPinSwaped);
+    _dials->setDialBPinSwaped(_data.config.dialBPinSwaped);
     _dials->init();
 
     spdlog::info("create daemon");

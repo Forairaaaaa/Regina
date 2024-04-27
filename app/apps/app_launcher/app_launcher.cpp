@@ -49,7 +49,7 @@ void AppLauncher::onRunning()
     shit++;
     HAL::GetCanvas()->printf("%d", shit);
     HAL::CanvasUpdate();
-    HAL::Delay(20);
+    // HAL::Delay(20);
 }
 
 void AppLauncher::onDestroy()

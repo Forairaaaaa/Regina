@@ -35,8 +35,11 @@ void HAL_Regina::_fs_init()
 
 void HAL_Regina::_log_out_system_config()
 {
-    // spdlog::info("system config:");
-    // spdlog::info(" - brightness: {}", _config.brightness);
+    spdlog::info("system config:");
+    spdlog::info(" - dialAPinSwaped: {}", _data.config.dialAPinSwaped);
+    spdlog::info(" - dialBPinSwaped: {}", _data.config.dialBPinSwaped);
+    spdlog::info(" - wifiSsid: {}", _data.config.wifiSsid);
+    spdlog::info(" - wifiPassword: {}", _data.config.wifiPassword);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -92,7 +95,8 @@ void HAL_Regina::loadSystemConfig()
     }
 
     // Copy
-    // _config.brightness = doc["brightness"];
+    _data.config.dialAPinSwaped = doc["dialAPinSwaped"];
+    _data.config.dialBPinSwaped = doc["dialBPinSwaped"];
 
     free(file_content);
     spdlog::info("done");
@@ -112,7 +116,10 @@ void HAL_Regina::saveSystemConfig()
         _config_check_valid();
 
         // Copy
-        // doc["brightness"] = _config.brightness;
+        doc["dialAPinSwaped"] = _data.config.dialAPinSwaped;
+        doc["dialBPinSwaped"] = _data.config.dialBPinSwaped;
+        doc["wifiSsid"] = _data.config.wifiSsid;
+        doc["wifiPassword"] = _data.config.wifiPassword;
 
         // Serialize
         if (serializeJson(doc, json_content) == 0)
