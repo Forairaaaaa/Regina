@@ -37,7 +37,7 @@ extern "C" void app_main(void)
             spdlog::error("asset pool partition not found!\n");
             return;
         }
-        err = esp_partition_mmap(part, 0, 2 * 1024 * 1024, ESP_PARTITION_MMAP_DATA, (const void**)&static_asset, &handler);
+        err = esp_partition_mmap(part, 0, 4 * 1024 * 1024, ESP_PARTITION_MMAP_DATA, (const void**)&static_asset, &handler);
         if (err != ESP_OK)
         {
             spdlog::error("map asset pool failed!\n");

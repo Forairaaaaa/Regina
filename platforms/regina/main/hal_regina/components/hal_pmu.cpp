@@ -79,7 +79,7 @@ void HAL_Regina::_pmu_init()
     //     spdlog::info("{} {}", getBatteryPercentage(), isBatteryCharging());
     //     delay(500);
     // }
-    // powerOff();
+    // // powerOff();
 }
 
 void HAL_Regina::reboot() { esp_restart(); }
