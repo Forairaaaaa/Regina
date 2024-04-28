@@ -16,10 +16,11 @@ void setup()
     APP::SetupCallback_t callback;
 
     callback.AssetPoolInjection = []() {
-        AssetPool::InjectStaticAsset(AssetPool::CreateStaticAsset());
-
-        AssetPool::CreateStaticAssetBin(AssetPool::GetStaticAsset());
-        // AssetPool::InjectStaticAsset(AssetPool::GetStaticAssetFromBin());
+        // 自产自销
+        auto asset_pool = AssetPool::CreateStaticAsset();
+        AssetPool::CreateStaticAssetBin(asset_pool);
+        delete asset_pool;
+        AssetPool::InjectStaticAsset(AssetPool::GetStaticAssetFromBin());
     };
 
     callback.HalInjection = []() { HAL::Inject(new HAL_Desktop(128, 64)); };

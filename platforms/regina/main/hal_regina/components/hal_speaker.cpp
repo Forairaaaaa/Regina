@@ -34,12 +34,12 @@ void HAL_Regina::_seaker_init()
     // /* -------------------------------------------------------------------------- */
     // /*                                    Test                                    */
     // /* -------------------------------------------------------------------------- */
-    beep(NOTE_C4, 100);
-    delay(100);
-    beep(NOTE_FS4, 100);
-    delay(100);
-    beep(NOTE_B4, 100);
-    delay(100);
+    // beep(NOTE_C4, 100);
+    // delay(100);
+    // beep(NOTE_FS4, 100);
+    // delay(100);
+    // beep(NOTE_B4, 100);
+    // delay(100);
 }
 
 void HAL_Regina::beep(float frequency, uint32_t duration)

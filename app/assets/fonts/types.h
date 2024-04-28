@@ -21,4 +21,6 @@ struct FontPool_t
     // uint8_t* montserrat_semibolditalic_24 = nullptr;
     // or
     // uint8_t montserrat_semibolditalic_24[81463];
+
+    uint8_t zpix_12[3227624];
 };

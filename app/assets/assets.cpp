@@ -13,6 +13,7 @@
 #include "localization/types.h"
 #include "fonts/fonts.h"
 #include "images/images.h"
+#include "spdlog/spdlog.h"
 #ifndef ESP_PLATFORM
 #include <iostream>
 #include <fstream>
@@ -80,23 +81,30 @@ void AssetPool::setLocaleCode(LocaleCode_t code)
     setLocalTextTo(_data.locale_code);
 }
 
-void AssetPool::loadFont14(LGFX_SpriteFx* lgfxDevice)
+void AssetPool::loadFont12(LGFX_SpriteFx* lgfxDevice)
 {
-    /* ------------------- Load your font by locale code here ------------------- */
-
-    // lgfxDevice->setTextSize(1);
-    // if (_data.locale_code == locale_code_en)
-    //     lgfxDevice->loadFont(getStaticAsset()->Font.montserrat_semibold_14);
-    // else
-    //     ...
+    lgfxDevice->setTextSize(1);
+    lgfxDevice->loadFont(getStaticAsset()->Font.zpix_12);
 }
 
-void AssetPool::loadFont16(LGFX_SpriteFx* lgfxDevice) {}
+// void AssetPool::loadFont14(LGFX_SpriteFx* lgfxDevice)
+// {
+//     /* ------------------- Load your font by locale code here ------------------- */
 
-void AssetPool::loadFont24(LGFX_SpriteFx* lgfxDevice) {}
+//     // lgfxDevice->setTextSize(1);
+//     // if (_data.locale_code == locale_code_en)
+//     //     lgfxDevice->loadFont(getStaticAsset()->Font.montserrat_semibold_14);
+//     // else
+//     //     ...
+// }
 
-void AssetPool::loadFont72(LGFX_SpriteFx* lgfxDevice) {}
+// void AssetPool::loadFont16(LGFX_SpriteFx* lgfxDevice) {}
 
+// void AssetPool::loadFont24(LGFX_SpriteFx* lgfxDevice) {}
+
+// void AssetPool::loadFont72(LGFX_SpriteFx* lgfxDevice) {}
+
+#ifndef ESP_PLATFORM
 /* -------------------------------------------------------------------------- */
 /*                            Static asset generate                           */
 /* -------------------------------------------------------------------------- */
@@ -104,26 +112,31 @@ StaticAsset_t* AssetPool::CreateStaticAsset()
 {
     auto asset_pool = new StaticAsset_t;
 
-    // Copy data
     /* -------------------------------------------------------------------------- */
-    /*                                    Fonts                                   */
+    /*                                    Font                                    */
     /* -------------------------------------------------------------------------- */
+    const char* font_file_path = "../../app/assets/fonts/Zpix-12.vlw";
+    spdlog::info("try open {}", font_file_path);
 
-    // Copy your font here (or set pointer)
-    // std::memcpy(asset_pool->Font.montserrat_semibolditalic_24, montserrat_semibolditalic_24,
-    // montserrat_semibolditalic_24_size);
+    std::ifstream file(font_file_path, std::ios::binary | std::ios::ate);
+    if (!file.is_open())
+    {
+        spdlog::error("open failed!", font_file_path);
+    }
+    else
+    {
+        std::streampos file_size = file.tellg();
+        file.seekg(0, std::ios::beg);
+        spdlog::info("font binary size {}", file_size);
 
-    /* -------------------------------------------------------------------------- */
-    /*                                   Images                                   */
-    /* -------------------------------------------------------------------------- */
-
-    // Copy your image here (or set pointer)
-    // std::memcpy(asset_pool->Image.AppLauncher.icon, image_data_icon, image_data_icon_size);
+        // Copy and go
+        file.read(reinterpret_cast<char*>(asset_pool->Font.zpix_12), file_size);
+        file.close();
+    }
 
     return asset_pool;
 }
 
-#ifndef ESP_PLATFORM
 void AssetPool::CreateStaticAssetBin(StaticAsset_t* assetPool)
 {
     /* -------------------------------------------------------------------------- */
@@ -145,7 +158,7 @@ StaticAsset_t* AssetPool::GetStaticAssetFromBin()
     auto asset_pool = new StaticAsset_t;
 
     // Read from bin
-    std::string bin_path = "AssetPool-VAMeter.bin";
+    std::string bin_path = "AssetPool.bin";
 
     std::ifstream inFile(bin_path, std::ios::binary);
     if (!inFile)

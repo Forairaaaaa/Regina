@@ -68,10 +68,11 @@ public:
 
     /* ---------------------------------- Font ---------------------------------- */
 public:
-    void loadFont14(LGFX_SpriteFx* lgfxDevice);
-    void loadFont16(LGFX_SpriteFx* lgfxDevice);
-    void loadFont24(LGFX_SpriteFx* lgfxDevice);
-    void loadFont72(LGFX_SpriteFx* lgfxDevice);
+    void loadFont12(LGFX_SpriteFx* lgfxDevice);
+    // void loadFont14(LGFX_SpriteFx* lgfxDevice);
+    // void loadFont16(LGFX_SpriteFx* lgfxDevice);
+    // void loadFont24(LGFX_SpriteFx* lgfxDevice);
+    // void loadFont72(LGFX_SpriteFx* lgfxDevice);
 
     /* ------------------------------- Static wrap ------------------------------ */
 public:
@@ -88,15 +89,16 @@ public:
     static LocaleCode_t GetLocaleCode() { return Get()->getLocaleCode(); }
     static bool IsLocaleEn() { return Get()->isLocaleEn(); }
 
-    static void LoadFont14(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont14(lgfxDevice); }
-    static void LoadFont16(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont16(lgfxDevice); }
-    static void LoadFont24(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont24(lgfxDevice); }
-    static void LoadFont72(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont72(lgfxDevice); }
+    static void LoadFont12(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont12(lgfxDevice); }
+    // static void LoadFont14(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont14(lgfxDevice); }
+    // static void LoadFont16(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont16(lgfxDevice); }
+    // static void LoadFont24(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont24(lgfxDevice); }
+    // static void LoadFont72(LGFX_SpriteFx* lgfxDevice) { Get()->loadFont72(lgfxDevice); }
 
 public:
     /* -------------------------- Generate static asset ------------------------- */
-    static StaticAsset_t* CreateStaticAsset();
 #ifndef ESP_PLATFORM
+    static StaticAsset_t* CreateStaticAsset();
     static void CreateStaticAssetBin(StaticAsset_t* assetPool);
     static StaticAsset_t* GetStaticAssetFromBin();
 #endif

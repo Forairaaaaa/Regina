@@ -29,4 +29,6 @@ public:
         fillSmoothRoundRectInDifference(x - r, y - r, r * 2 + 1, r * 2 + 1, r);
     }
     void drawLineFakeWidth(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int width);
+
+    inline void drawStringFix(const char* string, int32_t x, int32_t y) { drawString(string, x, y - 13); }
 };
