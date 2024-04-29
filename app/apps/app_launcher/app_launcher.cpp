@@ -97,6 +97,10 @@ void AppLauncher::onRunning()
 
     HAL::CanvasUpdate();
     // HAL::Delay(10);
+
+    Button::Update();
+    if (Button::D()->wasClicked())
+        HAL::Reboot();
 }
 
 void AppLauncher::onDestroy()

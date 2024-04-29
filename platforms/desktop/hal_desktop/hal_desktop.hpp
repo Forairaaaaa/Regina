@@ -36,7 +36,8 @@ public:
     void init() override
     {
         // Display
-        _data.display = new LGFX(_screenWidth * 2, _screenHeight * 2);
+        _data.display = new LGFX(_screenWidth, _screenHeight);
+        // _data.display = new LGFX(_screenWidth * 2, _screenHeight * 2);
         _data.display->init();
 
         // Canvas
@@ -46,7 +47,8 @@ public:
         // _data.canvas->setColorDepth(lgfx::color_depth_t::grayscale_1bit);
 
         // Some pc window pop up slower?
-        lgfx::delay(1500);
+        // lgfx::delay(1500);
+        lgfx::delay(500);
 
         // this->popWarning("404 not found\nasdasd asdfasf");
         // this->popSuccess("404 not found\nasdasd asdfasf");
@@ -58,8 +60,8 @@ public:
 
     void canvasUpdate() override
     {
-        GetCanvas()->pushRotateZoom(0, 2, 2);
-        // GetCanvas()->pushSprite(0, 0);
+        // GetCanvas()->pushRotateZoom(0, 2, 2);
+        GetCanvas()->pushSprite(0, 0);
     }
 
     bool getButton(GAMEPAD::GamePadButton_t button) override

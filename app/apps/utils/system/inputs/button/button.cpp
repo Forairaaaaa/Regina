@@ -10,31 +10,52 @@
  */
 #include "button.h"
 #include "../../../../../hal/hal.h"
+#include "hal/types.h"
 
 using namespace SYSTEM::INPUTS;
 
 void Button::update() { m5::Button_Class::setRawState(HAL::Millis(), HAL::GetButton(_button)); }
 
-static Button* _encoder_button = nullptr;
-Button* Button::Encoder()
+static Button* _button_a = nullptr;
+Button* Button::A()
 {
     // Lazy loading
-    if (_encoder_button == nullptr)
-        _encoder_button = new Button(GAMEPAD::BTN_A);
-    return _encoder_button;
+    if (_button_a == nullptr)
+        _button_a = new Button(GAMEPAD::BTN_A);
+    return _button_a;
 }
 
-static Button* _side_button = nullptr;
-Button* Button::Side()
+static Button* _button_b = nullptr;
+Button* Button::B()
 {
     // Lazy loading
-    if (_side_button == nullptr)
-        _side_button = new Button(GAMEPAD::BTN_B);
-    return _side_button;
+    if (_button_b == nullptr)
+        _button_b = new Button(GAMEPAD::BTN_B);
+    return _button_b;
+}
+
+static Button* _button_c = nullptr;
+Button* Button::C()
+{
+    // Lazy loading
+    if (_button_c == nullptr)
+        _button_c = new Button(GAMEPAD::BTN_C);
+    return _button_c;
+}
+
+static Button* _button_d = nullptr;
+Button* Button::D()
+{
+    // Lazy loading
+    if (_button_d == nullptr)
+        _button_d = new Button(GAMEPAD::BTN_D);
+    return _button_d;
 }
 
 void Button::Update()
 {
-    Encoder()->update();
-    Side()->update();
+    A()->update();
+    B()->update();
+    C()->update();
+    D()->update();
 }

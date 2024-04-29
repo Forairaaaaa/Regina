@@ -31,18 +31,14 @@ namespace SYSTEM
 
         public:
             /**
-             * @brief Encoder button instance
-             *
-             * @return Button*
+             * @brief Button instances
+             * 
+             * @return Button* 
              */
-            static Button* Encoder();
-
-            /**
-             * @brief Side button instance
-             *
-             * @return Button*
-             */
-            static Button* Side();
+            static Button* A();
+            static Button* B();
+            static Button* C();
+            static Button* D();
 
             /**
              * @brief Helper method to update all button instances
