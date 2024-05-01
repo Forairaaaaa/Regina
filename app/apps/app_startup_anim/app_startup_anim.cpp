@@ -29,44 +29,69 @@ void AppStartupAnim::onResume()
 {
     spdlog::info("{} onResume", getAppName());
 
-    AssetPool::LoadFont12(HAL::GetCanvas());
-    HAL::GetCanvas()->setTextSize(2);
-    HAL::GetCanvas()->setTextColor(TFT_BLACK, TFT_WHITE);
-    HAL::GetCanvas()->setTextDatum(middle_left);
-
     Transition4D transition;
-    transition.setDuration(400);
-    transition.setTransitionPath(EasingPath::easeOutBack);
-    transition.jumpTo(17, -30, 95, 30);
-    transition.moveTo(17, 17, 95, 30);
+    // HELL:
+
+    /* ---------------------------------- Image --------------------------------- */
+    transition.jumpTo(0, HAL::GetCanvas()->height(), 0, 0);
+    transition.moveTo(0, -39, 0, 0);
+
+    transition.setDuration(700);
+    transition.setTransitionPath(EasingPath::easeOutQuad);
+
     while (!transition.isFinish())
     {
         transition.update(HAL::Millis());
         auto frame = transition.getValue();
 
         HAL::GetCanvas()->fillScreen(TFT_BLACK);
-        HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 8, TFT_WHITE);
-        HAL::GetCanvas()->drawString("Regina", frame.x + 10, frame.y + 15);
+        HAL::GetCanvas()->pushImage(0,
+                                    frame.y,
+                                    AssetPool::GetImage().StartupAnim.warma_halftone_width,
+                                    AssetPool::GetImage().StartupAnim.warma_halftone_height,
+                                    AssetPool::GetImage().StartupAnim.warma_halftone);
         HAL::CanvasUpdate();
         HAL::FeedTheDog();
     }
 
-    HAL::Delay(600);
+    HAL::Delay(1000);
 
-    transition.setDuration(500);
+    /* ---------------------------------- Panel --------------------------------- */
+    transition.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
     transition.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
+
+    transition.setDuration(700);
+    transition.setTransitionPath(EasingPath::easeOutBack);
+
+    transition.getYTransition().setDuration(500);
+    transition.getXTransition().setDelay(70);
+    transition.getWTransition().setDelay(70);
+    transition.getHTransition().setDelay(70);
+
     while (!transition.isFinish())
     {
         transition.update(HAL::Millis());
         auto frame = transition.getValue();
 
         HAL::GetCanvas()->fillScreen(TFT_BLACK);
+
+        HAL::GetCanvas()->pushImage(0,
+                                    frame.y - 103,
+                                    AssetPool::GetImage().StartupAnim.warma_halftone_width,
+                                    AssetPool::GetImage().StartupAnim.warma_halftone_height,
+                                    AssetPool::GetImage().StartupAnim.warma_halftone);
+        HAL::GetCanvas()->fillRect(frame.x, frame.y, frame.w, frame.h, TFT_BLACK);
         HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 8, TFT_WHITE);
+
         HAL::CanvasUpdate();
         HAL::FeedTheDog();
     }
 
-    HAL::Delay(3000);
+    // HAL::GetCanvas()->pushImage(0, 0, 128, 128, AssetPool::GetImage().StartupAnim.warma_halftone);
+    // HAL::CanvasUpdate();
+
+    // HAL::Delay(1000);
+    // goto HELL;
 
     destroyApp();
 }

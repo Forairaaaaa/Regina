@@ -25,4 +25,12 @@ struct ImagePool_t
     //     uint16_t* app_icon = nullptr;
     // };
     // AppLauncher_t AppLauncher;
+
+    struct StartupAnim_t
+    {
+        uint16_t warma_halftone[16384];
+        uint16_t warma_halftone_width = 128;
+        uint16_t warma_halftone_height = 128;
+    };
+    StartupAnim_t StartupAnim;
 };

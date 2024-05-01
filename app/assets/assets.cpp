@@ -8,20 +8,16 @@
  * @copyright Copyright (c) 2024
  *
  */
+#include <cstring>
 #include <mooncake.h>
 #include "assets.h"
 #include "localization/types.h"
+#ifndef ESP_PLATFORM
 #include "fonts/fonts.h"
 #include "images/images.h"
-#include "spdlog/spdlog.h"
-#ifndef ESP_PLATFORM
 #include <iostream>
 #include <fstream>
 #endif
-#include <algorithm>
-#include <cstring>
-#include <iterator>
-#include <string>
 
 AssetPool* AssetPool::_asset_pool = nullptr;
 
@@ -134,13 +130,18 @@ StaticAsset_t* AssetPool::CreateStaticAsset()
         file.close();
     }
 
+    /* -------------------------------------------------------------------------- */
+    /*                                    Image                                   */
+    /* -------------------------------------------------------------------------- */
+    std::memcpy(asset_pool->Image.StartupAnim.warma_halftone, image_data_warma_halftone, image_data_warma_halftone_size);
+
     return asset_pool;
 }
 
 void AssetPool::CreateStaticAssetBin(StaticAsset_t* assetPool)
 {
     /* -------------------------------------------------------------------------- */
-    /*                                Output to bin                               */
+    /*                             Serialize into bin                             */
     /* -------------------------------------------------------------------------- */
     std::string bin_path = "AssetPool.bin";
 
