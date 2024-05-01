@@ -23,7 +23,7 @@ using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
 
 // App name
-const char* AppLauncher_Packer::getAppName() { return "AppLauncher"; }
+const char* AppLauncher_Packer::getAppName() { return "Launcher"; }
 
 // Icon
 void* AppLauncher_Packer::getAppIcon() { return nullptr; }

@@ -12,16 +12,13 @@
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../utils/system/system.h"
+#include "lgfx/v1/misc/enum.hpp"
 
 using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
 
 // App name
 const char* AppTemplate_Packer::getAppName() { return "AppTemplate"; }
-
-// Theme color
-constexpr static uint32_t _theme_color = 0x3D7AF5;
-void* AppTemplate_Packer::getCustomData() { return (void*)(&_theme_color); }
 
 // Icon
 void* AppTemplate_Packer::getAppIcon() { return nullptr; }
@@ -31,8 +28,10 @@ void AppTemplate::onResume()
 {
     spdlog::info("{} onResume", getAppName());
 
-    // Render full screen to theme color
-    HAL::GetCanvas()->fillScreen(_theme_color);
+    HAL::GetCanvas()->fillScreen(TFT_BLACK);
+    AssetPool::LoadFont12(HAL::GetCanvas());
+    HAL::GetCanvas()->setCursor(0, 0);
+    HAL::GetCanvas()->print("啊?");
     HAL::CanvasUpdate();
 }
 

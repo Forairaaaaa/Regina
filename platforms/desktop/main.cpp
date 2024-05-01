@@ -23,7 +23,10 @@ void setup()
         AssetPool::InjectStaticAsset(AssetPool::GetStaticAssetFromBin());
     };
 
-    callback.HalInjection = []() { HAL::Inject(new HAL_Desktop(128, 64)); };
+    callback.HalInjection = []() {
+        HAL::Inject(new HAL_Desktop(128, 64));
+        // HAL::Inject(new HAL_Desktop(128, 64, true));
+    };
 
     APP::Setup(callback);
 }

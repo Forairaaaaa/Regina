@@ -1,15 +1,16 @@
 /**
- * @file app_template.h
+ * @file app_desktop.h
  * @author Forairaaaaa
  * @brief
  * @version 0.1
- * @date <date></date>
+ * @date 2024-05-01
  *
  * @copyright Copyright (c) 2024
  *
  */
 #include <cstdint>
 #include <mooncake.h>
+#include "view/terminal.h"
 
 namespace MOONCAKE
 {
@@ -19,27 +20,29 @@ namespace MOONCAKE
          * @brief Template
          *
          */
-        class AppTemplate : public APP_BASE
+        class AppDesktop : public APP_BASE
         {
         private:
             struct Data_t
             {
-                std::uint32_t time_count = 0;
+                Terminal terminal;
             };
             Data_t _data;
 
         public:
+            void onCreate() override;
             void onResume() override;
             void onRunning() override;
             void onDestroy() override;
         };
 
-        class AppTemplate_Packer : public APP_PACKER_BASE
+        class AppDesktop_Packer : public APP_PACKER_BASE
         {
             const char* getAppName() override;
             void* getAppIcon() override;
-            void* newApp() override { return new AppTemplate; }
-            void deleteApp(void* app) override { delete (AppTemplate*)app; }
+            void* newApp() override { return new AppDesktop; }
+            void deleteApp(void* app) override { delete (AppDesktop*)app; }
         };
+
     } // namespace APPS
 } // namespace MOONCAKE

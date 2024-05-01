@@ -23,21 +23,24 @@ class HAL_Desktop : public HAL
 private:
     int _screenWidth;
     int _screenHeight;
+    bool _zoom;
 
 public:
     std::string type() override { return "Desktop"; }
 
-    HAL_Desktop(int screenWidth = 240, int screenHeight = 240)
+    HAL_Desktop(int screenWidth = 240, int screenHeight = 240, bool zoom = false)
+        : _screenWidth(screenWidth), _screenHeight(screenHeight), _zoom(zoom)
     {
-        _screenWidth = screenWidth;
-        _screenHeight = screenHeight;
     }
 
     void init() override
     {
         // Display
-        _data.display = new LGFX(_screenWidth, _screenHeight);
-        // _data.display = new LGFX(_screenWidth * 2, _screenHeight * 2);
+        if (_zoom)
+            _data.display = new LGFX(_screenWidth * 2 - 2, _screenHeight * 2 - 2);
+        else
+            _data.display = new LGFX(_screenWidth, _screenHeight);
+
         _data.display->init();
 
         // Canvas
@@ -60,8 +63,10 @@ public:
 
     void canvasUpdate() override
     {
-        // GetCanvas()->pushRotateZoom(0, 2, 2);
-        GetCanvas()->pushSprite(0, 0);
+        if (_zoom)
+            GetCanvas()->pushRotateZoom(0, 2, 2);
+        else
+            GetCanvas()->pushSprite(0, 0);
     }
 
     bool getButton(GAMEPAD::GamePadButton_t button) override

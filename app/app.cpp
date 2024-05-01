@@ -46,7 +46,7 @@ void APP::Setup(SetupCallback_t callback)
     _mooncake->init();
 
     app_run_startup_anim(_mooncake);
-    app_install_launcher(_mooncake);
+    app_install_default_startup_app(_mooncake);
     app_install_apps(_mooncake);
 }
 

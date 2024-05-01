@@ -12,6 +12,7 @@
 #include "app_template/app_template.h"
 #include "app_launcher/app_launcher.h"
 #include "app_startup_anim/app_startup_anim.h"
+#include "app_desktop/app_desktop.h"
 /* Header files locator (Don't remove) */
 
 /**
@@ -36,16 +37,16 @@ inline void app_run_startup_anim(MOONCAKE::Mooncake* mooncake)
 }
 
 /**
- * @brief Install launcher
+ * @brief Install default startup app
  *
  * @param mooncake
  */
-inline void app_install_launcher(MOONCAKE::Mooncake* mooncake)
+inline void app_install_default_startup_app(MOONCAKE::Mooncake* mooncake)
 {
-    /* -------------------------- Install launcher here ------------------------- */
-    auto launcher = new MOONCAKE::APPS::AppLauncher_Packer;
-    mooncake->installApp(launcher);
-    mooncake->createApp(launcher);
+    // Install and start desktop at startup
+    auto desktop = new MOONCAKE::APPS::AppDesktop_Packer;
+    mooncake->installApp(desktop);
+    mooncake->createAndStartApp(desktop);
 }
 
 /**
@@ -56,5 +57,6 @@ inline void app_install_launcher(MOONCAKE::Mooncake* mooncake)
 inline void app_install_apps(MOONCAKE::Mooncake* mooncake)
 {
     // mooncake->installApp(new MOONCAKE::APPS::AppTemplate_Packer);
+    mooncake->installApp(new MOONCAKE::APPS::AppDesktop_Packer);
     /* Install app locator (Don't remove) */
 }
