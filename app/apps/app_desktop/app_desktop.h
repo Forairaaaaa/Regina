@@ -10,7 +10,7 @@
  */
 #include <cstdint>
 #include <mooncake.h>
-#include "view/terminal.h"
+#include "view/desktop.h"
 
 namespace MOONCAKE
 {
@@ -25,7 +25,7 @@ namespace MOONCAKE
         private:
             struct Data_t
             {
-                Terminal terminal;
+                WidgetDesktop widget_desktop;
             };
             Data_t _data;
 

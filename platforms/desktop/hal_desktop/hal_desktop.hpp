@@ -37,7 +37,7 @@ public:
     {
         // Display
         if (_zoom)
-            _data.display = new LGFX(_screenWidth * 2 - 2, _screenHeight * 2 - 2);
+            _data.display = new LGFX(_screenWidth * 2, _screenHeight * 2);
         else
             _data.display = new LGFX(_screenWidth, _screenHeight);
 
@@ -64,7 +64,7 @@ public:
     void canvasUpdate() override
     {
         if (_zoom)
-            GetCanvas()->pushRotateZoom(0, 2, 2);
+            GetCanvas()->pushRotateZoom(_data.display, 129, 65, 0, 2, 2);
         else
             GetCanvas()->pushSprite(0, 0);
     }
@@ -188,4 +188,6 @@ public:
         popSuccess("Upgrade done");
         return true;
     }
+
+    uint8_t getBatteryPercentage() override { return 100; }
 };

@@ -12,10 +12,10 @@
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../utils/system/system.h"
-#include "lgfx/v1/misc/enum.hpp"
 
 using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
+using namespace SmoothUIToolKit;
 
 // App name
 const char* AppDesktop_Packer::getAppName() { return "Desktop"; }
@@ -30,8 +30,7 @@ void AppDesktop::onCreate()
     setAllowBgRunning(true);
     startApp();
 
-    // Init components
-    _data.terminal.init();
+    _data.widget_desktop.init();
 }
 
 // Like setup()...
@@ -40,13 +39,11 @@ void AppDesktop::onResume() { spdlog::info("{} onResume", getAppName()); }
 // Like loop()...
 void AppDesktop::onRunning()
 {
-    /* --------------------------------- Update --------------------------------- */
-    _data.terminal.update();
+    _data.widget_desktop.update(HAL::Millis());
 
-    /* --------------------------------- Render --------------------------------- */
-    HAL::GetCanvas()->fillRoundRect(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height(), 8, TFT_WHITE);
-    _data.terminal.render();
-    HAL::CanvasUpdate();
+    Button::Update();
+    if (Button::D()->wasClicked())
+        HAL::Reboot();
 }
 
 void AppDesktop::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }

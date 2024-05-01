@@ -56,36 +56,36 @@ void AppStartupAnim::onResume()
 
     HAL::Delay(1000);
 
-    /* ---------------------------------- Panel --------------------------------- */
-    transition.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
-    transition.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
+    // /* ---------------------------------- Panel --------------------------------- */
+    // transition.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
+    // transition.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
 
-    transition.setDuration(700);
-    transition.setTransitionPath(EasingPath::easeOutBack);
+    // transition.setDuration(700);
+    // transition.setTransitionPath(EasingPath::easeOutBack);
 
-    transition.getYTransition().setDuration(500);
-    transition.getXTransition().setDelay(70);
-    transition.getWTransition().setDelay(70);
-    transition.getHTransition().setDelay(70);
+    // transition.getYTransition().setDuration(500);
+    // transition.getXTransition().setDelay(70);
+    // transition.getWTransition().setDelay(70);
+    // transition.getHTransition().setDelay(70);
 
-    while (!transition.isFinish())
-    {
-        transition.update(HAL::Millis());
-        auto frame = transition.getValue();
+    // while (!transition.isFinish())
+    // {
+    //     transition.update(HAL::Millis());
+    //     auto frame = transition.getValue();
 
-        HAL::GetCanvas()->fillScreen(TFT_BLACK);
+    //     HAL::GetCanvas()->fillScreen(TFT_BLACK);
 
-        HAL::GetCanvas()->pushImage(0,
-                                    frame.y - 103,
-                                    AssetPool::GetImage().StartupAnim.warma_halftone_width,
-                                    AssetPool::GetImage().StartupAnim.warma_halftone_height,
-                                    AssetPool::GetImage().StartupAnim.warma_halftone);
-        HAL::GetCanvas()->fillRect(frame.x, frame.y, frame.w, frame.h, TFT_BLACK);
-        HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 8, TFT_WHITE);
+    //     HAL::GetCanvas()->pushImage(0,
+    //                                 frame.y - 103,
+    //                                 AssetPool::GetImage().StartupAnim.warma_halftone_width,
+    //                                 AssetPool::GetImage().StartupAnim.warma_halftone_height,
+    //                                 AssetPool::GetImage().StartupAnim.warma_halftone);
+    //     HAL::GetCanvas()->fillRect(frame.x, frame.y, frame.w, frame.h, TFT_BLACK);
+    //     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 8, TFT_WHITE);
 
-        HAL::CanvasUpdate();
-        HAL::FeedTheDog();
-    }
+    //     HAL::CanvasUpdate();
+    //     HAL::FeedTheDog();
+    // }
 
     // HAL::GetCanvas()->pushImage(0, 0, 128, 128, AssetPool::GetImage().StartupAnim.warma_halftone);
     // HAL::CanvasUpdate();
