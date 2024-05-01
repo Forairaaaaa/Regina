@@ -17,5 +17,5 @@
 // #include "app_launcher/icon.h"
 // static constexpr size_t image_data_icon_size = sizeof(image_data_icon);
 
-#include "startup_anim/warma_halftone.h"
+#include "startup_anim/warma_halftone.hpp"
 static constexpr size_t image_data_warma_halftone_size = sizeof(image_data_warma_halftone);
