@@ -11,10 +11,23 @@
 #include "desktop.h"
 #include <smooth_ui_toolkit.h>
 #include "../../../assets/assets.h"
-#include "terminal.h"
-#include "battery.h"
+#include "components/components.h"
 
 using namespace SmoothUIToolKit;
+
+void WidgetDesktop::_reset_anim()
+{
+    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
+    _data.shape_trans.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
+
+    _data.shape_trans.setDuration(700);
+    _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
+
+    _data.shape_trans.getYTransition().setDuration(500);
+    _data.shape_trans.getXTransition().setDelay(70);
+    _data.shape_trans.getWTransition().setDelay(70);
+    _data.shape_trans.getHTransition().setDelay(70);
+}
 
 void WidgetDesktop::onInit()
 {
@@ -23,6 +36,7 @@ void WidgetDesktop::onInit()
     // Child widgets
     addChild(new WidgetTerminal);
     addChild(new WidgetBattery);
+    addChild(new WidgetClock);
 }
 
 void WidgetDesktop::onReset() { _reset_anim(); }
@@ -49,17 +63,3 @@ void WidgetDesktop::onRender()
 }
 
 void WidgetDesktop::onPostRender() { HAL::CanvasUpdate(); }
-
-void WidgetDesktop::_reset_anim()
-{
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
-    _data.shape_trans.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
-
-    _data.shape_trans.setDuration(700);
-    _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
-
-    _data.shape_trans.getYTransition().setDuration(500);
-    _data.shape_trans.getXTransition().setDelay(70);
-    _data.shape_trans.getWTransition().setDelay(70);
-    _data.shape_trans.getHTransition().setDelay(70);
-}

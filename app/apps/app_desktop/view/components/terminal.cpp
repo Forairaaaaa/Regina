@@ -8,10 +8,10 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "terminal.h"
+#include "components.h"
+#include "../../../../assets/assets.h"
 #include <mooncake.h>
 #include <smooth_ui_toolkit.h>
-#include "../../../assets/assets.h"
 
 using namespace SmoothUIToolKit;
 
@@ -29,14 +29,14 @@ void WidgetTerminal::_reset_anim()
 {
     constexpr int delay = 260;
 
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 12);
+    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 20);
     _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
     _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(700);
+    _data.shape_trans.setDuration(500);
     // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
 
-    _data.shape_trans.getYTransition().setDuration(500);
+    _data.shape_trans.getYTransition().setDuration(300);
     _data.shape_trans.getXTransition().setDelay(delay + 70);
     _data.shape_trans.getWTransition().setDelay(delay + 70);
     _data.shape_trans.getHTransition().setDelay(delay + 70);
