@@ -1,5 +1,5 @@
 /**
- * @file clock.cpp
+ * @file calendar.cpp
  * @author Forairaaaaa
  * @brief
  * @version 0.1
@@ -16,21 +16,21 @@
 
 using namespace SmoothUIToolKit;
 
-static constexpr int _panel_x = 2;
+static constexpr int _panel_x = 79;
 static constexpr int _panel_y = 35;
-static constexpr int _panel_w = 75;
+static constexpr int _panel_w = 47;
 static constexpr int _panel_h = 27;
 static constexpr int _panel_r = 4;
 
-void WidgetClock::_reset_anim()
+void WidgetCalendar::_reset_anim()
 {
-    constexpr int delay = 360;
+    constexpr int delay = 400;
 
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 20);
+    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 + 48, HAL::GetCanvas()->height(), 24, 20);
     _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
     _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(500);
+    _data.shape_trans.setDuration(400);
     // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
 
     _data.shape_trans.getYTransition().setDuration(300);
@@ -39,31 +39,35 @@ void WidgetClock::_reset_anim()
     _data.shape_trans.getHTransition().setDelay(delay + 70);
 }
 
-void WidgetClock::onInit() { _reset_anim(); }
+void WidgetCalendar::onInit() { _reset_anim(); }
 
-void WidgetClock::onUpdate(const TimeSize_t& currentTime)
+void WidgetCalendar::onUpdate(const TimeSize_t& currentTime)
 {
     _data.shape_trans.update(HAL::Millis());
 
     auto time = HAL::GetLocalTime();
-    _data.time = spdlog::fmt_lib::format("{:02d}:{:02d}", time->tm_hour, time->tm_min);
-    // spdlog::info("{}", _data.time);
 
-    // _data.time = "22:33";
+    const char* weekday_list[7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+    _data.weekday = weekday_list[time->tm_wday];
+
+    _data.date = spdlog::fmt_lib::format("{}/{}", time->tm_mon + 1, time->tm_mday);
+
+    // _data.weekday = "SAT";
+    // _data.date = "3/7";
 }
 
-void WidgetClock::onRender()
+void WidgetCalendar::onRender()
 {
     auto frame = _data.shape_trans.getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
+    HAL::GetCanvas()->drawFastHLine(frame.x, frame.y + frame.h / 2, frame.w, TFT_WHITE);
 
     HAL::GetCanvas()->setTextColor(TFT_WHITE);
     HAL::GetCanvas()->setTextDatum(middle_center);
 
-    // float font_size = ((float)frame.h - ((float)_panel_h - 24)) / 12;
-    // spdlog::info("{}", font_size);
-    // HAL::GetCanvas()->setTextSize(font_size);
-    HAL::GetCanvas()->setTextSize(2);
+    HAL::GetCanvas()->setTextSize(1);
 
-    HAL::GetCanvas()->drawString(_data.time.c_str(), frame.x + frame.w / 2 + 1, frame.y + frame.h / 2 + 1);
+    int x = frame.x + frame.w / 2 + 1;
+    HAL::GetCanvas()->drawString(_data.weekday.c_str(), x, frame.y + frame.h / 4 + 1);
+    HAL::GetCanvas()->drawString(_data.date.c_str(), x, frame.y + frame.h / 4 * 3 + 3);
 }

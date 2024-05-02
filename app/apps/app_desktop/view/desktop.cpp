@@ -37,6 +37,7 @@ void WidgetDesktop::onInit()
     addChild(new WidgetTerminal);
     addChild(new WidgetBattery);
     addChild(new WidgetClock);
+    addChild(new WidgetCalendar);
 }
 
 void WidgetDesktop::onReset() { _reset_anim(); }
@@ -58,7 +59,7 @@ void WidgetDesktop::onRender()
                                     AssetPool::GetImage().StartupAnim.warma_halftone_height,
                                     AssetPool::GetImage().StartupAnim.warma_halftone);
         HAL::GetCanvas()->fillRect(frame.x, frame.y, frame.w, frame.h, TFT_BLACK);
-        HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 8, TFT_WHITE);
+        HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 4, TFT_WHITE);
     }
 }
 

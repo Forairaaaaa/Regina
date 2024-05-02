@@ -67,3 +67,21 @@ public:
     void onUpdate(const SmoothUIToolKit::TimeSize_t& currentTime) override;
     void onRender() override;
 };
+
+class WidgetCalendar : public SmoothUIToolKit::Widgets::WidgetBase
+{
+private:
+    struct Data_t
+    {
+        SmoothUIToolKit::Transition4D shape_trans;
+        std::string weekday;
+        std::string date;
+    };
+    Data_t _data;
+    void _reset_anim();
+
+public:
+    void onInit() override;
+    void onUpdate(const SmoothUIToolKit::TimeSize_t& currentTime) override;
+    void onRender() override;
+};

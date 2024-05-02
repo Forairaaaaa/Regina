@@ -19,11 +19,11 @@ static constexpr int _panel_x = 2;
 static constexpr int _panel_y = 2;
 static constexpr int _panel_w = 115;
 static constexpr int _panel_h = 31;
-static constexpr int _panel_r = 8;
-static constexpr int _canvas_w = 105;
+static constexpr int _panel_r = 4;
+static constexpr int _canvas_w = 109;
 static constexpr int _canvas_h = 27;
 static constexpr int _canvas_mt = 2;
-static constexpr int _canvas_ml = 5;
+static constexpr int _canvas_ml = 3;
 
 void WidgetTerminal::_reset_anim()
 {

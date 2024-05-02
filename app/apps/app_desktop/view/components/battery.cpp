@@ -16,9 +16,9 @@
 using namespace SmoothUIToolKit;
 
 static constexpr int _panel_x = 119;
-static constexpr int _panel_y = 5;
+static constexpr int _panel_y = 4;
 static constexpr int _panel_w = 7;
-static constexpr int _panel_h = 25;
+static constexpr int _panel_h = 27;
 static constexpr int _panel_r = 2;
 static constexpr int _bar_mx = 2;
 static constexpr int _bar_my = 2;
