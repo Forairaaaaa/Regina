@@ -9,7 +9,7 @@
  *
  */
 #pragma once
-#include "../../../../hal/hal.h"
+// #include "../../../../hal/hal.h"
 #include <smooth_ui_toolkit.h>
 #include <cstdint>
 #include <string>
@@ -20,7 +20,6 @@ private:
     struct Data_t
     {
         SmoothUIToolKit::Transition4D shape_trans;
-        LGFX_SpriteFx* terminal_canvas = nullptr;
     };
     Data_t _data;
     void _reset_anim();

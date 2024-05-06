@@ -85,6 +85,7 @@ protected:
     {
         LGFX_Device* display = nullptr;
         LGFX_SpriteFx* canvas = nullptr;
+        LGFX_SpriteFx* terminal_canvas = nullptr;
         time_t time_buffer;
         CONFIG::SystemConfig_t config;
         IMU::ImuData_t imu_data;
@@ -146,6 +147,18 @@ public:
      */
     static void PopSuccess(std::string msg, bool showSuccessLabel = true) { Get()->popSuccess(msg, showSuccessLabel); }
     virtual void popSuccess(std::string msg, bool showSuccessLabel = true);
+
+    /* -------------------------------------------------------------------------- */
+    /*                                  Terminal                                  */
+    /* -------------------------------------------------------------------------- */
+public:
+    /**
+     * @brief Small terminal canvas
+     *
+     * @return LGFX_SpriteFx*
+     */
+    static LGFX_SpriteFx* GetTerminal() { return Get()->_data.terminal_canvas; }
+    static void SetTerminal(LGFX_SpriteFx* terminalCanvas) { Get()->_data.terminal_canvas = terminalCanvas; }
 
     /* -------------------------------------------------------------------------- */
     /*                                   System                                   */

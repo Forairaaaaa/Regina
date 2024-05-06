@@ -44,22 +44,27 @@ void WidgetTerminal::_reset_anim()
 
 WidgetTerminal::~WidgetTerminal()
 {
-    if (_data.terminal_canvas != nullptr)
-        delete _data.terminal_canvas;
+    if (HAL::GetTerminal() != nullptr)
+    {
+        delete HAL::GetTerminal();
+        HAL::SetTerminal(nullptr);
+    }
 }
 
 void WidgetTerminal::onInit()
 {
-    if (_data.terminal_canvas != nullptr)
+    if (HAL::GetTerminal() != nullptr)
         spdlog::error("canvas exist");
     else
     {
-        _data.terminal_canvas = new LGFX_SpriteFx(HAL::GetCanvas());
-        _data.terminal_canvas->createSprite(_canvas_w, _canvas_h);
-        // _data.terminal_canvas->fillScreen(TFT_WHITE);
+        auto terminal_canvas = new LGFX_SpriteFx(HAL::GetCanvas());
+        terminal_canvas->createSprite(_canvas_w, _canvas_h);
+        // terminal_canvas->fillScreen(TFT_WHITE);
 
-        AssetPool::LoadFont12(_data.terminal_canvas);
-        _data.terminal_canvas->setTextScroll(true);
+        AssetPool::LoadFont12(terminal_canvas);
+        terminal_canvas->setTextScroll(true);
+
+        HAL::SetTerminal(terminal_canvas);
     }
 
     _reset_anim();
@@ -75,7 +80,7 @@ void WidgetTerminal::onUpdate(const SmoothUIToolKit::TimeSize_t& currentTime)
     {
         static int shit = 0;
         shit++;
-        _data.terminal_canvas->printf("%d", shit);
+        HAL::GetTerminal()->printf("%d", shit);
 
         // HAL::Delay(100);
     }
@@ -90,6 +95,6 @@ void WidgetTerminal::onRender()
     /* -------------------------------- Terminal -------------------------------- */
     if (_data.shape_trans.isFinish())
     {
-        _data.terminal_canvas->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
+        HAL::GetTerminal()->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
     }
 }
