@@ -8,8 +8,9 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "components.h"
+#include "widgets.h"
 #include "../../../../assets/assets.h"
+#include "spdlog/spdlog.h"
 #include <mooncake.h>
 #include <smooth_ui_toolkit.h>
 
@@ -18,11 +19,11 @@ using namespace SmoothUIToolKit;
 static constexpr int _panel_x = 2;
 static constexpr int _panel_y = 2;
 static constexpr int _panel_w = 115;
-static constexpr int _panel_h = 31;
+static constexpr int _panel_h = 45;
 static constexpr int _panel_r = 4;
 static constexpr int _canvas_w = 109;
-static constexpr int _canvas_h = 27;
-static constexpr int _canvas_mt = 2;
+static constexpr int _canvas_h = 39;
+static constexpr int _canvas_mt = 3;
 static constexpr int _canvas_ml = 3;
 
 void WidgetTerminal::_reset_anim()
@@ -59,7 +60,7 @@ void WidgetTerminal::onInit()
     {
         auto terminal_canvas = new LGFX_SpriteFx(HAL::GetCanvas());
         terminal_canvas->createSprite(_canvas_w, _canvas_h);
-        // terminal_canvas->fillScreen(TFT_WHITE);
+        terminal_canvas->fillScreen(TFT_WHITE);
 
         AssetPool::LoadFont12(terminal_canvas);
         terminal_canvas->setTextScroll(true);
@@ -72,9 +73,9 @@ void WidgetTerminal::onInit()
 
 void WidgetTerminal::onReset() { _reset_anim(); }
 
-void WidgetTerminal::onUpdate(const SmoothUIToolKit::TimeSize_t& currentTime)
+void WidgetTerminal::onUpdate()
 {
-    _data.shape_trans.update(currentTime);
+    _data.shape_trans.update(HAL::Millis());
 
     if (_data.shape_trans.isFinish())
     {

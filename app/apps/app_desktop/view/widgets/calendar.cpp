@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "components.h"
+#include "widgets.h"
 #include "../../../../assets/assets.h"
 #include "hal/hal.h"
 #include <mooncake.h>
@@ -16,10 +16,10 @@
 
 using namespace SmoothUIToolKit;
 
-static constexpr int _panel_x = 79;
-static constexpr int _panel_y = 35;
-static constexpr int _panel_w = 47;
-static constexpr int _panel_h = 27;
+static constexpr int _panel_x = 44;
+static constexpr int _panel_y = 49;
+static constexpr int _panel_w = 82;
+static constexpr int _panel_h = 13;
 static constexpr int _panel_r = 4;
 
 void WidgetCalendar::_reset_anim()
@@ -41,33 +41,29 @@ void WidgetCalendar::_reset_anim()
 
 void WidgetCalendar::onInit() { _reset_anim(); }
 
-void WidgetCalendar::onUpdate(const TimeSize_t& currentTime)
+void WidgetCalendar::onUpdate()
 {
     _data.shape_trans.update(HAL::Millis());
 
     auto time = HAL::GetLocalTime();
 
     const char* weekday_list[7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-    _data.weekday = weekday_list[time->tm_wday];
 
-    _data.date = spdlog::fmt_lib::format("{}/{}", time->tm_mon + 1, time->tm_mday);
+    _data.date = spdlog::fmt_lib::format(
+        "{}/{} {} {}", time->tm_mon + 1, time->tm_mday, weekday_list[time->tm_wday], time->tm_hour > 12 ? "PM" : "AM");
 
-    // _data.weekday = "SAT";
-    // _data.date = "3/7";
+    // _data.date = "3/7 SAT";
+    // _data.date = "12/23 SAT PM";
 }
 
 void WidgetCalendar::onRender()
 {
     auto frame = _data.shape_trans.getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
-    HAL::GetCanvas()->drawFastHLine(frame.x, frame.y + frame.h / 2, frame.w, TFT_WHITE);
 
     HAL::GetCanvas()->setTextColor(TFT_WHITE);
     HAL::GetCanvas()->setTextDatum(middle_center);
 
     HAL::GetCanvas()->setTextSize(1);
-
-    int x = frame.x + frame.w / 2 + 1;
-    HAL::GetCanvas()->drawString(_data.weekday.c_str(), x, frame.y + frame.h / 4 + 1);
-    HAL::GetCanvas()->drawString(_data.date.c_str(), x, frame.y + frame.h / 4 * 3 + 3);
+    HAL::GetCanvas()->drawString(_data.date.c_str(), frame.x + frame.w / 2 + 1, frame.y + frame.h / 2 + 1);
 }

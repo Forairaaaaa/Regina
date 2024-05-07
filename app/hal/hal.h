@@ -474,4 +474,11 @@ public:
     {
         return false;
     }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                     BLE                                    */
+    /* -------------------------------------------------------------------------- */
+public:
+    static bool IsBleConnected() { return Get()->isBleConnected(); }
+    virtual bool isBleConnected() { return false; }
 };

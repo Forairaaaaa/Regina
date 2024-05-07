@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "components.h"
+#include "widgets.h"
 #include "../../../../assets/assets.h"
 #include <mooncake.h>
 #include <smooth_ui_toolkit.h>
@@ -16,9 +16,9 @@
 using namespace SmoothUIToolKit;
 
 static constexpr int _panel_x = 119;
-static constexpr int _panel_y = 4;
+static constexpr int _panel_y = 17;
 static constexpr int _panel_w = 7;
-static constexpr int _panel_h = 27;
+static constexpr int _panel_h = 29;
 static constexpr int _panel_r = 2;
 static constexpr int _bar_mx = 2;
 static constexpr int _bar_my = 2;
@@ -42,7 +42,7 @@ void WidgetBattery::_reset_anim()
 
 void WidgetBattery::onInit() { _reset_anim(); }
 
-void WidgetBattery::onUpdate(const TimeSize_t& currentTime)
+void WidgetBattery::onUpdate()
 {
     _data.shape_trans.update(HAL::Millis());
     _data.battery_level = HAL::GetBatteryPercentage();

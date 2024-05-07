@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  *
  */
-#include "components.h"
+#include "widgets.h"
 #include "../../../../assets/assets.h"
 #include "hal/hal.h"
 #include <mooncake.h>
@@ -17,9 +17,9 @@
 using namespace SmoothUIToolKit;
 
 static constexpr int _panel_x = 2;
-static constexpr int _panel_y = 35;
-static constexpr int _panel_w = 75;
-static constexpr int _panel_h = 27;
+static constexpr int _panel_y = 49;
+static constexpr int _panel_w = 40;
+static constexpr int _panel_h = 13;
 static constexpr int _panel_r = 4;
 
 void WidgetClock::_reset_anim()
@@ -41,7 +41,7 @@ void WidgetClock::_reset_anim()
 
 void WidgetClock::onInit() { _reset_anim(); }
 
-void WidgetClock::onUpdate(const TimeSize_t& currentTime)
+void WidgetClock::onUpdate()
 {
     _data.shape_trans.update(HAL::Millis());
 
@@ -63,7 +63,8 @@ void WidgetClock::onRender()
     // float font_size = ((float)frame.h - ((float)_panel_h - 24)) / 12;
     // spdlog::info("{}", font_size);
     // HAL::GetCanvas()->setTextSize(font_size);
-    HAL::GetCanvas()->setTextSize(2);
+    // HAL::GetCanvas()->setTextSize(2);
+    HAL::GetCanvas()->setTextSize(1);
 
-    HAL::GetCanvas()->drawString(_data.time.c_str(), frame.x + frame.w / 2 + 1, frame.y + frame.h / 2 + 1);
+    HAL::GetCanvas()->drawString(_data.time.c_str(), frame.x + frame.w / 2, frame.y + frame.h / 2 + 1);
 }

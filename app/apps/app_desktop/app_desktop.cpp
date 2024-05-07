@@ -39,7 +39,7 @@ void AppDesktop::onResume() { spdlog::info("{} onResume", getAppName()); }
 // Like loop()...
 void AppDesktop::onRunning()
 {
-    _data.widget_desktop.update(HAL::Millis());
+    _data.widget_desktop.update();
 
     Button::Update();
     if (Button::D()->wasClicked())

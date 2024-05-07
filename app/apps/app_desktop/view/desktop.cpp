@@ -11,7 +11,7 @@
 #include "desktop.h"
 #include <smooth_ui_toolkit.h>
 #include "../../../assets/assets.h"
-#include "components/components.h"
+#include "widgets/widgets.h"
 
 using namespace SmoothUIToolKit;
 
@@ -35,6 +35,7 @@ void WidgetDesktop::onInit()
 
     // Child widgets
     addChild(new WidgetTerminal);
+    addChild(new WidgetBleStatus);
     addChild(new WidgetBattery);
     addChild(new WidgetClock);
     addChild(new WidgetCalendar);
@@ -42,7 +43,7 @@ void WidgetDesktop::onInit()
 
 void WidgetDesktop::onReset() { _reset_anim(); }
 
-void WidgetDesktop::onUpdate(const TimeSize_t& currentTime) { _data.shape_trans.update(currentTime); }
+void WidgetDesktop::onUpdate() { _data.shape_trans.update(HAL::Millis()); }
 
 void WidgetDesktop::onRender()
 {

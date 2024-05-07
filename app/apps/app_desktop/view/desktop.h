@@ -25,7 +25,7 @@ private:
 public:
     void onInit() override;
     void onReset() override;
-    void onUpdate(const SmoothUIToolKit::TimeSize_t& currentTime) override;
+    void onUpdate() override;
     void onRender() override;
     void onPostRender() override;
 };
