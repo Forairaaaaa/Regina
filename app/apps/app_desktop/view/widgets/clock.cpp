@@ -37,6 +37,9 @@ void WidgetClock::_reset_anim()
     _data.shape_trans.getXTransition().setDelay(delay + 70);
     _data.shape_trans.getWTransition().setDelay(delay + 70);
     _data.shape_trans.getHTransition().setDelay(delay + 70);
+
+    _data.update_time_count = 0;
+    _data.colon_type = true;
 }
 
 void WidgetClock::onInit() { _reset_anim(); }
@@ -45,26 +48,33 @@ void WidgetClock::onUpdate()
 {
     _data.shape_trans.update(HAL::Millis());
 
-    auto time = HAL::GetLocalTime();
-    _data.time = spdlog::fmt_lib::format("{:02d}:{:02d}", time->tm_hour, time->tm_min);
-    // spdlog::info("{}", _data.time);
+    // Update time
+    if (HAL::Millis() - _data.update_time_count > _data.update_interval)
+    {
+        // Colon
+        if (_data.shape_trans.isFinish())
+            _data.colon_type = !_data.colon_type;
+
+        // Time
+        auto time = HAL::GetLocalTime();
+        _data.time = fmt::format("{:02d}{}{:02d}", time->tm_hour, _data.colon_type ? ":" : " ", time->tm_min);
+        // spdlog::info("{}", _data.time);
+
+        _data.update_time_count = HAL::Millis();
+    }
 
     // _data.time = "22:33";
 }
 
 void WidgetClock::onRender()
 {
+    // Panel
     auto frame = _data.shape_trans.getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
 
+    // Time
     HAL::GetCanvas()->setTextColor(TFT_WHITE);
     HAL::GetCanvas()->setTextDatum(middle_center);
-
-    // float font_size = ((float)frame.h - ((float)_panel_h - 24)) / 12;
-    // spdlog::info("{}", font_size);
-    // HAL::GetCanvas()->setTextSize(font_size);
-    // HAL::GetCanvas()->setTextSize(2);
     HAL::GetCanvas()->setTextSize(1);
-
     HAL::GetCanvas()->drawString(_data.time.c_str(), frame.x + frame.w / 2, frame.y + frame.h / 2 + 1);
 }

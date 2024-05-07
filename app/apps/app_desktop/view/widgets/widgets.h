@@ -14,18 +14,23 @@
 #include <cstdint>
 #include <string>
 
-class WidgetTerminal : public SmoothUIToolKit::Widgets::WidgetBase
+class WidgetConsole : public SmoothUIToolKit::Widgets::WidgetBase
 {
 private:
     struct Data_t
     {
         SmoothUIToolKit::Transition4D shape_trans;
+        uint32_t msg_update_time_count = 0;
+        uint32_t msg_update_interval = 20;
+        uint32_t cursor_update_time_count = 0;
+        uint32_t cursor_update_interval = 500;
+        bool cursor_type = true;
     };
     Data_t _data;
     void _reset_anim();
 
 public:
-    ~WidgetTerminal();
+    ~WidgetConsole();
 
     void onInit() override;
     void onReset() override;
@@ -57,6 +62,9 @@ private:
     {
         SmoothUIToolKit::Transition4D shape_trans;
         std::string time;
+        uint32_t update_time_count = 0;
+        uint32_t update_interval = 1000;
+        bool colon_type = true;
     };
     Data_t _data;
     void _reset_anim();
@@ -74,6 +82,8 @@ private:
     {
         SmoothUIToolKit::Transition4D shape_trans;
         std::string date;
+        uint32_t update_time_count = 0;
+        uint32_t update_interval = 1000;
     };
     Data_t _data;
     void _reset_anim();

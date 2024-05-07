@@ -37,6 +37,8 @@ void WidgetCalendar::_reset_anim()
     _data.shape_trans.getXTransition().setDelay(delay + 70);
     _data.shape_trans.getWTransition().setDelay(delay + 70);
     _data.shape_trans.getHTransition().setDelay(delay + 70);
+
+    _data.update_time_count = 0;
 }
 
 void WidgetCalendar::onInit() { _reset_anim(); }
@@ -45,12 +47,15 @@ void WidgetCalendar::onUpdate()
 {
     _data.shape_trans.update(HAL::Millis());
 
-    auto time = HAL::GetLocalTime();
+    if (HAL::Millis() - _data.update_time_count > _data.update_interval)
+    {
+        auto time = HAL::GetLocalTime();
+        const char* weekday_list[7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+        _data.date = fmt::format(
+            "{}/{} {} {}", time->tm_mon + 1, time->tm_mday, weekday_list[time->tm_wday], time->tm_hour > 12 ? "PM" : "AM");
 
-    const char* weekday_list[7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-
-    _data.date = spdlog::fmt_lib::format(
-        "{}/{} {} {}", time->tm_mon + 1, time->tm_mday, weekday_list[time->tm_wday], time->tm_hour > 12 ? "PM" : "AM");
+        _data.update_time_count = HAL::Millis();
+    }
 
     // _data.date = "3/7 SAT";
     // _data.date = "12/23 SAT PM";

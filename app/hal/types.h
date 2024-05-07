@@ -13,6 +13,8 @@
 #include <string>
 #include <functional>
 #include <smooth_ui_toolkit.h>
+#include <mooncake.h>
+#include <spdlog/fmt/bundled/format.h>
 
 /* -------------------------------------------------------------------------- */
 /*                               Gamepad button                               */
@@ -125,3 +127,31 @@ namespace OTA_UPGRADE
 typedef std::function<void(const std::string& log, bool pushScreen, bool clear)> OnLogPageRenderCallback_t;
 
 #define APP_VERSION "V1.0.0"
+
+/* -------------------------------------------------------------------------- */
+/*                                   Console                                  */
+/* -------------------------------------------------------------------------- */
+namespace CONSOLE
+{
+    class ConsolePipe_t : public SmoothUIToolKit::RingBuffer<char, 124>
+    {
+    public:
+        template <typename... Args>
+        void log(const char* msg, const Args&... args)
+        {
+            // std::string formatted_msg = fmt::format(msg, args...);
+            // Gcc sucks
+            auto format_args = fmt::make_format_args(args...);
+            std::string formatted_msg = fmt::vformat(msg, format_args);
+
+            // New line
+            if (!this->isEmpty())
+                this->put('\n');
+
+            for (const auto& i : formatted_msg)
+            {
+                this->put(i);
+            }
+        }
+    };
+} // namespace CONSOLE

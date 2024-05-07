@@ -10,8 +10,6 @@
  */
 #include "widgets.h"
 #include "../../../../assets/assets.h"
-#include "lgfx/v1/misc/enum.hpp"
-#include "spdlog/spdlog.h"
 #include <mooncake.h>
 #include <smooth_ui_toolkit.h>
 

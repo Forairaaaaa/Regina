@@ -34,7 +34,7 @@ void WidgetDesktop::onInit()
     _reset_anim();
 
     // Child widgets
-    addChild(new WidgetTerminal);
+    addChild(new WidgetConsole);
     addChild(new WidgetBleStatus);
     addChild(new WidgetBattery);
     addChild(new WidgetClock);
