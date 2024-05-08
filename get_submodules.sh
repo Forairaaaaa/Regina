@@ -12,7 +12,8 @@ cd dependencies
 echo "> $(pwd)"
 
 git clone https://github.com/Forairaaaaa/smooth_ui_toolkit.git
-git clone --depth 1 https://github.com/m5stack/M5GFX.git
+# git clone --depth 1 https://github.com/m5stack/M5GFX.git
+git clone --depth 1 https://github.com/Forairaaaaa/M5GFX.git
 git clone https://github.com/Forairaaaaa/mooncake.git
 
 # Desktop

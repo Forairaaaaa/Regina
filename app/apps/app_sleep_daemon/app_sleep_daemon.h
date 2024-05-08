@@ -1,9 +1,9 @@
 /**
- * @file app_template.h
+ * @file app_sleep_daemon.h
  * @author Forairaaaaa
  * @brief
  * @version 0.1
- * @date <date></date>
+ * @date 2024-05-08
  *
  * @copyright Copyright (c) 2024
  *
@@ -15,16 +15,13 @@ namespace MOONCAKE
 {
     namespace APPS
     {
-        /**
-         * @brief AppTemplate
-         *
-         */
-        class AppTemplate : public APP_BASE
+        class AppSleepDaemon : public APP_BASE
         {
         private:
             struct Data_t
             {
-                std::uint32_t time_count = 0;
+                uint32_t check_pwr_btn_time_count = 0;
+                uint32_t check_pwr_btn_interval = 100;
             };
             Data_t _data;
 
@@ -34,12 +31,11 @@ namespace MOONCAKE
             void onDestroy() override;
         };
 
-        class AppTemplate_Packer : public APP_PACKER_BASE
+        class AppSleepDaemon_Packer : public APP_PACKER_BASE
         {
             const char* getAppName() override;
-            void* getAppIcon() override;
-            void* newApp() override { return new AppTemplate; }
-            void deleteApp(void* app) override { delete (AppTemplate*)app; }
+            void* newApp() override { return new AppSleepDaemon; }
+            void deleteApp(void* app) override { delete (AppSleepDaemon*)app; }
         };
     } // namespace APPS
 } // namespace MOONCAKE

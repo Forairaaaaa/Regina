@@ -59,3 +59,13 @@ void Button::Update()
     C()->update();
     D()->update();
 }
+
+static ButtonPwr* _button_pwr = nullptr;
+ButtonPwr* Button::Power()
+{
+    if (_button_pwr == nullptr)
+        _button_pwr = new ButtonPwr;
+    return _button_pwr;
+}
+
+bool ButtonPwr::wasClicked() { return HAL::WasPowerButtonClicked(); }

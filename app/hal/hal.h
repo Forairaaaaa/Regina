@@ -90,6 +90,7 @@ protected:
         time_t time_buffer;
         CONFIG::SystemConfig_t config;
         IMU::ImuData_t imu_data;
+        bool is_sleeping = false;
     };
     Data_t _data;
 
@@ -245,6 +246,38 @@ public:
      */
     static bool IsBatteryCharging() { return Get()->isBatteryCharging(); }
     virtual bool isBatteryCharging() { return false; }
+
+    /**
+     * @brief Was power button just clicked
+     *
+     * @return true
+     * @return false
+     */
+    static bool WasPowerButtonClicked() { return Get()->wasPowerButtonClicked(); }
+    virtual bool wasPowerButtonClicked() { return false; }
+
+    /**
+     * @brief Go to sleep
+     *
+     */
+    static void GoToSleep() { Get()->goToSleep(); }
+    virtual void goToSleep() { _data.is_sleeping = true; }
+
+    /**
+     * @brief Wake the fuck up, Samurai! We have a city to burn
+     *
+     */
+    static void WakeTheFuckUp() { Get()->wakeTheFuckUp(); }
+    virtual void wakeTheFuckUp() { _data.is_sleeping = false; }
+
+    /**
+     * @brief Is now sleeping
+     *
+     * @return true
+     * @return false
+     */
+    static bool IsSleeping() { return Get()->isSleeping(); }
+    virtual bool isSleeping() { return _data.is_sleeping; }
 
     /* -------------------------------------------------------------------------- */
     /*                                     MSC                                    */

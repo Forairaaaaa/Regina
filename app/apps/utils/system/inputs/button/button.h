@@ -16,6 +16,13 @@ namespace SYSTEM
 {
     namespace INPUTS
     {
+        // Special shit
+        class ButtonPwr
+        {
+        public:
+            bool wasClicked(void);
+        };
+
         /**
          * @brief Button class with richer apis
          *
@@ -32,13 +39,14 @@ namespace SYSTEM
         public:
             /**
              * @brief Button instances
-             * 
-             * @return Button* 
+             *
+             * @return Button*
              */
             static Button* A();
             static Button* B();
             static Button* C();
             static Button* D();
+            static ButtonPwr* Power();
 
             /**
              * @brief Helper method to update all button instances

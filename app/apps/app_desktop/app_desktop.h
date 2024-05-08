@@ -16,10 +16,6 @@ namespace MOONCAKE
 {
     namespace APPS
     {
-        /**
-         * @brief Template
-         *
-         */
         class AppDesktop : public APP_BASE
         {
         private:
