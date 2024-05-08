@@ -20,8 +20,8 @@ void WidgetDesktop::_reset_anim()
     _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
     _data.shape_trans.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
 
-    _data.shape_trans.setDuration(700);
-    _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
+    _data.shape_trans.setDuration(400);
+    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
 
     _data.shape_trans.getYTransition().setDuration(500);
     _data.shape_trans.getXTransition().setDelay(70);

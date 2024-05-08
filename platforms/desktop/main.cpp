@@ -24,8 +24,8 @@ void setup()
     };
 
     callback.HalInjection = []() {
-        // HAL::Inject(new HAL_Desktop(128, 64));
-        HAL::Inject(new HAL_Desktop(128, 64, true));
+        HAL::Inject(new HAL_Desktop(128, 64));
+        // HAL::Inject(new HAL_Desktop(128, 64, true));
     };
 
     APP::Setup(callback);
