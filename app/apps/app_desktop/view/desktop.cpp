@@ -15,6 +15,8 @@
 
 using namespace SmoothUIToolKit;
 
+static constexpr int _panel_r = 4;
+
 void WidgetDesktop::_reset_anim()
 {
     _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
@@ -48,7 +50,10 @@ void WidgetDesktop::onUpdate() { _data.shape_trans.update(HAL::Millis()); }
 void WidgetDesktop::onRender()
 {
     if (_data.shape_trans.isFinish())
-        HAL::GetCanvas()->fillRoundRect(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height(), 8, TFT_WHITE);
+    {
+        HAL::GetCanvas()->fillScreen(TFT_BLACK);
+        HAL::GetCanvas()->fillRoundRect(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height(), _panel_r, TFT_WHITE);
+    }
     else
     {
         auto frame = _data.shape_trans.getValue();
@@ -60,7 +65,7 @@ void WidgetDesktop::onRender()
                                     AssetPool::GetImage().StartupAnim.warma_halftone_height,
                                     AssetPool::GetImage().StartupAnim.warma_halftone);
         HAL::GetCanvas()->fillRect(frame.x, frame.y, frame.w, frame.h, TFT_BLACK);
-        HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, 4, TFT_WHITE);
+        HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_WHITE);
     }
 }
 
