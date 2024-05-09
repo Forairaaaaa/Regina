@@ -23,7 +23,7 @@ static constexpr int _panel_r = 2;
 static constexpr int _bar_mx = 2;
 static constexpr int _bar_my = 2;
 
-void WidgetBleStatus::_reset_anim()
+void WidgetBleStatus::onPopOut()
 {
     constexpr int delay = 100;
 
@@ -42,8 +42,6 @@ void WidgetBleStatus::_reset_anim()
     _data.anim_time_count = 0;
     _data.anim_cursor.reset(_panel_x + _bar_mx, _panel_y + _bar_my);
 }
-
-void WidgetBleStatus::onInit() { _reset_anim(); }
 
 void WidgetBleStatus::onUpdate() { _data.shape_trans.update(HAL::Millis()); }
 

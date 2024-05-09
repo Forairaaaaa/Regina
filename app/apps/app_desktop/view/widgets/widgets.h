@@ -27,13 +27,13 @@ private:
         bool cursor_type = true;
     };
     Data_t _data;
-    void _reset_anim();
 
 public:
     ~WidgetConsole();
 
+    // inline bool isAnimFinish() override { return _data.shape_trans.isFinish(); }
     void onInit() override;
-    void onReset() override;
+    void onPopOut() override;
     void onUpdate() override;
     void onRender() override;
 };
@@ -47,10 +47,10 @@ private:
         uint8_t battery_level = 100;
     };
     Data_t _data;
-    void _reset_anim();
 
 public:
-    void onInit() override;
+    // inline bool isAnimFinish() override { return _data.shape_trans.isFinish(); }
+    void onPopOut() override;
     void onUpdate() override;
     void onRender() override;
 };
@@ -67,10 +67,10 @@ private:
         bool colon_type = true;
     };
     Data_t _data;
-    void _reset_anim();
 
 public:
-    void onInit() override;
+    // inline bool isAnimFinish() override { return _data.shape_trans.isFinish(); }
+    void onPopOut() override;
     void onUpdate() override;
     void onRender() override;
 };
@@ -86,10 +86,10 @@ private:
         uint32_t update_interval = 1000;
     };
     Data_t _data;
-    void _reset_anim();
 
 public:
-    void onInit() override;
+    // inline bool isAnimFinish() override { return _data.shape_trans.isFinish(); }
+    void onPopOut() override;
     void onUpdate() override;
     void onRender() override;
 };
@@ -105,11 +105,11 @@ private:
         bool anim_mask_type = false;
     };
     Data_t _data;
-    void _reset_anim();
     bool _get_next_anim_cursor(int& x, int& y);
 
 public:
-    void onInit() override;
+    // inline bool isAnimFinish() override { return _data.shape_trans.isFinish(); }
+    void onPopOut() override;
     void onUpdate() override;
     void onRender() override;
 };

@@ -22,7 +22,7 @@ static constexpr int _panel_w = 40;
 static constexpr int _panel_h = 13;
 static constexpr int _panel_r = 4;
 
-void WidgetClock::_reset_anim()
+void WidgetClock::onPopOut()
 {
     constexpr int delay = 360;
 
@@ -41,8 +41,6 @@ void WidgetClock::_reset_anim()
     _data.update_time_count = 0;
     _data.colon_type = true;
 }
-
-void WidgetClock::onInit() { _reset_anim(); }
 
 void WidgetClock::onUpdate()
 {

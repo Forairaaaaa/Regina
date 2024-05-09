@@ -23,7 +23,7 @@ static constexpr int _panel_r = 2;
 static constexpr int _bar_mx = 2;
 static constexpr int _bar_my = 2;
 
-void WidgetBattery::_reset_anim()
+void WidgetBattery::onPopOut()
 {
     constexpr int delay = 200;
 
@@ -39,8 +39,6 @@ void WidgetBattery::_reset_anim()
     _data.shape_trans.getWTransition().setDelay(delay + 70);
     _data.shape_trans.getHTransition().setDelay(delay + 70);
 }
-
-void WidgetBattery::onInit() { _reset_anim(); }
 
 void WidgetBattery::onUpdate()
 {

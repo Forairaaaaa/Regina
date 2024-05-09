@@ -25,26 +25,6 @@ static constexpr int _canvas_h = 39;
 static constexpr int _canvas_mt = 3;
 static constexpr int _canvas_ml = 3;
 
-void WidgetConsole::_reset_anim()
-{
-    constexpr int delay = 260;
-
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 20);
-    _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
-
-    _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(500);
-    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
-
-    _data.shape_trans.getYTransition().setDuration(300);
-    _data.shape_trans.getXTransition().setDelay(delay + 70);
-    _data.shape_trans.getWTransition().setDelay(delay + 70);
-    _data.shape_trans.getHTransition().setDelay(delay + 70);
-
-    _data.msg_update_time_count = 0;
-    _data.cursor_type = true;
-}
-
 WidgetConsole::~WidgetConsole()
 {
     if (HAL::GetConsoleCanvas() != nullptr)
@@ -75,11 +55,27 @@ void WidgetConsole::onInit()
         HAL::Console().log("机会, 烧冻鸡翅!");
         HAL::Console().log("我将, 点燃大海 >-<");
     }
-
-    _reset_anim();
 }
 
-void WidgetConsole::onReset() { _reset_anim(); }
+void WidgetConsole::onPopOut()
+{
+    constexpr int delay = 260;
+
+    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 20);
+    _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
+
+    _data.shape_trans.setDelay(delay);
+    _data.shape_trans.setDuration(500);
+    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
+
+    _data.shape_trans.getYTransition().setDuration(300);
+    _data.shape_trans.getXTransition().setDelay(delay + 70);
+    _data.shape_trans.getWTransition().setDelay(delay + 70);
+    _data.shape_trans.getHTransition().setDelay(delay + 70);
+
+    _data.msg_update_time_count = 0;
+    _data.cursor_type = true;
+}
 
 void WidgetConsole::onUpdate()
 {

@@ -22,7 +22,7 @@ static constexpr int _panel_w = 82;
 static constexpr int _panel_h = 13;
 static constexpr int _panel_r = 4;
 
-void WidgetCalendar::_reset_anim()
+void WidgetCalendar::onPopOut()
 {
     constexpr int delay = 400;
 
@@ -40,8 +40,6 @@ void WidgetCalendar::_reset_anim()
 
     _data.update_time_count = 0;
 }
-
-void WidgetCalendar::onInit() { _reset_anim(); }
 
 void WidgetCalendar::onUpdate()
 {

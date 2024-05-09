@@ -15,11 +15,25 @@
 
 using namespace SmoothUIToolKit;
 
+static constexpr int _panel_startup_x = (128 - 24) / 2;
+static constexpr int _panel_startup_y = 64;
+static constexpr int _panel_startup_w = 24;
+static constexpr int _panel_startup_h = 12;
 static constexpr int _panel_r = 4;
 
-void WidgetDesktop::_reset_anim()
+void WidgetDesktop::onInit()
 {
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2, HAL::GetCanvas()->height(), 24, 12);
+    // // Child widgets
+    // addChild(new WidgetConsole);
+    // addChild(new WidgetBleStatus);
+    // addChild(new WidgetBattery);
+    // addChild(new WidgetClock);
+    // addChild(new WidgetCalendar);
+}
+
+void WidgetDesktop::onPopOut()
+{
+    _data.shape_trans.jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
     _data.shape_trans.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
 
     _data.shape_trans.setDuration(400);
@@ -31,25 +45,25 @@ void WidgetDesktop::_reset_anim()
     _data.shape_trans.getHTransition().setDelay(70);
 }
 
-void WidgetDesktop::onInit()
+void WidgetDesktop::onRetract()
 {
-    _reset_anim();
+    _data.shape_trans.jumpTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
+    _data.shape_trans.moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
 
-    // Child widgets
-    addChild(new WidgetConsole);
-    addChild(new WidgetBleStatus);
-    addChild(new WidgetBattery);
-    addChild(new WidgetClock);
-    addChild(new WidgetCalendar);
+    _data.shape_trans.setDuration(400);
+    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
+
+    _data.shape_trans.getYTransition().setDuration(500);
+    _data.shape_trans.getXTransition().setDelay(70);
+    _data.shape_trans.getWTransition().setDelay(70);
+    _data.shape_trans.getHTransition().setDelay(70);
 }
-
-void WidgetDesktop::onReset() { _reset_anim(); }
 
 void WidgetDesktop::onUpdate() { _data.shape_trans.update(HAL::Millis()); }
 
 void WidgetDesktop::onRender()
 {
-    if (_data.shape_trans.isFinish())
+    if (isPoppedOut())
     {
         HAL::GetCanvas()->fillScreen(TFT_BLACK);
         HAL::GetCanvas()->fillRoundRect(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height(), _panel_r, TFT_WHITE);
@@ -59,14 +73,21 @@ void WidgetDesktop::onRender()
         auto frame = _data.shape_trans.getValue();
         HAL::GetCanvas()->fillScreen(TFT_BLACK);
 
-        HAL::GetCanvas()->pushImage(0,
-                                    frame.y - 103,
-                                    AssetPool::GetImage().StartupAnim.warma_halftone_width,
-                                    AssetPool::GetImage().StartupAnim.warma_halftone_height,
-                                    AssetPool::GetImage().StartupAnim.warma_halftone);
+        if (_data.is_just_created)
+        {
+            HAL::GetCanvas()->pushImage(0,
+                                        frame.y - 103,
+                                        AssetPool::GetImage().StartupAnim.warma_halftone_width,
+                                        AssetPool::GetImage().StartupAnim.warma_halftone_height,
+                                        AssetPool::GetImage().StartupAnim.warma_halftone);
+        }
+
         HAL::GetCanvas()->fillRect(frame.x, frame.y, frame.w, frame.h, TFT_BLACK);
         HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_WHITE);
     }
+
+    if (_data.is_just_created && isPoppedOut())
+        _data.is_just_created = false;
 }
 
 void WidgetDesktop::onPostRender() { HAL::CanvasUpdate(); }
