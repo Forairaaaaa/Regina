@@ -12,6 +12,7 @@
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../utils/system/system.h"
+#include "spdlog/spdlog.h"
 
 using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
@@ -25,22 +26,30 @@ void AppSleepDaemon::onResume() { spdlog::info("{} onResume", getAppName()); }
 // Like loop()...
 void AppSleepDaemon::onRunning()
 {
+    // Check ready sleeping
+    if (HAL::GetPowerState() == POWER::state_ready_to_sleep)
+    {
+        spdlog::info("ready, go to sleep");
+        HAL::GoToSleep();
+    }
+
     // Check power button
     if (HAL::Millis() - _data.check_pwr_btn_time_count > _data.check_pwr_btn_interval)
     {
         Button::Power()->update();
         if (Button::Power()->wasClicked())
         {
-            spdlog::info("pwr button clicked");
-            if (HAL::IsSleeping())
+            // spdlog::info("pwr button clicked");
+            if (HAL::GetPowerState() == POWER::state_awake)
             {
-                spdlog::info("waking up");
-                HAL::WakeTheFuckUp();
+                // Fire event
+                HAL::SetPowerState(POWER::state_going_sleep);
+                spdlog::info("going to sleep");
             }
-            else
+            else if (HAL::GetPowerState() == POWER::state_sleeping)
             {
-                spdlog::info("going bed");
-                HAL::GoToSleep();
+                spdlog::info("wake up");
+                HAL::WakeTheFuckUp();
             }
         }
         _data.check_pwr_btn_time_count = HAL::Millis();

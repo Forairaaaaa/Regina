@@ -90,7 +90,7 @@ protected:
         time_t time_buffer;
         CONFIG::SystemConfig_t config;
         IMU::ImuData_t imu_data;
-        bool is_sleeping = false;
+        POWER::PowerState_t power_state = POWER::state_awake;
     };
     Data_t _data;
 
@@ -261,23 +261,30 @@ public:
      *
      */
     static void GoToSleep() { Get()->goToSleep(); }
-    virtual void goToSleep() { _data.is_sleeping = true; }
+    virtual void goToSleep() { _data.power_state = POWER::state_sleeping; }
 
     /**
      * @brief Wake the fuck up, Samurai! We have a city to burn
      *
      */
     static void WakeTheFuckUp() { Get()->wakeTheFuckUp(); }
-    virtual void wakeTheFuckUp() { _data.is_sleeping = false; }
+    virtual void wakeTheFuckUp() { _data.power_state = POWER::state_awake; }
 
     /**
-     * @brief Is now sleeping
+     * @brief Get current power state
      *
-     * @return true
-     * @return false
+     * @return POWER::PowerState_t
      */
-    static bool IsSleeping() { return Get()->isSleeping(); }
-    virtual bool isSleeping() { return _data.is_sleeping; }
+    static POWER::PowerState_t GetPowerState() { return Get()->getPowerState(); }
+    virtual POWER::PowerState_t getPowerState() { return _data.power_state; }
+
+    /**
+     * @brief Set power state
+     *
+     * @param state
+     */
+    static void SetPowerState(POWER::PowerState_t state) { Get()->setPowerState(state); }
+    virtual void setPowerState(POWER::PowerState_t state) { _data.power_state = state; }
 
     /* -------------------------------------------------------------------------- */
     /*                                     MSC                                    */

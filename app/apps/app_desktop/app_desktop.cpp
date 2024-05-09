@@ -27,9 +27,6 @@ void AppDesktop::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
 
-    setAllowBgRunning(true);
-    startApp();
-
     _data.widget_desktop.init();
 }
 
@@ -37,6 +34,10 @@ void AppDesktop::onCreate()
 void AppDesktop::onResume() { spdlog::info("{} onResume", getAppName()); }
 
 // Like loop()...
-void AppDesktop::onRunning() { _data.widget_desktop.update(); }
+void AppDesktop::onRunning()
+{
+    if (HAL::GetPowerState() != POWER::state_sleeping)
+        _data.widget_desktop.update();
+}
 
 void AppDesktop::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }
