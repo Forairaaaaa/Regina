@@ -12,8 +12,6 @@
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../utils/system/system.h"
-#include "lgfx/v1/misc/enum.hpp"
-#include "spdlog/spdlog.h"
 
 using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
@@ -30,6 +28,7 @@ void AppSleepDaemon::onRunning()
     // Check power button
     if (HAL::Millis() - _data.check_pwr_btn_time_count > _data.check_pwr_btn_interval)
     {
+        Button::Power()->update();
         if (Button::Power()->wasClicked())
         {
             spdlog::info("pwr button clicked");

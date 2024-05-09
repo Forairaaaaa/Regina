@@ -69,9 +69,11 @@ void WidgetConsole::onInit()
 
         HAL::SetConsoleCanvas(terminal_canvas);
 
+        HAL::Console().log("终端创建成功 :)");
+        HAL::Console().setAutoNewLine(true);
+
         HAL::Console().log("机会, 烧冻鸡翅!");
         HAL::Console().log("我将, 点燃大海 >-<");
-        HAL::Console().log("芜~ {} {}", "sss", 66);
     }
 
     _reset_anim();
@@ -90,15 +92,23 @@ void WidgetConsole::onUpdate()
     {
         if (!HAL::Console().isEmpty())
         {
+            // Remove old cursor
+            HAL::GetConsoleCanvas()->fillRect(
+                HAL::GetConsoleCanvas()->getCursorX(), HAL::GetConsoleCanvas()->getCursorY() + 10, 6, 3, TFT_BLACK);
+
             char shit = 0;
             HAL::Console().get(shit);
             HAL::GetConsoleCanvas()->print(shit);
+
+            // New cursor
+            HAL::GetConsoleCanvas()->fillRect(
+                HAL::GetConsoleCanvas()->getCursorX(), HAL::GetConsoleCanvas()->getCursorY() + 10, 6, 3, TFT_WHITE);
         }
 
         _data.msg_update_time_count = HAL::Millis();
     }
 
-    // Cursor
+    // Cursor blink
     if (HAL::Millis() - _data.cursor_update_time_count > _data.cursor_update_interval)
     {
         _data.cursor_type = !_data.cursor_type;

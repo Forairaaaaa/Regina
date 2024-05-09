@@ -59,6 +59,14 @@ public:
 
         _data.config.wifiSsid = "114514";
         _data.config.wifiPassword = "1919810";
+
+        // Add key mapping
+        auto panel = (lgfx::Panel_sdl*)_data.display->getPanel();
+        panel->addKeyCodeMapping(SDLK_q, 0);
+        panel->addKeyCodeMapping(SDLK_w, 1);
+        panel->addKeyCodeMapping(SDLK_e, 2);
+        panel->addKeyCodeMapping(SDLK_r, 3);
+        panel->addKeyCodeMapping(SDLK_f, 4);
     }
 
     void canvasUpdate() override
@@ -72,15 +80,15 @@ public:
     bool getButton(GAMEPAD::GamePadButton_t button) override
     {
         if (button == GAMEPAD::BTN_A)
-            return !lgfx::gpio_in(39);
+            return !lgfx::gpio_in(0);
         else if (button == GAMEPAD::BTN_B)
-            return !lgfx::gpio_in(37);
-        else if (button == GAMEPAD::BTN_PWR)
-            return !lgfx::gpio_in(38);
+            return !lgfx::gpio_in(1);
         else if (button == GAMEPAD::BTN_C)
-            return !lgfx::gpio_in(39);
+            return !lgfx::gpio_in(2);
         else if (button == GAMEPAD::BTN_D)
-            return !lgfx::gpio_in(37);
+            return !lgfx::gpio_in(3);
+        else if (button == GAMEPAD::BTN_PWR)
+            return !lgfx::gpio_in(4);
 
         return false;
     }

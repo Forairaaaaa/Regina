@@ -52,14 +52,7 @@ Button* Button::D()
     return _button_d;
 }
 
-void Button::Update()
-{
-    A()->update();
-    B()->update();
-    C()->update();
-    D()->update();
-}
-
+#ifdef PLATFORM_BUILD_REGINA
 static ButtonPwr* _button_pwr = nullptr;
 ButtonPwr* Button::Power()
 {
@@ -69,3 +62,21 @@ ButtonPwr* Button::Power()
 }
 
 bool ButtonPwr::wasClicked() { return HAL::WasPowerButtonClicked(); }
+#else
+static Button* _button_power = nullptr;
+Button* Button::Power()
+{
+    // Lazy loading
+    if (_button_power == nullptr)
+        _button_power = new Button(GAMEPAD::BTN_PWR);
+    return _button_power;
+}
+#endif
+
+void Button::Update()
+{
+    A()->update();
+    B()->update();
+    C()->update();
+    D()->update();
+}

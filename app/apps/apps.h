@@ -14,6 +14,7 @@
 #include "app_startup_anim/app_startup_anim.h"
 #include "app_desktop/app_desktop.h"
 #include "app_sleep_daemon/app_sleep_daemon.h"
+#include "app_console_daemon/app_console_daemon.h"
 /* Header files locator (Don't remove) */
 
 /**
@@ -23,18 +24,18 @@
  */
 inline void app_run_startup_anim(MOONCAKE::Mooncake* mooncake)
 {
-    // /* -------------------- Install and run startup anim here ------------------- */
-    // auto startup_anim = new MOONCAKE::APPS::AppStartupAnim_Packer;
+    /* -------------------- Install and run startup anim here ------------------- */
+    auto startup_anim = new MOONCAKE::APPS::AppStartupAnim_Packer;
 
-    // mooncake->createAndStartApp(startup_anim);
-    // while (1)
-    // {
-    //     mooncake->update();
-    //     if (mooncake->getAppManager()->getCreatedAppNum() == 0)
-    //         break;
-    // }
+    mooncake->createAndStartApp(startup_anim);
+    while (1)
+    {
+        mooncake->update();
+        if (mooncake->getAppManager()->getCreatedAppNum() == 0)
+            break;
+    }
 
-    // delete startup_anim;
+    delete startup_anim;
 }
 
 /**
@@ -47,6 +48,10 @@ inline void app_install_default_startup_app(MOONCAKE::Mooncake* mooncake)
     auto desktop = new MOONCAKE::APPS::AppDesktop_Packer;
     mooncake->installApp(desktop);
     mooncake->createAndStartApp(desktop);
+
+    auto console_daemon = new MOONCAKE::APPS::AppConsoleDaemon_Packer;
+    mooncake->installApp(console_daemon);
+    mooncake->createAndStartApp(console_daemon);
 
     auto sleep_daemon = new MOONCAKE::APPS::AppSleepDaemon_Packer;
     mooncake->installApp(sleep_daemon);

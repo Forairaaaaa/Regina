@@ -17,11 +17,14 @@ namespace SYSTEM
     namespace INPUTS
     {
         // Special shit
+#ifdef PLATFORM_BUILD_REGINA
         class ButtonPwr
         {
         public:
             bool wasClicked(void);
+            void update() {}
         };
+#endif
 
         /**
          * @brief Button class with richer apis
@@ -46,7 +49,12 @@ namespace SYSTEM
             static Button* B();
             static Button* C();
             static Button* D();
+
+#ifdef PLATFORM_BUILD_REGINA
             static ButtonPwr* Power();
+#else
+            static Button* Power();
+#endif
 
             /**
              * @brief Helper method to update all button instances

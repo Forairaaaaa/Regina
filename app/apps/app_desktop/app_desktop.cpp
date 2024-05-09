@@ -37,13 +37,6 @@ void AppDesktop::onCreate()
 void AppDesktop::onResume() { spdlog::info("{} onResume", getAppName()); }
 
 // Like loop()...
-void AppDesktop::onRunning()
-{
-    _data.widget_desktop.update();
-
-    Button::Update();
-    if (Button::D()->wasClicked())
-        HAL::Reboot();
-}
+void AppDesktop::onRunning() { _data.widget_desktop.update(); }
 
 void AppDesktop::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }

@@ -135,7 +135,14 @@ namespace CONSOLE
 {
     class ConsolePipe_t : public SmoothUIToolKit::RingBuffer<char, 124>
     {
+    private:
+        bool _auto_newline;
+
     public:
+        ConsolePipe_t() : _auto_newline(false) {}
+
+        void setAutoNewLine(bool autoNewLine) { _auto_newline = autoNewLine; }
+
         template <typename... Args>
         void log(const char* msg, const Args&... args)
         {
@@ -145,7 +152,7 @@ namespace CONSOLE
             std::string formatted_msg = fmt::vformat(msg, format_args);
 
             // New line
-            if (!this->isEmpty())
+            if (_auto_newline)
                 this->put('\n');
 
             for (const auto& i : formatted_msg)
