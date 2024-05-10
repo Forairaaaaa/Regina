@@ -58,6 +58,7 @@ public:
     void powerOff() override;
     uint8_t getBatteryPercentage() override;
     bool isBatteryCharging() override;
+    bool wasPowerButtonClicked() override;
 
     void feedTheDog() override;
     void setSystemTime(tm dateTime) override;

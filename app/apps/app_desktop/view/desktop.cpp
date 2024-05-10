@@ -48,7 +48,7 @@ void WidgetDesktop::onPopOut()
 
 void WidgetDesktop::onHide()
 {
-    constexpr int delay = 220;
+    constexpr int delay = 200;
 
     getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
     getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);

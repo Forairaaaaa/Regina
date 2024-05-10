@@ -54,6 +54,27 @@ public:
         val &= 0b01000000;
         return (bool)val;
     }
+
+    void clearIqr()
+    {
+        const uint8_t reg = 0x48;
+        for (int i = 0; i < 5; i++)
+        {
+            writeRegister8(reg + i, 0xFF);
+        }
+    }
+
+    bool wasPwrKeyClicked()
+    {
+        const uint8_t reg = 0x4A;
+        auto val = readRegister8(reg);
+        bool ret = (bool)(val & 0b00000010);
+
+        if (ret)
+            clearIqr();
+
+        return ret;
+    }
 };
 
 static AXP202_Class* _pmu = nullptr;
@@ -68,16 +89,22 @@ void HAL_Regina::_pmu_init()
         spdlog::error("init failed!");
         delete _pmu;
     }
+    else
+    {
+        _pmu->clearIqr();
+    }
 
     // /* -------------------------------------------------------------------------- */
     // /*                                    Test                                    */
     // /* -------------------------------------------------------------------------- */
     // int shit = 0;
-    // while (shit < (10000 / 500))
+    // // while (shit < (10000 / 500))
+    // while (1)
     // {
     //     shit++;
-    //     spdlog::info("{} {}", getBatteryPercentage(), isBatteryCharging());
-    //     delay(500);
+    //     // spdlog::info("{} {}", getBatteryPercentage(), isBatteryCharging());
+    //     spdlog::info("{} {} {}", getBatteryPercentage(), isBatteryCharging(), wasPowerButtonClicked());
+    //     delay(100);
     // }
     // // powerOff();
 }
@@ -105,4 +132,11 @@ bool HAL_Regina::isBatteryCharging()
     if (_pmu == nullptr)
         return false;
     return _pmu->isCharging();
+}
+
+bool HAL_Regina::wasPowerButtonClicked()
+{
+    if (_pmu == nullptr)
+        return false;
+    return _pmu->wasPwrKeyClicked();
 }
