@@ -88,11 +88,13 @@ void AppConsoleDaemon::_update_buttons()
 
 void AppConsoleDaemon::_update_dials()
 {
-    uint8_t new_value = HAL::GetDialValue(DIAL::DIAL_A);
+    uint8_t new_value = 0;
+
+    new_value = HAL::GetDialValue(DIAL::DIAL_A);
     if (new_value != _data.last_dial_a_value)
     {
         _data.last_dial_a_value = new_value;
-        HAL::Console().log(">{}<", new_value);
+        HAL::Console().log("OA>{:X}", new_value);
         HAL::CupOfCoffee();
     }
 
@@ -100,7 +102,7 @@ void AppConsoleDaemon::_update_dials()
     if (new_value != _data.last_dial_b_value)
     {
         _data.last_dial_b_value = new_value;
-        HAL::Console().log(">{}<", new_value);
+        HAL::Console().log("OB>{:X}", new_value);
         HAL::CupOfCoffee();
     }
 }

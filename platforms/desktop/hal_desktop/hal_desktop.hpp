@@ -94,12 +94,12 @@ public:
     }
 
     // Simulate encoder by mouse drag
-    int encoder_count = 0;
-    int last_encoder_count = 0;
+    int encoder_a_count = 0;
+    int last_encoder_a_count = 0;
     int touch_start_x = 0;
     int touch_last_x = 0;
     bool is_touching = false;
-    int getEncoderCount() override
+    int getEncoderACount()
     {
         if (isTouching())
         {
@@ -107,24 +107,24 @@ public:
             {
                 is_touching = true;
                 touch_start_x = getTouchPoint().x;
-                return encoder_count;
+                return encoder_a_count;
             }
 
             if (getTouchPoint().x != touch_last_x)
             {
                 // spdlog::info("{} {} {}", touch_start_x, getTouchPoint().x, encoder_count);
-                encoder_count = (getTouchPoint().x - touch_start_x) / 20 + last_encoder_count;
+                encoder_a_count = (getTouchPoint().x - touch_start_x) / 20 + last_encoder_a_count;
             }
             touch_last_x = getTouchPoint().x;
         }
         else if (is_touching)
         {
             is_touching = false;
-            last_encoder_count = encoder_count;
+            last_encoder_a_count = encoder_a_count;
         }
 
         // // Reverse
-        return -encoder_count;
+        return -encoder_a_count;
         // // return encoder_count;
 
         // if (_data.config.reverseEncoder)
@@ -132,7 +132,66 @@ public:
         // return -encoder_count;
     }
 
-    void resetEncoderCount(int value) override { encoder_count = value; }
+    void resetEncoderACount(int value) { encoder_a_count = value; }
+
+    int encoder_b_count = 0;
+    int last_encoder_b_count = 0;
+    int touch_start_y = 0;
+    int touch_last_y = 0;
+    // bool is_touching = false;
+    int getEncoderBCount()
+    {
+        if (isTouching())
+        {
+            if (!is_touching)
+            {
+                is_touching = true;
+                touch_start_y = getTouchPoint().y;
+                return encoder_b_count;
+            }
+
+            if (getTouchPoint().y != touch_last_y)
+            {
+                spdlog::info("{} {} {}", touch_start_y, getTouchPoint().y, encoder_b_count);
+                encoder_b_count = (getTouchPoint().y - touch_start_y) / 20 + last_encoder_b_count;
+            }
+            touch_last_y = getTouchPoint().y;
+        }
+        else if (is_touching)
+        {
+            is_touching = false;
+            last_encoder_b_count = encoder_b_count;
+        }
+
+        // // Reverse
+        return -encoder_b_count;
+        // // return encoder_count;
+
+        // if (_data.config.reverseEncoder)
+        //     return encoder_count;
+        // return -encoder_count;
+    }
+
+    void resetEncoderBCount(int value) { encoder_b_count = value; }
+
+    int getDialCount(DIAL::DialId_t dialId) override
+    {
+        if (dialId == DIAL::DIAL_A)
+            return getEncoderACount();
+        else if (dialId == DIAL::DIAL_B)
+            return getEncoderBCount();
+        return 0;
+    }
+
+    void resetDialCount(DIAL::DialId_t dialId) override
+    {
+        if (dialId == DIAL::DIAL_A)
+            resetEncoderACount(0);
+        else if (dialId == DIAL::DIAL_B)
+            resetEncoderBCount(0);
+    }
+
+    uint8_t getDialValue(DIAL::DialId_t dialId) override { return getDialCount(dialId) & 0xF; }
 
     bool isTouching() override
     {
