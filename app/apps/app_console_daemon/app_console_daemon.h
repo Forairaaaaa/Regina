@@ -26,13 +26,19 @@ namespace MOONCAKE
             {
                 uint32_t update_btn_time_count = 0;
                 uint32_t update_btn_interval = 20;
+
+                uint8_t last_dial_a_value = 0;
+                uint8_t last_dial_b_value = 0;
             };
             Data_t _data;
             void _update_buttons();
+            void _update_dials();
 
         public:
+            void onCreate() override;
             void onResume() override;
             void onRunning() override;
+            void onRunningBG() override;
             void onDestroy() override;
         };
 

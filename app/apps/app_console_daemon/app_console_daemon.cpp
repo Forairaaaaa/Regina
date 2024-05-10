@@ -12,6 +12,7 @@
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../utils/system/system.h"
+#include <cstdint>
 
 using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
@@ -19,11 +20,42 @@ using namespace SYSTEM::INPUTS;
 // App name
 const char* AppConsoleDaemon_Packer::getAppName() { return "ConsoleDaemon"; }
 
-// Like setup()...
-void AppConsoleDaemon::onResume() { spdlog::info("{} onResume", getAppName()); }
+void AppConsoleDaemon::onCreate()
+{
+    spdlog::info("{} onCreate", getAppName());
 
-// Like loop()...
-void AppConsoleDaemon::onRunning() { _update_buttons(); }
+    setAllowBgRunning(true);
+    startApp();
+}
+
+void AppConsoleDaemon::onResume()
+{
+    spdlog::info("{} onResume", getAppName());
+
+    _data.last_dial_a_value = HAL::GetDialValue(DIAL::DIAL_A);
+    _data.last_dial_b_value = HAL::GetDialValue(DIAL::DIAL_B);
+}
+
+void AppConsoleDaemon::onRunning()
+{
+    // Check is sleeping
+    if (HAL::GetPowerState() == POWER::state_sleeping)
+    {
+        closeApp();
+        return;
+    }
+
+    _update_buttons();
+}
+
+void AppConsoleDaemon::onRunningBG()
+{
+    // Check is sleeping
+    if (HAL::GetPowerState() == POWER::state_awake)
+    {
+        startApp();
+    }
+}
 
 void AppConsoleDaemon::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }
 
@@ -33,15 +65,42 @@ void AppConsoleDaemon::_update_buttons()
     {
         Button::Update();
 
+        auto pipe_value_num = HAL::Console().valueNum();
+
         if (Button::A()->wasClicked())
-            HAL::Console().log("A o.O?");
+            HAL::Console().log(">A<");
         else if (Button::B()->wasClicked())
-            HAL::Console().log("B o.O?");
+            HAL::Console().log(">B<");
         else if (Button::C()->wasClicked())
-            HAL::Console().log("C o.O?");
+            HAL::Console().log(">C<");
         else if (Button::D()->wasClicked())
-            HAL::Console().log("D o.O?");
+            HAL::Console().log(">D<");
+
+        if (HAL::Console().valueNum() != pipe_value_num)
+            HAL::CupOfCoffee();
+
+        // 来都来了
+        _update_dials();
 
         _data.update_btn_time_count = HAL::Millis();
+    }
+}
+
+void AppConsoleDaemon::_update_dials()
+{
+    uint8_t new_value = HAL::GetDialValue(DIAL::DIAL_A);
+    if (new_value != _data.last_dial_a_value)
+    {
+        _data.last_dial_a_value = new_value;
+        HAL::Console().log(">{}<", new_value);
+        HAL::CupOfCoffee();
+    }
+
+    new_value = HAL::GetDialValue(DIAL::DIAL_B);
+    if (new_value != _data.last_dial_b_value)
+    {
+        _data.last_dial_b_value = new_value;
+        HAL::Console().log(">{}<", new_value);
+        HAL::CupOfCoffee();
     }
 }
