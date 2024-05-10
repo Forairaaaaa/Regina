@@ -16,6 +16,10 @@
 
 using namespace SmoothUIToolKit;
 
+static constexpr int _panel_startup_x = (128 - 24) / 2 - 24;
+static constexpr int _panel_startup_y = 64 + 12;
+static constexpr int _panel_startup_w = 24;
+static constexpr int _panel_startup_h = 20;
 static constexpr int _panel_x = 2;
 static constexpr int _panel_y = 49;
 static constexpr int _panel_w = 40;
@@ -26,31 +30,34 @@ void WidgetClock::onPopOut()
 {
     constexpr int delay = 360;
 
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 20);
-    _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+    getTransition().moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
-    _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(500);
-    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
-
-    _data.shape_trans.getYTransition().setDuration(300);
-    _data.shape_trans.getXTransition().setDelay(delay + 70);
-    _data.shape_trans.getWTransition().setDelay(delay + 70);
-    _data.shape_trans.getHTransition().setDelay(delay + 70);
+    getTransition().setEachDelay(delay + 70, delay + 70, delay, delay + 70);
+    getTransition().setEachDuration(500, 300, 500, 500);
 
     _data.update_time_count = 0;
     _data.colon_type = true;
 }
 
+void WidgetClock::onHide()
+{
+    constexpr int delay = 60;
+
+    getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+
+    getTransition().setEachDelay(delay, delay, delay + 70, delay);
+    getTransition().setEachDuration(300, 500, 300, 300);
+}
+
 void WidgetClock::onUpdate()
 {
-    _data.shape_trans.update(HAL::Millis());
-
     // Update time
     if (HAL::Millis() - _data.update_time_count > _data.update_interval)
     {
         // Colon
-        if (_data.shape_trans.isFinish())
+        if (isPoppedOut())
             _data.colon_type = !_data.colon_type;
 
         // Time
@@ -67,7 +74,7 @@ void WidgetClock::onUpdate()
 void WidgetClock::onRender()
 {
     // Panel
-    auto frame = _data.shape_trans.getValue();
+    auto frame = getTransition().getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
 
     // Time

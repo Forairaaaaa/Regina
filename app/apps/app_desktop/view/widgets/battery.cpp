@@ -15,6 +15,10 @@
 
 using namespace SmoothUIToolKit;
 
+static constexpr int _panel_startup_x = (128 - 24) / 2;
+static constexpr int _panel_startup_y = 64 + 12;
+static constexpr int _panel_startup_w = 24;
+static constexpr int _panel_startup_h = 12;
 static constexpr int _panel_x = 119;
 static constexpr int _panel_y = 17;
 static constexpr int _panel_w = 7;
@@ -27,28 +31,29 @@ void WidgetBattery::onPopOut()
 {
     constexpr int delay = 200;
 
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() + 24) / 2, HAL::GetCanvas()->height(), 24, 12);
-    _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+    getTransition().moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
-    _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(500);
-    // _data.position_trans.setTransitionPath(EasingPath::easeOutBack);
-
-    _data.shape_trans.getYTransition().setDuration(300);
-    // _data.shape_trans.getXTransition().setDelay(delay + 70);
-    _data.shape_trans.getWTransition().setDelay(delay + 70);
-    _data.shape_trans.getHTransition().setDelay(delay + 70);
+    getTransition().setEachDelay(delay, delay, delay + 70, delay + 70);
+    getTransition().setEachDuration(500, 300, 500, 500);
 }
 
-void WidgetBattery::onUpdate()
+void WidgetBattery::onHide()
 {
-    _data.shape_trans.update(HAL::Millis());
-    _data.battery_level = HAL::GetBatteryPercentage();
+    constexpr int delay = 60;
+
+    getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+
+    getTransition().setEachDelay(delay, delay + 70, delay + 70, delay + 70);
+    getTransition().setEachDuration(500, 400, 500, 500);
 }
+
+void WidgetBattery::onUpdate() { _data.battery_level = HAL::GetBatteryPercentage(); }
 
 void WidgetBattery::onRender()
 {
-    auto frame = _data.shape_trans.getValue();
+    auto frame = getTransition().getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
 
     int bar_width = frame.w - _bar_mx * 2;

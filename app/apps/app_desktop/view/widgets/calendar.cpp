@@ -16,6 +16,10 @@
 
 using namespace SmoothUIToolKit;
 
+static constexpr int _panel_startup_x = (128 - 24) / 2 + 48;
+static constexpr int _panel_startup_y = 64 + 12;
+static constexpr int _panel_startup_w = 24;
+static constexpr int _panel_startup_h = 20;
 static constexpr int _panel_x = 44;
 static constexpr int _panel_y = 49;
 static constexpr int _panel_w = 82;
@@ -26,25 +30,30 @@ void WidgetCalendar::onPopOut()
 {
     constexpr int delay = 400;
 
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 + 48, HAL::GetCanvas()->height(), 24, 20);
-    _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+    getTransition().moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
-    _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(400);
-    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
+    getTransition().setEachDelay(delay + 70, delay, delay + 70, delay + 70);
+    getTransition().setEachDuration(400, 300, 400, 400);
 
-    _data.shape_trans.getYTransition().setDuration(300);
-    _data.shape_trans.getXTransition().setDelay(delay + 70);
-    _data.shape_trans.getWTransition().setDelay(delay + 70);
-    _data.shape_trans.getHTransition().setDelay(delay + 70);
+    _data.update_time_count = 0;
+}
+
+void WidgetCalendar::onHide()
+{
+    constexpr int delay = 0;
+
+    getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+
+    getTransition().setEachDelay(delay, delay + 70, delay, delay);
+    getTransition().setEachDuration(400, 300, 400, 400);
 
     _data.update_time_count = 0;
 }
 
 void WidgetCalendar::onUpdate()
 {
-    _data.shape_trans.update(HAL::Millis());
-
     if (HAL::Millis() - _data.update_time_count > _data.update_interval)
     {
         auto time = HAL::GetLocalTime();
@@ -61,7 +70,7 @@ void WidgetCalendar::onUpdate()
 
 void WidgetCalendar::onRender()
 {
-    auto frame = _data.shape_trans.getValue();
+    auto frame = getTransition().getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
 
     HAL::GetCanvas()->setTextColor(TFT_WHITE);

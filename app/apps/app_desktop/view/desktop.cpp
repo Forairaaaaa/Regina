@@ -9,57 +9,56 @@
  *
  */
 #include "desktop.h"
+#include <cstdint>
 #include <smooth_ui_toolkit.h>
 #include "../../../assets/assets.h"
+#include "lgfx/v1/misc/enum.hpp"
 #include "widgets/widgets.h"
 
 using namespace SmoothUIToolKit;
 
 static constexpr int _panel_startup_x = (128 - 24) / 2;
-static constexpr int _panel_startup_y = 64;
+static constexpr int _panel_startup_y = 64 + 12;
 static constexpr int _panel_startup_w = 24;
 static constexpr int _panel_startup_h = 12;
+static constexpr int _panel_x = 0;
+static constexpr int _panel_y = 0;
+static constexpr int _panel_w = 128;
+static constexpr int _panel_h = 64;
 static constexpr int _panel_r = 4;
 
 void WidgetDesktop::onInit()
 {
-    // // Child widgets
-    // addChild(new WidgetConsole);
-    // addChild(new WidgetBleStatus);
-    // addChild(new WidgetBattery);
-    // addChild(new WidgetClock);
-    // addChild(new WidgetCalendar);
+    // Child widgets
+    addChild(new WidgetConsole);
+    addChild(new WidgetBleStatus);
+    addChild(new WidgetBattery);
+    addChild(new WidgetClock);
+    addChild(new WidgetCalendar);
 }
 
 void WidgetDesktop::onPopOut()
 {
-    _data.shape_trans.jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
-    _data.shape_trans.moveTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
+    getTransition().jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+    getTransition().moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
-    _data.shape_trans.setDuration(400);
-    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
-
-    _data.shape_trans.getYTransition().setDuration(500);
-    _data.shape_trans.getXTransition().setDelay(70);
-    _data.shape_trans.getWTransition().setDelay(70);
-    _data.shape_trans.getHTransition().setDelay(70);
+    getTransition().setEachDuration(500, 400, 500, 500);
+    getTransition().setEachDelay(70, 0, 70, 70);
 }
 
-void WidgetDesktop::onRetract()
+void WidgetDesktop::onHide()
 {
-    _data.shape_trans.jumpTo(0, 0, HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
-    _data.shape_trans.moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+    constexpr int delay = 220;
 
-    _data.shape_trans.setDuration(400);
-    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
+    getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
 
-    _data.shape_trans.getYTransition().setDuration(500);
-    _data.shape_trans.getXTransition().setDelay(70);
-    _data.shape_trans.getWTransition().setDelay(70);
-    _data.shape_trans.getHTransition().setDelay(70);
+    // getTransition().setEachDuration(400, 500, 400, 400);
+    // getTransition().setEachDelay(delay, delay + 70, delay, delay);
+
+    getTransition().setEachDuration(700, 500, 700, 500);
+    getTransition().setEachDelay(delay, delay, delay, delay);
 }
-
-void WidgetDesktop::onUpdate() { _data.shape_trans.update(HAL::Millis()); }
 
 void WidgetDesktop::onRender()
 {
@@ -70,13 +69,13 @@ void WidgetDesktop::onRender()
     }
     else
     {
-        auto frame = _data.shape_trans.getValue();
+        auto frame = getTransition().getValue();
         HAL::GetCanvas()->fillScreen(TFT_BLACK);
 
         if (_data.is_just_created)
         {
             HAL::GetCanvas()->pushImage(0,
-                                        frame.y - 103,
+                                        frame.y - 103 - 12,
                                         AssetPool::GetImage().StartupAnim.warma_halftone_width,
                                         AssetPool::GetImage().StartupAnim.warma_halftone_height,
                                         AssetPool::GetImage().StartupAnim.warma_halftone);

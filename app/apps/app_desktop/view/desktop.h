@@ -11,22 +11,19 @@
 #pragma once
 #include <smooth_ui_toolkit.h>
 
-class WidgetDesktop : public SmoothUIToolKit::Widgets::WidgetBase
+class WidgetDesktop : public SmoothUIToolKit::Widgets::SmoothWidgetBase
 {
 private:
     struct Data_t
     {
-        SmoothUIToolKit::Transition4D shape_trans;
         bool is_just_created = true;
     };
     Data_t _data;
 
 public:
-    inline bool isAnimFinish() override { return _data.shape_trans.isFinish(); }
     void onInit() override;
     void onPopOut() override;
-    void onRetract() override;
-    void onUpdate() override;
+    void onHide() override;
     void onRender() override;
     void onPostRender() override;
 };

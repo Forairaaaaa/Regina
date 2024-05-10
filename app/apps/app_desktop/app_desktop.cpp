@@ -40,22 +40,26 @@ void AppDesktop::onRunning()
 {
     // Normal update
     if (HAL::GetPowerState() != POWER::state_sleeping)
-        _data.widget_desktop.update();
+        _data.widget_desktop.update(HAL::Millis());
 
-    spdlog::info("{}", _data.widget_desktop.isRetracting());
+    // spdlog::info("{} {} {} {}",
+    //              _data.widget_desktop.isPoppedOut(),
+    //              _data.widget_desktop.isPoppingOut(),
+    //              _data.widget_desktop.isHidden(),
+    //              _data.widget_desktop.isHidding());
 
     // Pop out
-    if (HAL::GetPowerState() == POWER::state_awake && _data.widget_desktop.isRetracting())
+    if (HAL::GetPowerState() == POWER::state_awake && _data.widget_desktop.isHidden())
         _data.widget_desktop.popOut();
 
-    // Retract
+    // Hide
     else if (HAL::GetPowerState() == POWER::state_going_sleep)
     {
         if (_data.widget_desktop.isPoppedOut())
-            _data.widget_desktop.retract();
+            _data.widget_desktop.hide();
 
         // Ready to sleep
-        if (_data.widget_desktop.isRetracting())
+        if (_data.widget_desktop.isHidden())
             HAL::SetPowerState(POWER::state_ready_to_sleep);
     }
 }

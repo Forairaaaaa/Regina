@@ -15,6 +15,10 @@
 
 using namespace SmoothUIToolKit;
 
+static constexpr int _panel_startup_x = (128 - 24) / 2 - 32;
+static constexpr int _panel_startup_y = 64 + 12;
+static constexpr int _panel_startup_w = 24;
+static constexpr int _panel_startup_h = 12;
 static constexpr int _panel_x = 2;
 static constexpr int _panel_y = 2;
 static constexpr int _panel_w = 115;
@@ -61,26 +65,30 @@ void WidgetConsole::onPopOut()
 {
     constexpr int delay = 260;
 
-    _data.shape_trans.jumpTo((HAL::GetCanvas()->width() - 24) / 2 - 24, HAL::GetCanvas()->height(), 24, 20);
-    _data.shape_trans.moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().jumpTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+    getTransition().moveTo(_panel_x, _panel_y, _panel_w, _panel_h);
 
-    _data.shape_trans.setDelay(delay);
-    _data.shape_trans.setDuration(500);
-    // _data.shape_trans.setTransitionPath(EasingPath::easeOutBack);
-
-    _data.shape_trans.getYTransition().setDuration(300);
-    _data.shape_trans.getXTransition().setDelay(delay + 70);
-    _data.shape_trans.getWTransition().setDelay(delay + 70);
-    _data.shape_trans.getHTransition().setDelay(delay + 70);
+    getTransition().setEachDelay(delay + 70, delay, delay + 70, delay + 70);
+    getTransition().setEachDuration(500, 300, 500, 500);
 
     _data.msg_update_time_count = 0;
     _data.cursor_type = true;
 }
 
+void WidgetConsole::onHide()
+{
+    constexpr int delay = 0;
+
+    getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
+    getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
+
+    getTransition().setEachDelay(delay, delay + 70, delay, delay);
+    getTransition().setEachDuration(300, 500, 300, 300);
+}
+
 void WidgetConsole::onUpdate()
 {
-    _data.shape_trans.update(HAL::Millis());
-    if (!_data.shape_trans.isFinish())
+    if (!isPoppedOut())
         return;
 
     // Message
@@ -124,11 +132,11 @@ void WidgetConsole::onUpdate()
 void WidgetConsole::onRender()
 {
     // panel
-    auto frame = _data.shape_trans.getValue();
+    auto frame = getTransition().getValue();
     HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
 
     // Console
-    if (_data.shape_trans.isFinish())
+    if (isPoppedOut())
     {
         HAL::GetConsoleCanvas()->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
     }
