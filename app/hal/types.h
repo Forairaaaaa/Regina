@@ -104,6 +104,7 @@ namespace CONFIG
         bool dialBPinSwaped = false;
         std::string wifiSsid = "";
         std::string wifiPassword = "";
+        uint32_t autoSleepTimeout = 12000;
     };
 } // namespace CONFIG
 

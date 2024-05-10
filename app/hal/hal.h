@@ -9,6 +9,7 @@
  *
  */
 #pragma once
+#include <cstdint>
 #include <functional>
 #include <vector>
 #include <M5GFX.h>
@@ -91,6 +92,7 @@ protected:
         CONFIG::SystemConfig_t config;
         IMU::ImuData_t imu_data;
         POWER::PowerState_t power_state = POWER::state_awake;
+        uint32_t awake_time_count = 0;
     };
     Data_t _data;
 
@@ -285,6 +287,19 @@ public:
      */
     static void SetPowerState(POWER::PowerState_t state) { Get()->setPowerState(state); }
     virtual void setPowerState(POWER::PowerState_t state) { _data.power_state = state; }
+
+    /**
+     * @brief Reset auto sleep counting
+     *
+     */
+    static void CupOfCoffee() { Get()->_data.awake_time_count = Get()->millis(); }
+
+    /**
+     * @brief Get awake time count
+     *
+     * @return uint32_t
+     */
+    static uint32_t GetAwakeTime() { return Get()->_data.awake_time_count; }
 
     /* -------------------------------------------------------------------------- */
     /*                                     MSC                                    */

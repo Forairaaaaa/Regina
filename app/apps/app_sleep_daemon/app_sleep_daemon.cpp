@@ -21,7 +21,11 @@ using namespace SYSTEM::INPUTS;
 const char* AppSleepDaemon_Packer::getAppName() { return "SleepDaemon"; }
 
 // Like setup()...
-void AppSleepDaemon::onResume() { spdlog::info("{} onResume", getAppName()); }
+void AppSleepDaemon::onResume()
+{
+    spdlog::info("{} onResume", getAppName());
+    HAL::CupOfCoffee();
+}
 
 // Like loop()...
 void AppSleepDaemon::onRunning()
@@ -50,9 +54,21 @@ void AppSleepDaemon::onRunning()
             {
                 spdlog::info("wake up");
                 HAL::WakeTheFuckUp();
+                HAL::CupOfCoffee();
             }
         }
         _data.check_pwr_btn_time_count = HAL::Millis();
+    }
+
+    // Check auto sleep
+    if (HAL::GetPowerState() == POWER::state_awake)
+    {
+        if (HAL::Millis() - HAL::GetAwakeTime() > HAL::GetSystemConfig().autoSleepTimeout)
+        {
+            // Fire event
+            HAL::SetPowerState(POWER::state_going_sleep);
+            spdlog::info("going to sleep");
+        }
     }
 }
 
