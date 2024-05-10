@@ -16,7 +16,7 @@
 
 using namespace SmoothUIToolKit;
 
-static constexpr int _panel_startup_x = (128 - 24) / 2 + 48;
+static constexpr int _panel_startup_x = (128 - 24) / 2 + 24;
 static constexpr int _panel_startup_y = 64 + 12;
 static constexpr int _panel_startup_w = 24;
 static constexpr int _panel_startup_h = 20;

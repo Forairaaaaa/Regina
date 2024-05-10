@@ -15,7 +15,7 @@
 
 using namespace SmoothUIToolKit;
 
-static constexpr int _panel_startup_x = (128 - 24) / 2 - 32;
+static constexpr int _panel_startup_x = (128 - 24) / 2;
 static constexpr int _panel_startup_y = 64 + 12;
 static constexpr int _panel_startup_w = 24;
 static constexpr int _panel_startup_h = 12;
@@ -57,7 +57,7 @@ void WidgetConsole::onInit()
         HAL::Console().setAutoNewLine(true);
 
         HAL::Console().log("机会, 烧冻鸡翅!");
-        HAL::Console().log("我将, 点燃大海 >-<");
+        HAL::Console().log("我将,\n点燃大海!  >_<");
     }
 }
 
@@ -77,7 +77,7 @@ void WidgetConsole::onPopOut()
 
 void WidgetConsole::onHide()
 {
-    constexpr int delay = 0;
+    constexpr int delay = 120;
 
     getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
     getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);

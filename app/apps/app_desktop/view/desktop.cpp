@@ -53,11 +53,11 @@ void WidgetDesktop::onHide()
     getTransition().jumpTo(_panel_x, _panel_y, _panel_w, _panel_h);
     getTransition().moveTo(_panel_startup_x, _panel_startup_y, _panel_startup_w, _panel_startup_h);
 
-    // getTransition().setEachDuration(400, 500, 400, 400);
-    // getTransition().setEachDelay(delay, delay + 70, delay, delay);
+    getTransition().setEachDuration(400, 500, 400, 400);
+    getTransition().setEachDelay(delay, delay + 70, delay, delay);
 
-    getTransition().setEachDuration(700, 500, 700, 500);
-    getTransition().setEachDelay(delay, delay, delay, delay);
+    // getTransition().setEachDuration(700, 500, 700, 500);
+    // getTransition().setEachDelay(delay, delay, delay, delay);
 }
 
 void WidgetDesktop::onRender()
