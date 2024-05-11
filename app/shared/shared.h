@@ -139,8 +139,9 @@ public:
     /**
      * @brief Reset auto sleep counting
      *
+     * @param coffee
      */
-    static void CupOfCoffee() { GetData().awake_time_count = 0; }
+    static void CupOfCoffee(const uint32_t coffee) { GetData().awake_time_count = coffee; }
 
     /**
      * @brief Get awake time count

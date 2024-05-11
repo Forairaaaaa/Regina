@@ -79,7 +79,7 @@ void AppConsoleDaemon::_update_buttons()
             SharedData::Console().log(">D<");
 
         if (SharedData::Console().valueNum() != pipe_value_num)
-            SharedData::CupOfCoffee();
+            SharedData::CupOfCoffee(HAL::Millis());
 
         // 来都来了
         _update_dials();
@@ -97,7 +97,7 @@ void AppConsoleDaemon::_update_dials()
     {
         _data.last_dial_a_value = new_value;
         SharedData::Console().log("OA>{:X}", new_value);
-        SharedData::CupOfCoffee();
+        SharedData::CupOfCoffee(HAL::Millis());
     }
 
     new_value = HAL::GetDialValue(DIAL::DIAL_B);
@@ -105,6 +105,6 @@ void AppConsoleDaemon::_update_dials()
     {
         _data.last_dial_b_value = new_value;
         SharedData::Console().log("OB>{:X}", new_value);
-        SharedData::CupOfCoffee();
+        SharedData::CupOfCoffee(HAL::Millis());
     }
 }

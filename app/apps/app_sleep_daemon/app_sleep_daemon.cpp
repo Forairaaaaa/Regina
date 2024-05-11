@@ -25,7 +25,7 @@ const char* AppSleepDaemon_Packer::getAppName() { return "SleepDaemon"; }
 void AppSleepDaemon::onResume()
 {
     spdlog::info("{} onResume", getAppName());
-    SharedData::CupOfCoffee();
+    SharedData::CupOfCoffee(HAL::Millis());
 }
 
 // Like loop()...
@@ -57,7 +57,7 @@ void AppSleepDaemon::onRunning()
                 spdlog::info("wake up");
                 SharedData::SetPowerState(POWER::state_awake);
                 HAL::WakeTheFuckUp();
-                SharedData::CupOfCoffee();
+                SharedData::CupOfCoffee(HAL::Millis());
             }
         }
         _data.check_pwr_btn_time_count = HAL::Millis();
@@ -66,6 +66,7 @@ void AppSleepDaemon::onRunning()
     // Check auto sleep
     if (SharedData::GetPowerState() == POWER::state_awake)
     {
+        spdlog::info("{} {}", HAL::Millis(), SharedData::GetAwakeTime());
         if (HAL::Millis() - SharedData::GetAwakeTime() > HAL::GetSystemConfig().autoSleepTimeout)
         {
             spdlog::info("auto sleep");
