@@ -17,7 +17,7 @@
 #include "types.h"
 
 /**
- * @brief Singleton like pattern to simplify hal's getter
+ * @brief Singleton pattern to simplify hal's getter
  * 1) Inherit and override methods to create a specific hal
  * 2) Use HAL::Inject() to inject your hal
  * 3) Use HAL:Get() to get this hal wherever you want
@@ -86,13 +86,9 @@ protected:
     {
         LGFX_Device* display = nullptr;
         LGFX_SpriteFx* canvas = nullptr;
-        LGFX_SpriteFx* console_canvas = nullptr;
-        CONSOLE::ConsolePipe_t console_msg_pipe;
         time_t time_buffer;
         CONFIG::SystemConfig_t config;
         IMU::ImuData_t imu_data;
-        POWER::PowerState_t power_state = POWER::state_awake;
-        uint32_t awake_time_count = 0;
     };
     Data_t _data;
 
@@ -151,25 +147,6 @@ public:
      */
     static void PopSuccess(std::string msg, bool showSuccessLabel = true) { Get()->popSuccess(msg, showSuccessLabel); }
     virtual void popSuccess(std::string msg, bool showSuccessLabel = true);
-
-    /* -------------------------------------------------------------------------- */
-    /*                                   Console                                  */
-    /* -------------------------------------------------------------------------- */
-public:
-    /**
-     * @brief Small terminal canvas
-     *
-     * @return LGFX_SpriteFx*
-     */
-    static LGFX_SpriteFx* GetConsoleCanvas() { return Get()->_data.console_canvas; }
-    static void SetConsoleCanvas(LGFX_SpriteFx* terminalCanvas) { Get()->_data.console_canvas = terminalCanvas; }
-
-    /**
-     * @brief Get console message pipe line
-     *
-     * @return CONSOLE::ConsolePipe_t&
-     */
-    static CONSOLE::ConsolePipe_t& Console() { return Get()->_data.console_msg_pipe; }
 
     /* -------------------------------------------------------------------------- */
     /*                                   System                                   */
@@ -263,43 +240,14 @@ public:
      *
      */
     static void GoToSleep() { Get()->goToSleep(); }
-    virtual void goToSleep() { _data.power_state = POWER::state_sleeping; }
+    virtual void goToSleep() {}
 
     /**
      * @brief Wake the fuck up, Samurai! We have a city to burn
      *
      */
     static void WakeTheFuckUp() { Get()->wakeTheFuckUp(); }
-    virtual void wakeTheFuckUp() { _data.power_state = POWER::state_awake; }
-
-    /**
-     * @brief Get current power state
-     *
-     * @return POWER::PowerState_t
-     */
-    static POWER::PowerState_t GetPowerState() { return Get()->getPowerState(); }
-    virtual POWER::PowerState_t getPowerState() { return _data.power_state; }
-
-    /**
-     * @brief Set power state
-     *
-     * @param state
-     */
-    static void SetPowerState(POWER::PowerState_t state) { Get()->setPowerState(state); }
-    virtual void setPowerState(POWER::PowerState_t state) { _data.power_state = state; }
-
-    /**
-     * @brief Reset auto sleep counting
-     *
-     */
-    static void CupOfCoffee() { Get()->_data.awake_time_count = Get()->millis(); }
-
-    /**
-     * @brief Get awake time count
-     *
-     * @return uint32_t
-     */
-    static uint32_t GetAwakeTime() { return Get()->_data.awake_time_count; }
+    virtual void wakeTheFuckUp() {}
 
     /* -------------------------------------------------------------------------- */
     /*                                     MSC                                    */

@@ -109,20 +109,6 @@ namespace CONFIG
 } // namespace CONFIG
 
 /* -------------------------------------------------------------------------- */
-/*                                    Power                                   */
-/* -------------------------------------------------------------------------- */
-namespace POWER
-{
-    enum PowerState_t
-    {
-        state_awake = 0,
-        state_going_sleep,
-        state_ready_to_sleep,
-        state_sleeping,
-    };
-} // namespace POWER
-
-/* -------------------------------------------------------------------------- */
 /*                                  OTA info                                  */
 /* -------------------------------------------------------------------------- */
 namespace OTA_UPGRADE
@@ -142,38 +128,3 @@ namespace OTA_UPGRADE
 typedef std::function<void(const std::string& log, bool pushScreen, bool clear)> OnLogPageRenderCallback_t;
 
 #define APP_VERSION "V1.0.0"
-
-/* -------------------------------------------------------------------------- */
-/*                                   Console                                  */
-/* -------------------------------------------------------------------------- */
-namespace CONSOLE
-{
-    class ConsolePipe_t : public SmoothUIToolKit::RingBuffer<char, 124>
-    {
-    private:
-        bool _auto_newline;
-
-    public:
-        ConsolePipe_t() : _auto_newline(false) {}
-
-        void setAutoNewLine(bool autoNewLine) { _auto_newline = autoNewLine; }
-
-        template <typename... Args>
-        void log(const char* msg, const Args&... args)
-        {
-            // std::string formatted_msg = fmt::format(msg, args...);
-            // Gcc sucks
-            auto format_args = fmt::make_format_args(args...);
-            std::string formatted_msg = fmt::vformat(msg, format_args);
-
-            // New line
-            if (_auto_newline)
-                this->put('\n');
-
-            for (const auto& i : formatted_msg)
-            {
-                this->put(i);
-            }
-        }
-    };
-} // namespace CONSOLE

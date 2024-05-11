@@ -11,6 +11,7 @@
 #include "app_sleep_daemon.h"
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
+#include "../../shared/shared.h"
 #include "../utils/system/system.h"
 #include "spdlog/spdlog.h"
 
@@ -24,16 +25,17 @@ const char* AppSleepDaemon_Packer::getAppName() { return "SleepDaemon"; }
 void AppSleepDaemon::onResume()
 {
     spdlog::info("{} onResume", getAppName());
-    HAL::CupOfCoffee();
+    SharedData::CupOfCoffee();
 }
 
 // Like loop()...
 void AppSleepDaemon::onRunning()
 {
     // Check ready sleeping
-    if (HAL::GetPowerState() == POWER::state_ready_to_sleep)
+    if (SharedData::GetPowerState() == POWER::state_ready_to_sleep)
     {
-        spdlog::info("ready, go to sleep");
+        spdlog::info("ready to sleep");
+        SharedData::SetPowerState(POWER::state_sleeping);
         HAL::GoToSleep();
     }
 
@@ -44,29 +46,31 @@ void AppSleepDaemon::onRunning()
         if (Button::Power()->wasClicked())
         {
             // spdlog::info("pwr button clicked");
-            if (HAL::GetPowerState() == POWER::state_awake)
+            if (SharedData::GetPowerState() == POWER::state_awake)
             {
                 // Fire event
-                HAL::SetPowerState(POWER::state_going_sleep);
+                SharedData::SetPowerState(POWER::state_going_sleep);
                 spdlog::info("going to sleep");
             }
-            else if (HAL::GetPowerState() == POWER::state_sleeping)
+            else if (SharedData::GetPowerState() == POWER::state_sleeping)
             {
                 spdlog::info("wake up");
+                SharedData::SetPowerState(POWER::state_awake);
                 HAL::WakeTheFuckUp();
-                HAL::CupOfCoffee();
+                SharedData::CupOfCoffee();
             }
         }
         _data.check_pwr_btn_time_count = HAL::Millis();
     }
 
     // Check auto sleep
-    if (HAL::GetPowerState() == POWER::state_awake)
+    if (SharedData::GetPowerState() == POWER::state_awake)
     {
-        if (HAL::Millis() - HAL::GetAwakeTime() > HAL::GetSystemConfig().autoSleepTimeout)
+        if (HAL::Millis() - SharedData::GetAwakeTime() > HAL::GetSystemConfig().autoSleepTimeout)
         {
+            spdlog::info("auto sleep");
             // Fire event
-            HAL::SetPowerState(POWER::state_going_sleep);
+            SharedData::SetPowerState(POWER::state_going_sleep);
             spdlog::info("going to sleep");
         }
     }

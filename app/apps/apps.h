@@ -15,6 +15,7 @@
 #include "app_desktop/app_desktop.h"
 #include "app_sleep_daemon/app_sleep_daemon.h"
 #include "app_console_daemon/app_console_daemon.h"
+#include "app_settings/app_settings.h"
 /* Header files locator (Don't remove) */
 
 /**
@@ -66,5 +67,6 @@ inline void app_install_default_startup_app(MOONCAKE::Mooncake* mooncake)
 inline void app_install_apps(MOONCAKE::Mooncake* mooncake)
 {
     // mooncake->installApp(new MOONCAKE::APPS::AppTemplate_Packer);
+    mooncake->installApp(new MOONCAKE::APPS::AppSettings_Packer);
     /* Install app locator (Don't remove) */
 }

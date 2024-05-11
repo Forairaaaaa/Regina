@@ -10,6 +10,7 @@
  */
 #include "widgets.h"
 #include "../../../../assets/assets.h"
+#include "../../../../shared/shared.h"
 #include <mooncake.h>
 #include <smooth_ui_toolkit.h>
 
@@ -31,16 +32,16 @@ static constexpr int _canvas_ml = 3;
 
 WidgetConsole::~WidgetConsole()
 {
-    if (HAL::GetConsoleCanvas() != nullptr)
+    if (SharedData::GetConsoleCanvas() != nullptr)
     {
-        delete HAL::GetConsoleCanvas();
-        HAL::SetConsoleCanvas(nullptr);
+        delete SharedData::GetConsoleCanvas();
+        SharedData::SetConsoleCanvas(nullptr);
     }
 }
 
 void WidgetConsole::onInit()
 {
-    if (HAL::GetConsoleCanvas() != nullptr)
+    if (SharedData::GetConsoleCanvas() != nullptr)
         spdlog::error("canvas exist");
     else
     {
@@ -51,13 +52,13 @@ void WidgetConsole::onInit()
         AssetPool::LoadFont12(terminal_canvas);
         terminal_canvas->setTextScroll(true);
 
-        HAL::SetConsoleCanvas(terminal_canvas);
+        SharedData::SetConsoleCanvas(terminal_canvas);
 
-        HAL::Console().log("终端创建成功 :)");
-        HAL::Console().setAutoNewLine(true);
+        SharedData::Console().log("终端创建成功 :)");
+        SharedData::Console().setAutoNewLine(true);
 
-        HAL::Console().log("机会, 烧冻鸡翅!");
-        HAL::Console().log("我将,\n点燃大海!  >_<");
+        SharedData::Console().log("机会, 烧冻鸡翅!");
+        SharedData::Console().log("我将,\n点燃大海!  >_<");
     }
 }
 
@@ -94,19 +95,25 @@ void WidgetConsole::onUpdate()
     // Message
     if (HAL::Millis() - _data.msg_update_time_count > _data.msg_update_interval)
     {
-        if (!HAL::Console().isEmpty())
+        if (!SharedData::Console().isEmpty())
         {
             // Remove old cursor
-            HAL::GetConsoleCanvas()->fillRect(
-                HAL::GetConsoleCanvas()->getCursorX(), HAL::GetConsoleCanvas()->getCursorY() + 10, 6, 3, TFT_BLACK);
+            SharedData::GetConsoleCanvas()->fillRect(SharedData::GetConsoleCanvas()->getCursorX(),
+                                                     SharedData::GetConsoleCanvas()->getCursorY() + 10,
+                                                     6,
+                                                     3,
+                                                     TFT_BLACK);
 
             char shit = 0;
-            HAL::Console().get(shit);
-            HAL::GetConsoleCanvas()->print(shit);
+            SharedData::Console().get(shit);
+            SharedData::GetConsoleCanvas()->print(shit);
 
             // New cursor
-            HAL::GetConsoleCanvas()->fillRect(
-                HAL::GetConsoleCanvas()->getCursorX(), HAL::GetConsoleCanvas()->getCursorY() + 10, 6, 3, TFT_WHITE);
+            SharedData::GetConsoleCanvas()->fillRect(SharedData::GetConsoleCanvas()->getCursorX(),
+                                                     SharedData::GetConsoleCanvas()->getCursorY() + 10,
+                                                     6,
+                                                     3,
+                                                     TFT_WHITE);
         }
 
         _data.msg_update_time_count = HAL::Millis();
@@ -117,11 +124,11 @@ void WidgetConsole::onUpdate()
     {
         _data.cursor_type = !_data.cursor_type;
 
-        HAL::GetConsoleCanvas()->fillRect(HAL::GetConsoleCanvas()->getCursorX(),
-                                          HAL::GetConsoleCanvas()->getCursorY() + 10,
-                                          6,
-                                          3,
-                                          _data.cursor_type ? TFT_WHITE : TFT_BLACK);
+        SharedData::GetConsoleCanvas()->fillRect(SharedData::GetConsoleCanvas()->getCursorX(),
+                                                 SharedData::GetConsoleCanvas()->getCursorY() + 10,
+                                                 6,
+                                                 3,
+                                                 _data.cursor_type ? TFT_WHITE : TFT_BLACK);
         // spdlog::info(
         //     "{} {} {}", HAL::GetConsoleCanvas()->getCursorX(), HAL::GetConsoleCanvas()->getCursorY(), _data.cursor_type);
 
@@ -138,6 +145,6 @@ void WidgetConsole::onRender()
     // Console
     if (isPoppedOut())
     {
-        HAL::GetConsoleCanvas()->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
+        SharedData::GetConsoleCanvas()->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
     }
 }

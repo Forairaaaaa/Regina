@@ -12,6 +12,8 @@
 #include "apps/apps.h"
 #include "hal/hal.h"
 #include "assets/assets.h"
+#include "shared/shared.h"
+#include "spdlog/spdlog.h"
 #include <mooncake.h>
 
 using namespace MOONCAKE;
@@ -29,6 +31,18 @@ void APP::Setup(SetupCallback_t callback)
         callback.AssetPoolInjection();
     else
         spdlog::warn("empty callback");
+
+    /* -------------------------------------------------------------------------- */
+    /*                            Shared data injection                           */
+    /* -------------------------------------------------------------------------- */
+    spdlog::info("shared data injection:");
+    if (callback.sharedDataInjection != nullptr)
+        callback.sharedDataInjection();
+    else
+    {
+        spdlog::info("empty callback, inject type base");
+        SharedData::Inject(new SharedData);
+    }
 
     /* -------------------------------------------------------------------------- */
     /*                                HAL injection                               */

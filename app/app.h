@@ -18,6 +18,7 @@ namespace APP
 {
     struct SetupCallback_t
     {
+        std::function<void()> sharedDataInjection = nullptr;
         std::function<void()> AssetPoolInjection = nullptr;
         std::function<void()> HalInjection = nullptr;
     };

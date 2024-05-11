@@ -11,6 +11,8 @@
 #include "app_console_daemon.h"
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
+#include "../../shared/shared.h"
+#include "../../shared/shared.h"
 #include "../utils/system/system.h"
 #include <cstdint>
 
@@ -39,7 +41,7 @@ void AppConsoleDaemon::onResume()
 void AppConsoleDaemon::onRunning()
 {
     // Check is sleeping
-    if (HAL::GetPowerState() == POWER::state_sleeping)
+    if (SharedData::GetPowerState() == POWER::state_sleeping)
     {
         closeApp();
         return;
@@ -51,7 +53,7 @@ void AppConsoleDaemon::onRunning()
 void AppConsoleDaemon::onRunningBG()
 {
     // Check is sleeping
-    if (HAL::GetPowerState() == POWER::state_awake)
+    if (SharedData::GetPowerState() == POWER::state_awake)
     {
         startApp();
     }
@@ -65,19 +67,19 @@ void AppConsoleDaemon::_update_buttons()
     {
         Button::Update();
 
-        auto pipe_value_num = HAL::Console().valueNum();
+        auto pipe_value_num = SharedData::Console().valueNum();
 
         if (Button::A()->wasClicked())
-            HAL::Console().log(">A<");
+            SharedData::Console().log(">A<");
         else if (Button::B()->wasClicked())
-            HAL::Console().log(">B<");
+            SharedData::Console().log(">B<");
         else if (Button::C()->wasClicked())
-            HAL::Console().log(">C<");
+            SharedData::Console().log(">C<");
         else if (Button::D()->wasClicked())
-            HAL::Console().log(">D<");
+            SharedData::Console().log(">D<");
 
-        if (HAL::Console().valueNum() != pipe_value_num)
-            HAL::CupOfCoffee();
+        if (SharedData::Console().valueNum() != pipe_value_num)
+            SharedData::CupOfCoffee();
 
         // 来都来了
         _update_dials();
@@ -94,15 +96,15 @@ void AppConsoleDaemon::_update_dials()
     if (new_value != _data.last_dial_a_value)
     {
         _data.last_dial_a_value = new_value;
-        HAL::Console().log("OA>{:X}", new_value);
-        HAL::CupOfCoffee();
+        SharedData::Console().log("OA>{:X}", new_value);
+        SharedData::CupOfCoffee();
     }
 
     new_value = HAL::GetDialValue(DIAL::DIAL_B);
     if (new_value != _data.last_dial_b_value)
     {
         _data.last_dial_b_value = new_value;
-        HAL::Console().log("OB>{:X}", new_value);
-        HAL::CupOfCoffee();
+        SharedData::Console().log("OB>{:X}", new_value);
+        SharedData::CupOfCoffee();
     }
 }

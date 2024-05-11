@@ -11,6 +11,7 @@
 #include "app_desktop.h"
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
+#include "../../shared/shared.h"
 #include "../utils/system/system.h"
 #include "spdlog/spdlog.h"
 
@@ -39,7 +40,7 @@ void AppDesktop::onResume() { spdlog::info("{} onResume", getAppName()); }
 void AppDesktop::onRunning()
 {
     // Normal update
-    if (HAL::GetPowerState() != POWER::state_sleeping)
+    if (SharedData::GetPowerState() != POWER::state_sleeping)
         _data.widget_desktop.update(HAL::Millis());
 
     // spdlog::info("{} {} {} {}",
@@ -49,18 +50,18 @@ void AppDesktop::onRunning()
     //              _data.widget_desktop.isHidding());
 
     // Pop out
-    if (HAL::GetPowerState() == POWER::state_awake && _data.widget_desktop.isHidden())
+    if (SharedData::GetPowerState() == POWER::state_awake && _data.widget_desktop.isHidden())
         _data.widget_desktop.popOut();
 
     // Hide
-    else if (HAL::GetPowerState() == POWER::state_going_sleep)
+    else if (SharedData::GetPowerState() == POWER::state_going_sleep)
     {
         if (_data.widget_desktop.isPoppedOut())
             _data.widget_desktop.hide();
 
         // Ready to sleep
         if (_data.widget_desktop.isHidden())
-            HAL::SetPowerState(POWER::state_ready_to_sleep);
+            SharedData::SetPowerState(POWER::state_ready_to_sleep);
     }
 }
 
