@@ -152,7 +152,7 @@ public:
 
             if (getTouchPoint().y != touch_last_y)
             {
-                spdlog::info("{} {} {}", touch_start_y, getTouchPoint().y, encoder_b_count);
+                // spdlog::info("{} {} {}", touch_start_y, getTouchPoint().y, encoder_b_count);
                 encoder_b_count = (getTouchPoint().y - touch_start_y) / 20 + last_encoder_b_count;
             }
             touch_last_y = getTouchPoint().y;

@@ -66,7 +66,7 @@ void AppSleepDaemon::onRunning()
     // Check auto sleep
     if (SharedData::GetPowerState() == POWER::state_awake)
     {
-        spdlog::info("{} {}", HAL::Millis(), SharedData::GetAwakeTime());
+        // spdlog::info("{} {}", HAL::Millis(), SharedData::GetAwakeTime());
         if (HAL::Millis() - SharedData::GetAwakeTime() > HAL::GetSystemConfig().autoSleepTimeout)
         {
             spdlog::info("auto sleep");
