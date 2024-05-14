@@ -17,7 +17,7 @@
 #include "types.h"
 
 /**
- * @brief Singleton pattern to simplify hal's getter
+ * @brief Provide a dingleton to abstract hardware methods
  * 1) Inherit and override methods to create a specific hal
  * 2) Use HAL::Inject() to inject your hal
  * 3) Use HAL:Get() to get this hal wherever you want

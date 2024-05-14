@@ -104,6 +104,35 @@ void AssetPool::loadFont12(LGFX_SpriteFx* lgfxDevice)
 /* -------------------------------------------------------------------------- */
 /*                            Static asset generate                           */
 /* -------------------------------------------------------------------------- */
+/**
+ * @brief Copy file into target as binary
+ *
+ * @param filePath
+ * @param target
+ * @return true
+ * @return false
+ */
+static bool _copy_file(std::string filePath, uint8_t* target)
+{
+    spdlog::info("try open {}", filePath);
+
+    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+    if (!file.is_open())
+    {
+        spdlog::error("open failed!", filePath);
+        return false;
+    }
+    std::streampos file_size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    spdlog::info("file binary size {}", file_size);
+
+    // Copy and go
+    if (target != nullptr)
+        file.read(reinterpret_cast<char*>(target), file_size);
+    file.close();
+    return true;
+}
+
 StaticAsset_t* AssetPool::CreateStaticAsset()
 {
     auto asset_pool = new StaticAsset_t;
@@ -111,24 +140,7 @@ StaticAsset_t* AssetPool::CreateStaticAsset()
     /* -------------------------------------------------------------------------- */
     /*                                    Font                                    */
     /* -------------------------------------------------------------------------- */
-    const char* font_file_path = "../../app/assets/fonts/Zpix-12.vlw";
-    spdlog::info("try open {}", font_file_path);
-
-    std::ifstream file(font_file_path, std::ios::binary | std::ios::ate);
-    if (!file.is_open())
-    {
-        spdlog::error("open failed!", font_file_path);
-    }
-    else
-    {
-        std::streampos file_size = file.tellg();
-        file.seekg(0, std::ios::beg);
-        spdlog::info("font binary size {}", file_size);
-
-        // Copy and go
-        file.read(reinterpret_cast<char*>(asset_pool->Font.zpix_12), file_size);
-        file.close();
-    }
+    _copy_file("../../app/assets/fonts/Zpix-12.vlw", asset_pool->Font.zpix_12);
 
     /* -------------------------------------------------------------------------- */
     /*                                    Image                                   */

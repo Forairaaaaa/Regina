@@ -70,4 +70,8 @@ def generate_cpp_files(csv_file, output_folder):
 
 
 # 示例用法
-generate_cpp_files("localization.csv", "text_pool")
+# generate_cpp_files("localization.csv", "text_pool")
+current_dir = os.path.dirname(os.path.abspath(__file__))
+csv_file_path = os.path.join(current_dir, "localization.csv")
+text_pool_folder_path = os.path.join(current_dir, "text_pool")
+generate_cpp_files(csv_file_path, text_pool_folder_path)

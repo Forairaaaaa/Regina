@@ -40,7 +40,7 @@ inline void app_run_startup_anim(MOONCAKE::Mooncake* mooncake)
 }
 
 /**
- * @brief Install default startup app
+ * @brief Install and start default startup app
  *
  * @param mooncake
  */
