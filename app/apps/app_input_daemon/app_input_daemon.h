@@ -1,12 +1,12 @@
 /**
  * @file app_input_daemon.h
  * @author Forairaaaaa
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-05-14
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #include <cstdint>
 #include <mooncake.h>
@@ -29,6 +29,8 @@ namespace MOONCAKE
 
                 uint8_t last_dial_a_value = 0;
                 uint8_t last_dial_b_value = 0;
+                uint8_t last_dial_a_count = 0;
+                uint8_t last_dial_b_count = 0;
             };
             Data_t _data;
             void _update_buttons();

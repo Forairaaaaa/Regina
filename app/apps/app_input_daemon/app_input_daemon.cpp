@@ -36,6 +36,8 @@ void AppInputDaemon::onResume()
 
     _data.last_dial_a_value = HAL::GetDialValue(DIAL::DIAL_A);
     _data.last_dial_b_value = HAL::GetDialValue(DIAL::DIAL_B);
+    _data.last_dial_a_count = HAL::GetDialCount(DIAL::DIAL_A);
+    _data.last_dial_b_count = HAL::GetDialCount(DIAL::DIAL_B);
 }
 
 void AppInputDaemon::onRunning()
@@ -70,13 +72,25 @@ void AppInputDaemon::_update_buttons()
         auto pipe_value_num = SharedData::Console().valueNum();
 
         if (Button::A()->wasClicked())
+        {
             SharedData::Console().log(">A<");
+            HAL::BleKeyBoardWrite(KEY_MEDIA_PREVIOUS_TRACK);
+        }
         else if (Button::B()->wasClicked())
+        {
             SharedData::Console().log(">B<");
+            HAL::BleKeyBoardWrite(KEY_MEDIA_PLAY_PAUSE);
+        }
         else if (Button::C()->wasClicked())
+        {
             SharedData::Console().log(">C<");
+            HAL::BleKeyBoardWrite(KEY_MEDIA_NEXT_TRACK);
+        }
         else if (Button::D()->wasClicked())
+        {
             SharedData::Console().log(">D<");
+            HAL::BleKeyBoardWrite(KEY_MEDIA_MUTE);
+        }
 
         if (SharedData::Console().valueNum() != pipe_value_num)
             SharedData::CupOfCoffee(HAL::Millis());
@@ -90,6 +104,7 @@ void AppInputDaemon::_update_buttons()
 
 void AppInputDaemon::_update_dials()
 {
+    auto pipe_value_num = SharedData::Console().valueNum();
     uint8_t new_value = 0;
 
     new_value = HAL::GetDialValue(DIAL::DIAL_A);
@@ -97,7 +112,11 @@ void AppInputDaemon::_update_dials()
     {
         _data.last_dial_a_value = new_value;
         SharedData::Console().log("OA>{:X}", new_value);
-        SharedData::CupOfCoffee(HAL::Millis());
+
+        if (HAL::GetDialCount(DIAL::DIAL_A) > _data.last_dial_a_count)
+            HAL::BleKeyBoardWrite(KEY_UP_ARROW);
+        else
+            HAL::BleKeyBoardWrite(KEY_DOWN_ARROW);
     }
 
     new_value = HAL::GetDialValue(DIAL::DIAL_B);
@@ -105,6 +124,13 @@ void AppInputDaemon::_update_dials()
     {
         _data.last_dial_b_value = new_value;
         SharedData::Console().log("OB>{:X}", new_value);
-        SharedData::CupOfCoffee(HAL::Millis());
+
+        if (HAL::GetDialCount(DIAL::DIAL_B) > _data.last_dial_b_count)
+            HAL::BleKeyBoardWrite(KEY_MEDIA_VOLUME_UP);
+        else
+            HAL::BleKeyBoardWrite(KEY_MEDIA_VOLUME_DOWN);
     }
+
+    if (SharedData::Console().valueNum() != pipe_value_num)
+        SharedData::CupOfCoffee(HAL::Millis());
 }

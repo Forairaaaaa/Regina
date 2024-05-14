@@ -9,6 +9,7 @@
  *
  */
 #pragma once
+#include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <vector>
@@ -68,9 +69,6 @@ public:
 
     static std::string Type() { return Get()->type(); }
     virtual std::string type() { return "Base"; }
-
-    static std::string Version() { return Get()->version(); }
-    virtual std::string version() { return APP_VERSION; }
 
     static std::string CompileDate() { return Get()->compileDate(); }
     virtual std::string compileDate() { return __DATE__; }
@@ -493,5 +491,9 @@ public:
     static bool IsBleConnected() { return Get()->isBleConnected(); }
     virtual bool isBleConnected() { return false; }
 
-    
+    static size_t BleKeyBoardWrite(const uint8_t c) { return Get()->bleKeyBoardWrite(c); }
+    virtual size_t bleKeyBoardWrite(const uint8_t c) { return 0; }
+
+    static size_t BleKeyBoardWrite(const MediaKeyReport c) { return Get()->bleKeyBoardWrite(c); }
+    virtual size_t bleKeyBoardWrite(const MediaKeyReport c) { return 0; }
 };

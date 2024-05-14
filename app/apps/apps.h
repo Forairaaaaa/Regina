@@ -67,6 +67,6 @@ inline void app_install_default_startup_app(MOONCAKE::Mooncake* mooncake)
 inline void app_install_apps(MOONCAKE::Mooncake* mooncake)
 {
     // mooncake->installApp(new MOONCAKE::APPS::AppTemplate_Packer);
-    mooncake->installApp(new MOONCAKE::APPS::AppSettings_Packer);
+    // mooncake->installApp(new MOONCAKE::APPS::AppSettings_Packer);
     /* Install app locator (Don't remove) */
 }
