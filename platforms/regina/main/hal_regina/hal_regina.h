@@ -33,6 +33,8 @@ private:
 
     // std::string _get_mac();
 
+    void _ble_init();
+
 public:
     std::string type() override { return "Regina"; }
 
@@ -49,6 +51,7 @@ public:
         _imu_init();
         _pmu_init();
         _dial_init();
+        _ble_init();
     }
 
     /* -------------------------------------------------------------------------- */

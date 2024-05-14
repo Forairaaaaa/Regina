@@ -38,6 +38,5 @@ echo "> $(pwd)"
 git clone https://github.com/bblanchon/ArduinoJson.git
 git clone https://github.com/Forairaaaaa/arduino_lite.git
 git clone https://github.com/m5stack/M5Unified.git
-git clone https://github.com/T-vK/ESP32-BLE-Keyboard.git
 
 echo "> done"

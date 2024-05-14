@@ -4,7 +4,10 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
-add_definitions(-DPLATFORM_BUILD_REGINA)
+add_definitions(
+    -DPLATFORM_BUILD_REGINA
+    -DARDUINO_ARCH_ESP32
+)
 
 set(EXTRA_COMPONENT_DIRS ../../dependencies)
 
