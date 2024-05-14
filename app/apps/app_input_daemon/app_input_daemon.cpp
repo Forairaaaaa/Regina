@@ -1,14 +1,14 @@
 /**
- * @file app_console_daemon.cpp
+ * @file app_input_daemon.cpp
  * @author Forairaaaaa
  * @brief
  * @version 0.1
- * @date 2024-05-09
+ * @date 2024-05-14
  *
  * @copyright Copyright (c) 2024
  *
  */
-#include "app_console_daemon.h"
+#include "app_input_daemon.h"
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../../shared/shared.h"
@@ -20,9 +20,9 @@ using namespace MOONCAKE::APPS;
 using namespace SYSTEM::INPUTS;
 
 // App name
-const char* AppConsoleDaemon_Packer::getAppName() { return "ConsoleDaemon"; }
+const char* AppInputDaemon_Packer::getAppName() { return "ConsoleDaemon"; }
 
-void AppConsoleDaemon::onCreate()
+void AppInputDaemon::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
 
@@ -30,7 +30,7 @@ void AppConsoleDaemon::onCreate()
     startApp();
 }
 
-void AppConsoleDaemon::onResume()
+void AppInputDaemon::onResume()
 {
     spdlog::info("{} onResume", getAppName());
 
@@ -38,7 +38,7 @@ void AppConsoleDaemon::onResume()
     _data.last_dial_b_value = HAL::GetDialValue(DIAL::DIAL_B);
 }
 
-void AppConsoleDaemon::onRunning()
+void AppInputDaemon::onRunning()
 {
     // Check is sleeping
     if (SharedData::GetPowerState() == POWER::state_sleeping)
@@ -50,7 +50,7 @@ void AppConsoleDaemon::onRunning()
     _update_buttons();
 }
 
-void AppConsoleDaemon::onRunningBG()
+void AppInputDaemon::onRunningBG()
 {
     // Check is sleeping
     if (SharedData::GetPowerState() == POWER::state_awake)
@@ -59,9 +59,9 @@ void AppConsoleDaemon::onRunningBG()
     }
 }
 
-void AppConsoleDaemon::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }
+void AppInputDaemon::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }
 
-void AppConsoleDaemon::_update_buttons()
+void AppInputDaemon::_update_buttons()
 {
     if (HAL::Millis() - _data.update_btn_time_count > _data.update_btn_interval)
     {
@@ -88,7 +88,7 @@ void AppConsoleDaemon::_update_buttons()
     }
 }
 
-void AppConsoleDaemon::_update_dials()
+void AppInputDaemon::_update_dials()
 {
     uint8_t new_value = 0;
 

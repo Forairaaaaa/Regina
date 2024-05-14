@@ -14,7 +14,7 @@
 #include "app_startup_anim/app_startup_anim.h"
 #include "app_desktop/app_desktop.h"
 #include "app_sleep_daemon/app_sleep_daemon.h"
-#include "app_console_daemon/app_console_daemon.h"
+#include "app_input_daemon/app_input_daemon.h"
 #include "app_settings/app_settings.h"
 /* Header files locator (Don't remove) */
 
@@ -50,7 +50,7 @@ inline void app_install_default_startup_app(MOONCAKE::Mooncake* mooncake)
     mooncake->installApp(desktop);
     mooncake->createAndStartApp(desktop);
 
-    auto console_daemon = new MOONCAKE::APPS::AppConsoleDaemon_Packer;
+    auto console_daemon = new MOONCAKE::APPS::AppInputDaemon_Packer;
     mooncake->installApp(console_daemon);
     mooncake->createAndStartApp(console_daemon);
 

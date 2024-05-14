@@ -492,4 +492,6 @@ public:
 public:
     static bool IsBleConnected() { return Get()->isBleConnected(); }
     virtual bool isBleConnected() { return false; }
+
+    
 };

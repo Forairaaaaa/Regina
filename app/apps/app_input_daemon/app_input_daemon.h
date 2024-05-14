@@ -1,12 +1,12 @@
 /**
- * @file app_console_daemon.h
+ * @file app_input_daemon.h
  * @author Forairaaaaa
- * @brief
+ * @brief 
  * @version 0.1
- * @date 2024-05-09
- *
+ * @date 2024-05-14
+ * 
  * @copyright Copyright (c) 2024
- *
+ * 
  */
 #include <cstdint>
 #include <mooncake.h>
@@ -16,10 +16,10 @@ namespace MOONCAKE
     namespace APPS
     {
         /**
-         * @brief AppConsoleDaemon
+         * @brief AppInputDaemon
          *
          */
-        class AppConsoleDaemon : public APP_BASE
+        class AppInputDaemon : public APP_BASE
         {
         private:
             struct Data_t
@@ -42,11 +42,11 @@ namespace MOONCAKE
             void onDestroy() override;
         };
 
-        class AppConsoleDaemon_Packer : public APP_PACKER_BASE
+        class AppInputDaemon_Packer : public APP_PACKER_BASE
         {
             const char* getAppName() override;
-            void* newApp() override { return new AppConsoleDaemon; }
-            void deleteApp(void* app) override { delete (AppConsoleDaemon*)app; }
+            void* newApp() override { return new AppInputDaemon; }
+            void deleteApp(void* app) override { delete (AppInputDaemon*)app; }
         };
     } // namespace APPS
 } // namespace MOONCAKE
