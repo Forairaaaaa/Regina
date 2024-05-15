@@ -135,6 +135,8 @@ void BleKeyboard::begin(void)
   hid->reportMap((uint8_t*)_hidReportDescriptor, sizeof(_hidReportDescriptor));
   hid->startServices();
 
+  onCustom(pServer);
+
   onStarted(pServer);
 
   advertising = pServer->getAdvertising();

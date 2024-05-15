@@ -189,6 +189,9 @@ protected:
     virtual void onConnect(BLEServer* pServer) override;
     virtual void onDisconnect(BLEServer* pServer) override;
     virtual void onWrite(BLECharacteristic* me) override;
+    
+protected:
+    virtual void onCustom(BLEServer* pServer) {}
 };
 
 // #endif // CONFIG_BT_ENABLED

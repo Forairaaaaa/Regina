@@ -34,7 +34,6 @@ private:
     // std::string _get_mac();
 
     void _ble_init();
-    void _ble_kb_init();
 
 public:
     std::string type() override { return "Regina"; }
