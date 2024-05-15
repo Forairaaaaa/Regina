@@ -34,6 +34,7 @@ private:
     // std::string _get_mac();
 
     void _ble_init();
+    void _ble_kb_init();
 
 public:
     std::string type() override { return "Regina"; }
@@ -77,6 +78,7 @@ public:
     void loadSystemConfig() override;
     void saveSystemConfig() override;
 
+    bool isBleConnected();
     size_t bleKeyBoardWrite(const uint8_t c);
     size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c);
 };

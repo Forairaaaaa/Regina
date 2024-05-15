@@ -24,12 +24,20 @@
 #include <Arduino.h>
 #include "../utils/ble_keyboard/BleKeyboard.h"
 
-static BleKeyboard* _ble_keyboard = nullptr;
-
 void HAL_Regina::_ble_init()
 {
     spdlog::info("ble init");
 
+    _ble_kb_init();
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             Simple BLE keyboard                            */
+/* -------------------------------------------------------------------------- */
+static BleKeyboard* _ble_keyboard = nullptr;
+
+void HAL_Regina::_ble_kb_init()
+{
     assert(_ble_keyboard == nullptr);
     _ble_keyboard = new BleKeyboard("Reginaaaa:)");
     _ble_keyboard->begin();
@@ -51,4 +59,11 @@ size_t HAL_Regina::bleKeyBoardWrite(const BLE_KB::MediaKeyReport c)
     if (_ble_keyboard->isConnected())
         return _ble_keyboard->write(c);
     return 0;
+}
+
+bool HAL_Regina::isBleConnected()
+{
+    if (_ble_keyboard != nullptr)
+        return _ble_keyboard->isConnected();
+    return false;
 }
