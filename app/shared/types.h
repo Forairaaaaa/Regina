@@ -17,6 +17,7 @@
 #include <spdlog/fmt/bundled/format.h>
 #include <M5GFX.h>
 #include "../hal/utils/lgfx_fx/lgfx_fx.h"
+#include <queue>
 
 /* -------------------------------------------------------------------------- */
 /*                                    Power                                   */
@@ -73,6 +74,22 @@ namespace CONSOLE
     };
 } // namespace CONSOLE
 
+namespace NOTIF
+{
+    struct Notification_t
+    {
+        std::string title;
+        std::string msg;
+
+        Notification_t() = default;
+        Notification_t(const std::string& title, const std::string& msg)
+        {
+            this->title = title;
+            this->msg = msg;
+        }
+    };
+}; // namespace NOTIF
+
 /* -------------------------------------------------------------------------- */
 /*                                    Misc                                    */
 /* -------------------------------------------------------------------------- */
@@ -84,7 +101,10 @@ namespace SHARED_DATA
     {
         LGFX_SpriteFx* console_canvas = nullptr;
         CONSOLE::ConsolePipe_t console_msg_pipe;
+
         POWER::PowerState_t power_state = POWER::state_awake;
         uint32_t awake_time_count = 0;
+
+        std::queue<NOTIF::Notification_t> notification_pipe;
     };
 } // namespace SHARED_DATA

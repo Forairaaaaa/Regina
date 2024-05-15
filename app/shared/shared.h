@@ -11,6 +11,7 @@
 #pragma once
 #include <cstdint>
 #include <functional>
+#include <queue>
 #include <vector>
 #include "types.h"
 
@@ -152,4 +153,15 @@ public:
      * @return uint32_t
      */
     static uint32_t GetAwakeTime() { return GetData().awake_time_count; }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                Notification                                */
+    /* -------------------------------------------------------------------------- */
+public:
+    /**
+     * @brief Get notification pipe
+     *
+     * @return std::queue<NOTIF::Notification_t>&
+     */
+    std::queue<NOTIF::Notification_t>& GetNotificationPipe() { return GetData().notification_pipe; }
 };
