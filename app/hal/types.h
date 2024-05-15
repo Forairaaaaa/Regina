@@ -213,6 +213,27 @@ namespace BLE_KB
     const MediaKeyReport KEY_MEDIA_WWW_BACK = {0, 32};
     const MediaKeyReport KEY_MEDIA_CONSUMER_CONTROL_CONFIGURATION = {0, 64}; // Media Selection
     const MediaKeyReport KEY_MEDIA_EMAIL_READER = {0, 128};
+
+    struct InputFrame_t
+    {
+        bool btnA = false;
+        bool btnB = false;
+        bool btnC = false;
+        bool btnD = false;
+        uint8_t valueDialA = 0;
+        uint8_t valueDialB = 0;
+
+        InputFrame_t() = default;
+        InputFrame_t(bool a, bool b, bool c, bool d, uint8_t dialA, uint8_t dialB)
+        {
+            this->btnA = a;
+            this->btnB = b;
+            this->btnC = c;
+            this->btnD = d;
+            this->valueDialA = dialA;
+            this->valueDialB = dialB;
+        }
+    };
 }; // namespace BLE_KB
 
 /* -------------------------------------------------------------------------- */

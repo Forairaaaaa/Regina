@@ -496,4 +496,7 @@ public:
 
     static size_t BleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return Get()->bleKeyBoardWrite(c); }
     virtual size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return 0; }
+
+    static void BleUpdateInput(const BLE_KB::InputFrame_t& newInput) { Get()->bleUpdateInput(newInput); }
+    virtual void bleUpdateInput(const BLE_KB::InputFrame_t& newInput) {}
 };

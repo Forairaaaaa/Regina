@@ -104,30 +104,34 @@ void HAL_Regina::loadSystemConfig()
     _config_check_valid();
 }
 
+std::string HAL_Regina::_create_config_json()
+{
+    std::string json_content;
+    // Create json
+    JsonDocument doc;
+
+    _config_check_valid();
+
+    // Copy
+    doc["dialAPinSwaped"] = _data.config.dialAPinSwaped;
+    doc["dialBPinSwaped"] = _data.config.dialBPinSwaped;
+    doc["wifiSsid"] = _data.config.wifiSsid;
+    doc["wifiPassword"] = _data.config.wifiPassword;
+
+    // Serialize
+    if (serializeJson(doc, json_content) == 0)
+    {
+        _disp_init();
+        popFatalError("Serialize failed");
+    }
+    return json_content;
+}
+
 void HAL_Regina::saveSystemConfig()
 {
     spdlog::info("save config to fs");
 
-    std::string json_content;
-    {
-        // Create json
-        JsonDocument doc;
-
-        _config_check_valid();
-
-        // Copy
-        doc["dialAPinSwaped"] = _data.config.dialAPinSwaped;
-        doc["dialBPinSwaped"] = _data.config.dialBPinSwaped;
-        doc["wifiSsid"] = _data.config.wifiSsid;
-        doc["wifiPassword"] = _data.config.wifiPassword;
-
-        // Serialize
-        if (serializeJson(doc, json_content) == 0)
-        {
-            _disp_init();
-            popFatalError("Serialize failed");
-        }
-    }
+    std::string json_content = _create_config_json();
 
     // Open file
     spdlog::info("open {}", _system_config_path);

@@ -40,69 +40,67 @@ void AppInputDaemon::onResume()
     _data.last_dial_b_count = HAL::GetDialCount(DIAL::DIAL_B);
 }
 
-void AppInputDaemon::onRunning()
-{
-    // Check is sleeping
-    if (SharedData::GetPowerState() == POWER::state_sleeping)
-    {
-        closeApp();
-        return;
-    }
-
-    _update_buttons();
-}
-
-void AppInputDaemon::onRunningBG()
-{
-    // Check is sleeping
-    if (SharedData::GetPowerState() == POWER::state_awake)
-    {
-        startApp();
-    }
-}
+void AppInputDaemon::onRunning() { _update_input(); }
 
 void AppInputDaemon::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }
 
-void AppInputDaemon::_update_buttons()
+void AppInputDaemon::_update_input()
 {
-    if (HAL::Millis() - _data.update_btn_time_count > _data.update_btn_interval)
+    if (HAL::Millis() - _data.update_input_time_count > _data.update_input_interval)
     {
-        Button::Update();
+        _data.new_input_frame.btnA = HAL::GetButton(GAMEPAD::BTN_A);
+        _data.new_input_frame.btnB = HAL::GetButton(GAMEPAD::BTN_B);
+        _data.new_input_frame.btnC = HAL::GetButton(GAMEPAD::BTN_C);
+        _data.new_input_frame.btnD = HAL::GetButton(GAMEPAD::BTN_D);
+        _data.new_input_frame.valueDialA = HAL::GetDialValue(DIAL::DIAL_A);
+        _data.new_input_frame.valueDialB = HAL::GetDialValue(DIAL::DIAL_B);
 
-        auto pipe_value_num = SharedData::Console().valueNum();
+        HAL::BleUpdateInput(_data.new_input_frame);
 
-        if (Button::A()->wasClicked())
+        if (SharedData::GetPowerState() == POWER::state_awake)
         {
-            SharedData::Console().log(">A<");
-            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_PREVIOUS_TRACK);
+            _update_button_console();
+            _update_dial_console();
         }
-        else if (Button::B()->wasClicked())
-        {
-            SharedData::Console().log(">B<");
-            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_PLAY_PAUSE);
-        }
-        else if (Button::C()->wasClicked())
-        {
-            SharedData::Console().log(">C<");
-            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_NEXT_TRACK);
-        }
-        else if (Button::D()->wasClicked())
-        {
-            SharedData::Console().log(">D<");
-            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_MUTE);
-        }
-
-        if (SharedData::Console().valueNum() != pipe_value_num)
-            SharedData::CupOfCoffee(HAL::Millis());
-
-        // 来都来了
-        _update_dials();
-
-        _data.update_btn_time_count = HAL::Millis();
+        _data.update_input_time_count = HAL::Millis();
     }
 }
 
-void AppInputDaemon::_update_dials()
+void AppInputDaemon::_update_button_console()
+{
+    Button::Update();
+
+    auto pipe_value_num = SharedData::Console().valueNum();
+
+    if (Button::A()->wasClicked())
+    {
+        SharedData::Console().log(">A<");
+        HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_PREVIOUS_TRACK);
+    }
+    else if (Button::B()->wasClicked())
+    {
+        SharedData::Console().log(">B<");
+        HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_PLAY_PAUSE);
+    }
+    else if (Button::C()->wasClicked())
+    {
+        SharedData::Console().log(">C<");
+        HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_NEXT_TRACK);
+    }
+    else if (Button::D()->wasClicked())
+    {
+        SharedData::Console().log(">D<");
+        HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_MUTE);
+    }
+
+    if (SharedData::Console().valueNum() != pipe_value_num)
+        SharedData::CupOfCoffee(HAL::Millis());
+
+    // 来都来了
+    _update_dial_console();
+}
+
+void AppInputDaemon::_update_dial_console()
 {
     auto pipe_value_num = SharedData::Console().valueNum();
     uint8_t new_value = 0;

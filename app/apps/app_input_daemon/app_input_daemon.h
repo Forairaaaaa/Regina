@@ -10,6 +10,7 @@
  */
 #include <cstdint>
 #include <mooncake.h>
+#include "../../hal/types.h"
 
 namespace MOONCAKE
 {
@@ -24,23 +25,25 @@ namespace MOONCAKE
         private:
             struct Data_t
             {
-                uint32_t update_btn_time_count = 0;
-                uint32_t update_btn_interval = 20;
+                uint32_t update_input_time_count = 0;
+                uint32_t update_input_interval = 20;
 
                 uint8_t last_dial_a_value = 0;
                 uint8_t last_dial_b_value = 0;
                 uint8_t last_dial_a_count = 0;
                 uint8_t last_dial_b_count = 0;
+
+                BLE_KB::InputFrame_t new_input_frame;
             };
             Data_t _data;
-            void _update_buttons();
-            void _update_dials();
+            void _update_input();
+            void _update_button_console();
+            void _update_dial_console();
 
         public:
             void onCreate() override;
             void onResume() override;
             void onRunning() override;
-            void onRunningBG() override;
             void onDestroy() override;
         };
 

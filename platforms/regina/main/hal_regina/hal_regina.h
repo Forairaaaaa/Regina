@@ -30,6 +30,7 @@ private:
     std::vector<std::string> _ls(const std::string& path);
     void _config_check_valid();
     void _log_out_system_config();
+    std::string _create_config_json();
 
     // std::string _get_mac();
 
@@ -78,6 +79,7 @@ public:
     void saveSystemConfig() override;
 
     bool isBleConnected();
-    size_t bleKeyBoardWrite(const uint8_t c);
-    size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c);
+    size_t bleKeyBoardWrite(const uint8_t c) override;
+    size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c) override;
+    void bleUpdateInput(const BLE_KB::InputFrame_t& newInput) override;
 };
