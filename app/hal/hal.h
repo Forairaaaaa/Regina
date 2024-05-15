@@ -298,6 +298,14 @@ public:
     static void SetSystemConfig(CONFIG::SystemConfig_t cfg) { Get()->_data.config = cfg; }
 
     /**
+     * @brief Get system config json
+     *
+     * @return std::string
+     */
+    static std::string GetSystemConfigJson() { return Get()->getSystemConfigJson(); }
+    virtual std::string getSystemConfigJson() { return ""; }
+
+    /**
      * @brief Apply system config to device
      *
      */

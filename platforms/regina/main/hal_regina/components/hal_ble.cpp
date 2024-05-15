@@ -44,7 +44,7 @@ public:
 private:
     struct Data_t
     {
-        BLECharacteristic* state_char = nullptr;
+        BLECharacteristic* pCharacteristic = nullptr;
     };
     Data_t _data;
     State_t _state;
@@ -52,12 +52,12 @@ private:
 public:
     BleDeviceState_t(BLEService* pService, const char* uuid)
     {
-        _data.state_char =
+        _data.pCharacteristic =
             pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
-        _data.state_char->setCallbacks(this);
+        _data.pCharacteristic->setCallbacks(this);
     }
 
-    void onWrite(BLECharacteristic* pCharacteristic)
+    void onWrite(BLECharacteristic* pCharacteristic) override
     {
         std::string value = pCharacteristic->getValue().c_str();
         spdlog::info("state ctrl get:\n {}", value);
@@ -85,17 +85,17 @@ class BleInputStatus_t : public BLECharacteristicCallbacks
 private:
     struct Data_t
     {
-        BLECharacteristic* status_char = nullptr;
+        BLECharacteristic* pCharacteristic = nullptr;
     };
     Data_t _data;
 
 public:
     BleInputStatus_t(BLEService* pService, const char* uuid)
     {
-        _data.status_char =
+        _data.pCharacteristic =
             pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-        _data.status_char->setCallbacks(this);
-        _data.status_char->addDescriptor(new BLE2902());
+        _data.pCharacteristic->setCallbacks(this);
+        _data.pCharacteristic->addDescriptor(new BLE2902());
     }
 
     void updateInput(const BLE_KB::InputFrame_t& newInput)
@@ -109,8 +109,49 @@ public:
         value[5] = newInput.valueDialB;
 
         // Update
-        _data.status_char->setValue(value, 6);
-        _data.status_char->notify();
+        _data.pCharacteristic->setValue(value, 6);
+        _data.pCharacteristic->notify();
+    }
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                System config                               */
+/* -------------------------------------------------------------------------- */
+class BleSystemConfig_t : public BLECharacteristicCallbacks
+{
+private:
+    struct Data_t
+    {
+        BLECharacteristic* pCharacteristic = nullptr;
+    };
+    Data_t _data;
+
+public:
+    BleSystemConfig_t(BLEService* pService, const char* uuid)
+    {
+        _data.pCharacteristic =
+            pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
+        _data.pCharacteristic->setCallbacks(this);
+    }
+
+    void onWrite(BLECharacteristic* pCharacteristic) override
+    {
+        std::string value = pCharacteristic->getValue().c_str();
+        spdlog::info("syscfg get:\n {}", value);
+
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, value);
+        if (error != DeserializationError::Ok)
+        {
+            spdlog::error("parse failed!");
+            return;
+        }
+    }
+
+    void onRead(BLECharacteristic* pCharacteristic) override
+    {
+        auto json = HAL::GetSystemConfigJson();
+        pCharacteristic->setValue(json.c_str());
     }
 };
 
@@ -124,6 +165,7 @@ private:
     {
         BleDeviceState_t* state = nullptr;
         BleInputStatus_t* input = nullptr;
+        BleSystemConfig_t* syscfg = nullptr;
     };
     Data_t _data;
 
@@ -134,6 +176,7 @@ private:
         BLEService* pService = pServer->createService("2333");
         _data.state = new BleDeviceState_t(pService, "2334");
         _data.input = new BleInputStatus_t(pService, "2335");
+        _data.syscfg = new BleSystemConfig_t(pService, "2336");
 
         pService->start();
     }
@@ -144,6 +187,7 @@ public:
     {
         delete _data.state;
         delete _data.input;
+        delete _data.syscfg;
     }
 
     const BleDeviceState_t::State_t& getState() { return _data.state->getState(); }

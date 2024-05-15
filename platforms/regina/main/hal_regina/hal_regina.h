@@ -77,8 +77,9 @@ public:
 
     void loadSystemConfig() override;
     void saveSystemConfig() override;
+    inline std::string getSystemConfigJson() override { return _create_config_json(); }
 
-    bool isBleConnected();
+    bool isBleConnected() override;
     size_t bleKeyBoardWrite(const uint8_t c) override;
     size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c) override;
     void bleUpdateInput(const BLE_KB::InputFrame_t& newInput) override;
