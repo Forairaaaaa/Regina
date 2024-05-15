@@ -74,6 +74,7 @@ void WidgetConsole::onPopOut()
 
     _data.msg_update_time_count = 0;
     _data.cursor_type = true;
+    SharedData::Console().setEnable(true);
 }
 
 void WidgetConsole::onHide()
@@ -85,6 +86,8 @@ void WidgetConsole::onHide()
 
     getTransition().setEachDelay(delay, delay + 70, delay, delay);
     getTransition().setEachDuration(300, 500, 300, 300);
+
+    SharedData::Console().setEnable(false);
 }
 
 void WidgetConsole::onUpdate()

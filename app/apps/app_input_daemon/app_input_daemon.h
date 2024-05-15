@@ -37,8 +37,8 @@ namespace MOONCAKE
             };
             Data_t _data;
             void _update_input();
-            void _update_button_console();
-            void _update_dial_console();
+            void _update_button();
+            void _update_dial();
 
         public:
             void onCreate() override;

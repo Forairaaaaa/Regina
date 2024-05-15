@@ -48,25 +48,24 @@ void AppInputDaemon::_update_input()
 {
     if (HAL::Millis() - _data.update_input_time_count > _data.update_input_interval)
     {
+        // Custom input
         _data.new_input_frame.btnA = HAL::GetButton(GAMEPAD::BTN_A);
         _data.new_input_frame.btnB = HAL::GetButton(GAMEPAD::BTN_B);
         _data.new_input_frame.btnC = HAL::GetButton(GAMEPAD::BTN_C);
         _data.new_input_frame.btnD = HAL::GetButton(GAMEPAD::BTN_D);
         _data.new_input_frame.valueDialA = HAL::GetDialValue(DIAL::DIAL_A);
         _data.new_input_frame.valueDialB = HAL::GetDialValue(DIAL::DIAL_B);
-
         HAL::BleUpdateInput(_data.new_input_frame);
 
-        if (SharedData::GetPowerState() == POWER::state_awake)
-        {
-            _update_button_console();
-            _update_dial_console();
-        }
+        // Hid keyboard
+        _update_button();
+        _update_dial();
+
         _data.update_input_time_count = HAL::Millis();
     }
 }
 
-void AppInputDaemon::_update_button_console()
+void AppInputDaemon::_update_button()
 {
     Button::Update();
 
@@ -95,12 +94,9 @@ void AppInputDaemon::_update_button_console()
 
     if (SharedData::Console().valueNum() != pipe_value_num)
         SharedData::CupOfCoffee(HAL::Millis());
-
-    // 来都来了
-    _update_dial_console();
 }
 
-void AppInputDaemon::_update_dial_console()
+void AppInputDaemon::_update_dial()
 {
     auto pipe_value_num = SharedData::Console().valueNum();
     uint8_t new_value = 0;

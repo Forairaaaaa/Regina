@@ -41,15 +41,21 @@ namespace CONSOLE
     {
     private:
         bool _auto_newline;
+        bool _is_enable;
 
     public:
-        ConsolePipe_t() : _auto_newline(false) {}
+        ConsolePipe_t() : _auto_newline(false), _is_enable(true) {}
 
         void setAutoNewLine(bool autoNewLine) { _auto_newline = autoNewLine; }
+
+        void setEnable(bool isEnable) { _is_enable = isEnable; }
 
         template <typename... Args>
         void log(const char* msg, const Args&... args)
         {
+            if (!_is_enable)
+                return;
+
             // std::string formatted_msg = fmt::format(msg, args...);
             // Gcc sucks
             auto format_args = fmt::make_format_args(args...);
