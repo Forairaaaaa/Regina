@@ -146,6 +146,15 @@ public:
             spdlog::error("parse failed!");
             return;
         }
+
+        HAL::GetSystemConfig().mute = doc["mute"];
+        HAL::GetSystemConfig().dialAPinSwaped = doc["dialAPinSwaped"];
+        HAL::GetSystemConfig().dialBPinSwaped = doc["dialBPinSwaped"];
+        HAL::GetSystemConfig().autoSleepTimeout = doc["autoSleepTimeout"];
+        HAL::GetSystemConfig().wifiSsid = doc["wifiSsid"].as<std::string>();
+        HAL::GetSystemConfig().wifiPassword = doc["wifiPassword"].as<std::string>();
+
+        HAL::SaveSystemConfig();
     }
 
     void onRead(BLECharacteristic* pCharacteristic) override
