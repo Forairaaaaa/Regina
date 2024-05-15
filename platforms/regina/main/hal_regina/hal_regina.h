@@ -76,4 +76,7 @@ public:
 
     void loadSystemConfig() override;
     void saveSystemConfig() override;
+
+    size_t bleKeyBoardWrite(const uint8_t c);
+    size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c);
 };

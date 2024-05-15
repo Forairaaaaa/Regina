@@ -494,6 +494,6 @@ public:
     static size_t BleKeyBoardWrite(const uint8_t c) { return Get()->bleKeyBoardWrite(c); }
     virtual size_t bleKeyBoardWrite(const uint8_t c) { return 0; }
 
-    static size_t BleKeyBoardWrite(const MediaKeyReport c) { return Get()->bleKeyBoardWrite(c); }
-    virtual size_t bleKeyBoardWrite(const MediaKeyReport c) { return 0; }
+    static size_t BleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return Get()->bleKeyBoardWrite(c); }
+    virtual size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return 0; }
 };

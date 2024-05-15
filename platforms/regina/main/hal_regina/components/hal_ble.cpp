@@ -31,6 +31,24 @@ void HAL_Regina::_ble_init()
     spdlog::info("ble init");
 
     assert(_ble_keyboard == nullptr);
-    _ble_keyboard = new BleKeyboard("Regina-Keyboard");
+    _ble_keyboard = new BleKeyboard("Reginaaaa:)");
     _ble_keyboard->begin();
+}
+
+size_t HAL_Regina::bleKeyBoardWrite(const uint8_t c)
+{
+    if (_ble_keyboard == nullptr)
+        return 0;
+    if (_ble_keyboard->isConnected())
+        return _ble_keyboard->write(c);
+    return 0;
+}
+
+size_t HAL_Regina::bleKeyBoardWrite(const BLE_KB::MediaKeyReport c)
+{
+    if (_ble_keyboard == nullptr)
+        return 0;
+    if (_ble_keyboard->isConnected())
+        return _ble_keyboard->write(c);
+    return 0;
 }

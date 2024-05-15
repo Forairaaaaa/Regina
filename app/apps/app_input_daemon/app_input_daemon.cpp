@@ -74,22 +74,22 @@ void AppInputDaemon::_update_buttons()
         if (Button::A()->wasClicked())
         {
             SharedData::Console().log(">A<");
-            HAL::BleKeyBoardWrite(KEY_MEDIA_PREVIOUS_TRACK);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_PREVIOUS_TRACK);
         }
         else if (Button::B()->wasClicked())
         {
             SharedData::Console().log(">B<");
-            HAL::BleKeyBoardWrite(KEY_MEDIA_PLAY_PAUSE);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_PLAY_PAUSE);
         }
         else if (Button::C()->wasClicked())
         {
             SharedData::Console().log(">C<");
-            HAL::BleKeyBoardWrite(KEY_MEDIA_NEXT_TRACK);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_NEXT_TRACK);
         }
         else if (Button::D()->wasClicked())
         {
             SharedData::Console().log(">D<");
-            HAL::BleKeyBoardWrite(KEY_MEDIA_MUTE);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_MUTE);
         }
 
         if (SharedData::Console().valueNum() != pipe_value_num)
@@ -114,9 +114,9 @@ void AppInputDaemon::_update_dials()
         SharedData::Console().log("OA>{:X}", new_value);
 
         if (HAL::GetDialCount(DIAL::DIAL_A) > _data.last_dial_a_count)
-            HAL::BleKeyBoardWrite(KEY_UP_ARROW);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_UP_ARROW);
         else
-            HAL::BleKeyBoardWrite(KEY_DOWN_ARROW);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_DOWN_ARROW);
     }
 
     new_value = HAL::GetDialValue(DIAL::DIAL_B);
@@ -126,9 +126,9 @@ void AppInputDaemon::_update_dials()
         SharedData::Console().log("OB>{:X}", new_value);
 
         if (HAL::GetDialCount(DIAL::DIAL_B) > _data.last_dial_b_count)
-            HAL::BleKeyBoardWrite(KEY_MEDIA_VOLUME_UP);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_VOLUME_UP);
         else
-            HAL::BleKeyBoardWrite(KEY_MEDIA_VOLUME_DOWN);
+            HAL::BleKeyBoardWrite(BLE_KB::KEY_MEDIA_VOLUME_DOWN);
     }
 
     if (SharedData::Console().valueNum() != pipe_value_num)
