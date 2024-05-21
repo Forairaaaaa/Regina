@@ -12,7 +12,6 @@
 #include "../../hal/hal.h"
 #include "../../assets/assets.h"
 #include "../../shared/shared.h"
-#include "../../shared/shared.h"
 #include "../utils/system/system.h"
 #include <cstdint>
 
@@ -58,8 +57,10 @@ void AppInputDaemon::_update_input()
         HAL::BleUpdateInput(_data.new_input_frame);
 
         // Hid keyboard
+        SharedData::BorrowData();
         _update_button();
         _update_dial();
+        SharedData::ReturnData();
 
         _data.update_input_time_count = HAL::Millis();
     }

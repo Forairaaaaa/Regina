@@ -10,9 +10,7 @@
  */
 #pragma once
 #include <cstdint>
-#include <functional>
 #include <queue>
-#include <vector>
 #include "types.h"
 
 /**
@@ -59,7 +57,7 @@ public:
      * @brief Sharing data
      *
      */
-private:
+protected:
     SHARED_DATA::SharedData_t _data;
 
     /**

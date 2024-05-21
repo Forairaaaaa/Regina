@@ -10,9 +10,26 @@
  */
 #include <app.h>
 #include "hal_regina/hal_regina.h"
+#include <shared/shared.h>
 #include <esp_partition.h>
 #include <spi_flash_mmap.h>
 #include <nvs_flash.h>
+#include <thread>
+#include <mutex>
+
+class MySharedData : public SharedData
+{
+public:
+    std::mutex _mutex;
+
+    SHARED_DATA::SharedData_t& borrowData() override
+    {
+        _mutex.lock();
+        return _data;
+    }
+
+    void returnData() override { _mutex.unlock(); }
+};
 
 extern "C" void app_main(void)
 {
@@ -20,7 +37,8 @@ extern "C" void app_main(void)
 
     APP::SetupCallback_t callback;
 
-    callback.AssetPoolInjection = []() {
+    callback.AssetPoolInjection = []()
+    {
         // // Simple reference
         // AssetPool::InjectStaticAsset(AssetPool::CreateStaticAsset());
 
@@ -50,6 +68,8 @@ extern "C" void app_main(void)
     };
 
     callback.HalInjection = []() { HAL::Inject(new HAL_Regina); };
+
+    callback.sharedDataInjection = []() { SharedData::Inject(new MySharedData); };
 
     APP::Setup(callback);
 

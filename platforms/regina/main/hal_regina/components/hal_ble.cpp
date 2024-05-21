@@ -8,16 +8,6 @@
  * @copyright Copyright (c) 2024
  *
  */
-/**
- * @file hal_dial.cpp
- * @author Forairaaaaa
- * @brief
- * @version 0.1
- * @date 2024-04-26
- *
- * @copyright Copyright (c) 2024
- *
- */
 #include "../hal_regina.h"
 #include "../hal_config.h"
 #include <mooncake.h>
@@ -27,58 +17,10 @@
 #include <BLEServer.h>
 #include <BLE2902.h>
 #include <BLECharacteristic.h>
-#include "../utils/ble_keyboard/BleKeyboard.h"
 #include <ArduinoJson.h>
 
 /* -------------------------------------------------------------------------- */
-/*                            Device state controll                           */
-/* -------------------------------------------------------------------------- */
-class BleDeviceState_t : public BLECharacteristicCallbacks
-{
-public:
-    struct State_t
-    {
-        bool hidKbEnable = true;
-    };
-
-private:
-    struct Data_t
-    {
-        BLECharacteristic* pCharacteristic = nullptr;
-    };
-    Data_t _data;
-    State_t _state;
-
-public:
-    BleDeviceState_t(BLEService* pService, const char* uuid)
-    {
-        _data.pCharacteristic =
-            pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
-        _data.pCharacteristic->setCallbacks(this);
-    }
-
-    void onWrite(BLECharacteristic* pCharacteristic) override
-    {
-        std::string value = pCharacteristic->getValue().c_str();
-        spdlog::info("state ctrl get:\n {}", value);
-
-        JsonDocument doc;
-        DeserializationError error = deserializeJson(doc, value);
-        if (error != DeserializationError::Ok)
-        {
-            spdlog::error("parse failed!");
-            return;
-        }
-
-        // Update state
-        _state.hidKbEnable = doc["hidKbEnable"];
-    }
-
-    const State_t& getState() { return _state; }
-};
-
-/* -------------------------------------------------------------------------- */
-/*                                 Input value                                */
+/*                                Input status                                */
 /* -------------------------------------------------------------------------- */
 class BleInputStatus_t : public BLECharacteristicCallbacks
 {
@@ -147,12 +89,18 @@ public:
             return;
         }
 
-        HAL::GetSystemConfig().mute = doc["mute"];
-        HAL::GetSystemConfig().dialAPinSwaped = doc["dialAPinSwaped"];
-        HAL::GetSystemConfig().dialBPinSwaped = doc["dialBPinSwaped"];
-        HAL::GetSystemConfig().autoSleepTimeout = doc["autoSleepTimeout"];
-        HAL::GetSystemConfig().wifiSsid = doc["wifiSsid"].as<std::string>();
-        HAL::GetSystemConfig().wifiPassword = doc["wifiPassword"].as<std::string>();
+        if (!doc["mute"].isNull())
+            HAL::GetSystemConfig().mute = doc["mute"];
+        if (!doc["dialAPinSwaped"].isNull())
+            HAL::GetSystemConfig().dialAPinSwaped = doc["dialAPinSwaped"];
+        if (!doc["dialBPinSwaped"].isNull())
+            HAL::GetSystemConfig().dialBPinSwaped = doc["dialBPinSwaped"];
+        if (!doc["autoSleepTimeout"].isNull())
+            HAL::GetSystemConfig().autoSleepTimeout = doc["autoSleepTimeout"];
+        if (!doc["wifiSsid"].isNull())
+            HAL::GetSystemConfig().wifiSsid = doc["wifiSsid"].as<std::string>();
+        if (!doc["wifiPassword"].isNull())
+            HAL::GetSystemConfig().wifiPassword = doc["wifiPassword"].as<std::string>();
 
         HAL::SaveSystemConfig();
     }
@@ -165,54 +113,70 @@ public:
 };
 
 /* -------------------------------------------------------------------------- */
-/*                      Add my shit base on hid keyboard                      */
+/*                                   My Shit                                  */
 /* -------------------------------------------------------------------------- */
-class MyBleShit : public BleKeyboard
+class MyBleShit : public BLEServerCallbacks
 {
 private:
     struct Data_t
     {
-        BleDeviceState_t* state = nullptr;
         BleInputStatus_t* input = nullptr;
         BleSystemConfig_t* syscfg = nullptr;
+        bool is_connected = false;
     };
     Data_t _data;
 
-    void onCustom(BLEServer* pServer) override
-    {
-        spdlog::info("add my custom shit");
-
-        BLEService* pService = pServer->createService("2333");
-        _data.state = new BleDeviceState_t(pService, "2334");
-        _data.input = new BleInputStatus_t(pService, "2335");
-        _data.syscfg = new BleSystemConfig_t(pService, "2336");
-
-        pService->start();
-    }
-
 public:
-    MyBleShit(const char* deviceName) : BleKeyboard(deviceName) {}
+    MyBleShit() {}
     ~MyBleShit()
     {
-        delete _data.state;
         delete _data.input;
         delete _data.syscfg;
     }
 
-    const BleDeviceState_t::State_t& getState() { return _data.state->getState(); }
+    void init()
+    {
+        // Server
+        BLEDevice::init("Reginaaaa:)");
+        BLEServer* pServer = BLEDevice::createServer();
+        pServer->setCallbacks(this);
+
+        // Service
+        BLEService* pService = pServer->createService("2333");
+        _data.input = new BleInputStatus_t(pService, "2334");
+        _data.syscfg = new BleSystemConfig_t(pService, "2335");
+        // TODO
+        // time
+        // msg
+        // imu
+        pService->start();
+
+        // Advertising
+        auto advertising = pServer->getAdvertising();
+        advertising->setAppearance(0x00C0);
+        advertising->addServiceUUID(pService->getUUID());
+        advertising->setScanResponse(false);
+        advertising->start();
+    }
+
+    void onConnect(BLEServer* pServer) override { _data.is_connected = true; }
+    void onDisconnect(BLEServer* pServer) override { _data.is_connected = false; }
+    inline bool isConnected() { return _data.is_connected; }
 
     void updateInput(const BLE_KB::InputFrame_t& newInput) { _data.input->updateInput(newInput); }
 };
-
 static MyBleShit* _my_ble_shit = nullptr;
 
+/* -------------------------------------------------------------------------- */
+/*                                    APIs                                    */
+/* -------------------------------------------------------------------------- */
 void HAL_Regina::_ble_init()
 {
     spdlog::info("ble init");
 
     assert(_my_ble_shit == nullptr);
-    _my_ble_shit = new MyBleShit("Reginaaaa:)");
-    _my_ble_shit->begin();
+    _my_ble_shit = new MyBleShit;
+    _my_ble_shit->init();
 }
 
 bool HAL_Regina::isBleConnected()
@@ -227,22 +191,4 @@ void HAL_Regina::bleUpdateInput(const BLE_KB::InputFrame_t& newInput)
     if (_my_ble_shit == nullptr)
         return;
     _my_ble_shit->updateInput(newInput);
-}
-
-size_t HAL_Regina::bleKeyBoardWrite(const uint8_t c)
-{
-    if (_my_ble_shit == nullptr)
-        return 0;
-    if (_my_ble_shit->isConnected() && _my_ble_shit->getState().hidKbEnable)
-        return _my_ble_shit->write(c);
-    return 0;
-}
-
-size_t HAL_Regina::bleKeyBoardWrite(const BLE_KB::MediaKeyReport c)
-{
-    if (_my_ble_shit == nullptr)
-        return 0;
-    if (_my_ble_shit->isConnected() && _my_ble_shit->getState().hidKbEnable)
-        return _my_ble_shit->write(c);
-    return 0;
 }
