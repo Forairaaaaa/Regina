@@ -26,7 +26,7 @@ namespace MOONCAKE
             struct Data_t
             {
                 uint32_t update_input_time_count = 0;
-                uint32_t update_input_interval = 20;
+                uint32_t update_input_interval = 50;
 
                 uint8_t last_dial_a_value = 0;
                 uint8_t last_dial_b_value = 0;

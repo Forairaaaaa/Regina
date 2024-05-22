@@ -28,6 +28,7 @@ private:
     struct Data_t
     {
         BLECharacteristic* pCharacteristic = nullptr;
+        uint8_t* value_buffer = nullptr;
     };
     Data_t _data;
 
@@ -38,27 +39,79 @@ public:
             pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
         _data.pCharacteristic->setCallbacks(this);
         _data.pCharacteristic->addDescriptor(new BLE2902());
+
+        _data.value_buffer = new uint8_t[10];
     }
+    ~BleInputStatus_t() { delete _data.value_buffer; }
 
     void updateInput(const BLE_KB::InputFrame_t& newInput)
     {
-        uint8_t value[10] = {0};
-        value[0] = newInput.btnA;
-        value[1] = newInput.btnB;
-        value[2] = newInput.btnC;
-        value[3] = newInput.btnD;
-        value[4] = newInput.valueDialA;
-        value[5] = newInput.valueDialB;
+        _data.value_buffer[0] = newInput.btnA;
+        _data.value_buffer[1] = newInput.btnB;
+        _data.value_buffer[2] = newInput.btnC;
+        _data.value_buffer[3] = newInput.btnD;
+        _data.value_buffer[4] = newInput.valueDialA;
+        _data.value_buffer[5] = newInput.valueDialB;
 
         // int16 by le
-        value[6] = newInput.countDialA & 0xFF;
-        value[7] = (newInput.countDialA >> 8) & 0xFF;
-        value[8] = newInput.countDialB & 0xFF;
-        value[9] = (newInput.countDialB >> 8) & 0xFF;
+        _data.value_buffer[6] = newInput.countDialA & 0xFF;
+        _data.value_buffer[7] = (newInput.countDialA >> 8) & 0xFF;
+        _data.value_buffer[8] = newInput.countDialB & 0xFF;
+        _data.value_buffer[9] = (newInput.countDialB >> 8) & 0xFF;
 
         // Update
-        _data.pCharacteristic->setValue(value, 10);
+        _data.pCharacteristic->setValue(_data.value_buffer, 10);
         _data.pCharacteristic->notify();
+    }
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                     IMU                                    */
+/* -------------------------------------------------------------------------- */
+class BleImuData_t : public BLECharacteristicCallbacks
+{
+private:
+    struct Data_t
+    {
+        BLECharacteristic* pCharacteristicAccel = nullptr;
+        BLECharacteristic* pCharacteristicGyro = nullptr;
+        uint8_t* value_buffer = nullptr;
+    };
+    Data_t _data;
+
+public:
+    BleImuData_t(BLEService* pService, const char* uuidAccel, const char* uuidGyro)
+    {
+        _data.pCharacteristicAccel =
+            pService->createCharacteristic(uuidAccel, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+        _data.pCharacteristicAccel->setCallbacks(this);
+        _data.pCharacteristicAccel->addDescriptor(new BLE2902());
+
+        _data.pCharacteristicGyro =
+            pService->createCharacteristic(uuidGyro, BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+        _data.pCharacteristicGyro->setCallbacks(this);
+        _data.pCharacteristicGyro->addDescriptor(new BLE2902());
+
+        // 6 * 32 float = 24
+        _data.value_buffer = new uint8_t[24];
+    }
+    ~BleImuData_t() { delete _data.value_buffer; }
+
+    void updateImuData(const IMU::ImuData_t& newData)
+    {
+        // 6 float in le
+        memcpy(_data.value_buffer, &newData.accel.x, sizeof(float));
+        memcpy(_data.value_buffer + 4, &newData.accel.y, sizeof(float));
+        memcpy(_data.value_buffer + 8, &newData.accel.z, sizeof(float));
+        memcpy(_data.value_buffer + 12, &newData.gyro.x, sizeof(float));
+        memcpy(_data.value_buffer + 16, &newData.gyro.y, sizeof(float));
+        memcpy(_data.value_buffer + 20, &newData.gyro.z, sizeof(float));
+
+        // Update
+        _data.pCharacteristicAccel->setValue(_data.value_buffer, 12);
+        _data.pCharacteristicAccel->notify();
+        _data.pCharacteristicGyro->setValue(_data.value_buffer + 12, 12);
+        _data.pCharacteristicGyro->notify();
     }
 };
 
@@ -127,6 +180,7 @@ private:
     struct Data_t
     {
         BleInputStatus_t* input = nullptr;
+        BleImuData_t* imu = nullptr;
         BleSystemConfig_t* syscfg = nullptr;
         bool is_connected = false;
     };
@@ -137,6 +191,7 @@ public:
     ~MyBleShit()
     {
         delete _data.input;
+        delete _data.imu;
         delete _data.syscfg;
     }
 
@@ -150,11 +205,13 @@ public:
         // Service
         BLEService* pService = pServer->createService("2333");
         _data.input = new BleInputStatus_t(pService, "2334");
-        _data.syscfg = new BleSystemConfig_t(pService, "2335");
+        _data.imu = new BleImuData_t(pService, "2335", "2336");
+        _data.syscfg = new BleSystemConfig_t(pService, "2337");
+
         // TODO
         // time
         // msg
-        // imu
+
         pService->start();
 
         // Advertising
@@ -170,6 +227,8 @@ public:
     inline bool isConnected() { return _data.is_connected; }
 
     void updateInput(const BLE_KB::InputFrame_t& newInput) { _data.input->updateInput(newInput); }
+
+    void updateImuDate(const IMU::ImuData_t& newData) { _data.imu->updateImuData(newData); }
 };
 static MyBleShit* _my_ble_shit = nullptr;
 
@@ -197,4 +256,11 @@ void HAL_Regina::bleUpdateInput(const BLE_KB::InputFrame_t& newInput)
     if (_my_ble_shit == nullptr)
         return;
     _my_ble_shit->updateInput(newInput);
+}
+
+void HAL_Regina::bleUpdateImuData(const IMU::ImuData_t& newData)
+{
+    if (_my_ble_shit == nullptr)
+        return;
+    _my_ble_shit->updateImuDate(newData);
 }

@@ -224,17 +224,6 @@ namespace BLE_KB
         uint8_t valueDialB = 0;
         int16_t countDialA = 0;
         int16_t countDialB = 0;
-
-        InputFrame_t() = default;
-        InputFrame_t(bool a, bool b, bool c, bool d, uint8_t dialA, uint8_t dialB)
-        {
-            this->btnA = a;
-            this->btnB = b;
-            this->btnC = c;
-            this->btnD = d;
-            this->valueDialA = dialA;
-            this->valueDialB = dialB;
-        }
     };
 }; // namespace BLE_KB
 

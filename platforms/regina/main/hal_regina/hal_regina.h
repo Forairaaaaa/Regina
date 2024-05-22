@@ -72,7 +72,7 @@ public:
     void beep(float frequency, uint32_t duration) override;
     void beepStop() override;
     uint8_t getDialValue(DIAL::DialId_t dialId) override;
-    int getDialCount(DIAL::DialId_t dialId) override;
+    int16_t getDialCount(DIAL::DialId_t dialId) override;
     void resetDialCount(DIAL::DialId_t dialId) override;
 
     void loadSystemConfig() override;
@@ -81,4 +81,5 @@ public:
 
     bool isBleConnected() override;
     void bleUpdateInput(const BLE_KB::InputFrame_t& newInput) override;
+    void bleUpdateImuData(const IMU::ImuData_t& newData) override;
 };

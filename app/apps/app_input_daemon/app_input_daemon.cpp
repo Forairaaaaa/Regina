@@ -54,7 +54,13 @@ void AppInputDaemon::_update_input()
         _data.new_input_frame.btnD = HAL::GetButton(GAMEPAD::BTN_D);
         _data.new_input_frame.valueDialA = HAL::GetDialValue(DIAL::DIAL_A);
         _data.new_input_frame.valueDialB = HAL::GetDialValue(DIAL::DIAL_B);
+        _data.new_input_frame.countDialA = HAL::GetDialCount(DIAL::DIAL_A);
+        _data.new_input_frame.countDialB = HAL::GetDialCount(DIAL::DIAL_B);
         HAL::BleUpdateInput(_data.new_input_frame);
+
+        // Imu data
+        HAL::UpdateImuData();
+        HAL::BleUpdateImuData(HAL::GetImuData());
 
         // Hid keyboard
         SharedData::BorrowData();

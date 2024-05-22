@@ -99,7 +99,7 @@ public:
     int touch_start_x = 0;
     int touch_last_x = 0;
     bool is_touching = false;
-    int getEncoderACount()
+    int16_t getEncoderACount()
     {
         if (isTouching())
         {
@@ -174,7 +174,7 @@ public:
 
     void resetEncoderBCount(int value) { encoder_b_count = value; }
 
-    int getDialCount(DIAL::DialId_t dialId) override
+    int16_t getDialCount(DIAL::DialId_t dialId) override
     {
         if (dialId == DIAL::DIAL_A)
             return getEncoderACount();

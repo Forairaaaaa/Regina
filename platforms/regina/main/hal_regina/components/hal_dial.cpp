@@ -24,7 +24,7 @@ private:
     {
         uint8_t last_value = 0;
         uint8_t new_value = 0;
-        int count = 0;
+        int16_t count = 0;
         bool pin_swaped = false;
     };
 
@@ -138,12 +138,12 @@ private:
 public:
     inline void setDialAPinSwaped(bool pinSwaped) { _data.dial_a.pin_swaped = pinSwaped; }
     inline const uint8_t& getDialAValue() { return _data.dial_a.new_value; }
-    inline const int& getDialACount() { return _data.dial_a.count; }
+    inline const int16_t& getDialACount() { return _data.dial_a.count; }
     inline void resetDialACount() { _data.dial_a.count = 0; }
 
     inline void setDialBPinSwaped(bool pinSwaped) { _data.dial_b.pin_swaped = pinSwaped; }
     inline const uint8_t& getDialBValue() { return _data.dial_b.new_value; }
-    inline const int& getDialBCount() { return _data.dial_b.count; }
+    inline const int16_t& getDialBCount() { return _data.dial_b.count; }
     inline void resetDialBCount() { _data.dial_b.count = 0; }
 
     void init()
@@ -263,9 +263,9 @@ uint8_t HAL_Regina::getDialValue(DIAL::DialId_t dialId)
     return value;
 }
 
-int HAL_Regina::getDialCount(DIAL::DialId_t dialId)
+int16_t HAL_Regina::getDialCount(DIAL::DialId_t dialId)
 {
-    int count = 0;
+    int16_t count = 0;
     _mutex->lock();
 
     if (dialId == DIAL::DIAL_A)

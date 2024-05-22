@@ -70,6 +70,7 @@ void HAL_Regina::_imu_init()
     {
         spdlog::error("init failed!");
         delete _imu;
+        _imu = nullptr;
     }
 
     // /* -------------------------------------------------------------------------- */

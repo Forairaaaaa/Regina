@@ -152,14 +152,14 @@ public:
      */
     static uint32_t GetAwakeTime() { return GetData().awake_time_count; }
 
-    /* -------------------------------------------------------------------------- */
-    /*                                Notification                                */
-    /* -------------------------------------------------------------------------- */
-public:
-    /**
-     * @brief Get notification pipe
-     *
-     * @return std::queue<NOTIF::Notification_t>&
-     */
-    std::queue<NOTIF::Notification_t>& GetNotificationPipe() { return GetData().notification_pipe; }
+    //     /* -------------------------------------------------------------------------- */
+    //     /*                                Notification                                */
+    //     /* -------------------------------------------------------------------------- */
+    // public:
+    //     /**
+    //      * @brief Get notification pipe
+    //      *
+    //      * @return std::queue<NOTIF::Notification_t>&
+    //      */
+    //     std::queue<NOTIF::Notification_t>& GetNotificationPipe() { return GetData().notification_pipe; }
 };

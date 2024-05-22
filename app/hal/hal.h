@@ -398,10 +398,10 @@ public:
      * @brief Get dial's count
      *
      * @param dialId
-     * @return int
+     * @return int16_t
      */
-    static int GetDialCount(DIAL::DialId_t dialId) { return Get()->getDialCount(dialId); }
-    virtual int getDialCount(DIAL::DialId_t dialId) { return 0; }
+    static int16_t GetDialCount(DIAL::DialId_t dialId) { return Get()->getDialCount(dialId); }
+    virtual int16_t getDialCount(DIAL::DialId_t dialId) { return 0; }
 
     /**
      * @brief Reset dial's count to 0
@@ -507,4 +507,7 @@ public:
 
     static void BleUpdateInput(const BLE_KB::InputFrame_t& newInput) { Get()->bleUpdateInput(newInput); }
     virtual void bleUpdateInput(const BLE_KB::InputFrame_t& newInput) {}
+
+    static void BleUpdateImuData(const IMU::ImuData_t& newData) { Get()->bleUpdateImuData(newData); }
+    virtual void bleUpdateImuData(const IMU::ImuData_t& newData) {}
 };
