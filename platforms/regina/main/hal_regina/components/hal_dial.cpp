@@ -30,9 +30,12 @@ private:
 
     struct Data_t
     {
-        uint16_t raw_value = 0;
         DialData_t dial_a;
         DialData_t dial_b;
+
+        uint16_t sample_count = 0;
+        uint16_t sample_result = 0;
+        std::array<uint16_t, 3> sample;
     };
     Data_t _data;
 
@@ -49,14 +52,33 @@ private:
         _pin_high(HAL_PIN_DIAL_PL);
         _pin_low(HAL_PIN_DIAL_CE);
 
-        _data.raw_value = 0;
+        _data.sample[_data.sample_count] = 0;
         for (uint8_t i = 0; i < 8; i++)
         {
             uint16_t value = _pin_read(HAL_PIN_DIAL_DATA);
-            _data.raw_value |= (value << ((8 - 1) - i));
+            _data.sample[_data.sample_count] |= (value << ((8 - 1) - i));
             _pin_high(HAL_PIN_DIAL_CLK);
             m5gfx::delayMicroseconds(5);
             _pin_low(HAL_PIN_DIAL_CLK);
+        }
+    }
+
+    void _update_sample_result()
+    {
+        std::unordered_map<uint16_t, int> frequency_map;
+        for (uint16_t value : _data.sample)
+        {
+            frequency_map[value]++;
+        }
+
+        int max_count = 0;
+        for (const auto& [value, count] : frequency_map)
+        {
+            if (count > max_count)
+            {
+                max_count = count;
+                _data.sample_result = value;
+            }
         }
     }
 
@@ -71,8 +93,8 @@ private:
     void _update_dial_value()
     {
         // Split into individual dial value
-        _data.dial_a.new_value = (_data.raw_value & 0x0F);
-        _data.dial_b.new_value = (_data.raw_value & 0xF0) >> 4;
+        _data.dial_a.new_value = (_data.sample_result & 0x0F);
+        _data.dial_b.new_value = (_data.sample_result & 0xF0) >> 4;
 
         if (_data.dial_a.pin_swaped)
             _pin_swaped_calibration(_data.dial_a.new_value);
@@ -141,16 +163,25 @@ public:
         update();
         resetDialACount();
         resetDialBCount();
+
+        // Init sample
+        _data.sample_count = 0;
     }
 
     void update()
     {
+        // Downsampling
         _update_raw_value();
-        _update_dial_value();
-        _update_increment_counting(_data.dial_a);
-        _update_increment_counting(_data.dial_b);
+        _data.sample_count++;
+        if (_data.sample_count >= _data.sample.size())
+        {
+            _data.sample_count = 0;
+            _update_sample_result();
 
-        // spdlog::info("{} {} {} {}", _data.dial_a.direction, _data.dial_a.count, _data.dial_b.direction, _data.dial_b.count);
+            _update_dial_value();
+            _update_increment_counting(_data.dial_a);
+            _update_increment_counting(_data.dial_b);
+        }
     }
 };
 
@@ -164,7 +195,7 @@ static void _dials_daemon(void* param)
         _mutex->lock();
         _dials->update();
         _mutex->unlock();
-        vTaskDelay(pdMS_TO_TICKS(20));
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
     vTaskDelete(NULL);
 }
@@ -203,7 +234,7 @@ void HAL_Regina::_dial_init()
 
     // while (1)
     // {
-    //     delay(20);
+    //     delay(50);
     //     spdlog::info(" {} {} | {} {}",
     //                  getDialValue(DIAL::DIAL_A),
     //                  getDialCount(DIAL::DIAL_A),

@@ -42,7 +42,7 @@ public:
 
     void updateInput(const BLE_KB::InputFrame_t& newInput)
     {
-        uint8_t value[6] = {0};
+        uint8_t value[10] = {0};
         value[0] = newInput.btnA;
         value[1] = newInput.btnB;
         value[2] = newInput.btnC;
@@ -50,8 +50,14 @@ public:
         value[4] = newInput.valueDialA;
         value[5] = newInput.valueDialB;
 
+        // int16 by le
+        value[6] = newInput.countDialA & 0xFF;
+        value[7] = (newInput.countDialA >> 8) & 0xFF;
+        value[8] = newInput.countDialB & 0xFF;
+        value[9] = (newInput.countDialB >> 8) & 0xFF;
+
         // Update
-        _data.pCharacteristic->setValue(value, 6);
+        _data.pCharacteristic->setValue(value, 10);
         _data.pCharacteristic->notify();
     }
 };
