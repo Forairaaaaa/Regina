@@ -1,0 +1,32 @@
+[
+    {
+        "url": "https://github.com/Forairaaaaa/mooncake.git",
+        "path": "dependencies/mooncake",
+        "branch": "main"
+    },
+    {
+        "url": "https://github.com/Forairaaaaa/smooth_ui_toolkit.git",
+        "path": "dependencies/smooth_ui_toolkit",
+        "branch": "main"
+    },
+    {
+        "url": "https://github.com/Forairaaaaa/M5GFX.git",
+        "path": "dependencies/M5GFX",
+        "branch": "master"
+    },
+    {
+        "url": "https://github.com/bblanchon/ArduinoJson.git",
+        "path": "platforms/regina/components/ArduinoJson",
+        "branch": "v7.0.4"
+    },
+    {
+        "url": "https://github.com/Forairaaaaa/arduino_lite.git",
+        "path": "platforms/regina/components/arduino_lite",
+        "branch": "main"
+    },
+    {
+        "url": "https://github.com/m5stack/M5Unified.git",
+        "path": "platforms/regina/components/M5Unified",
+        "branch": "0.1.14"
+    }
+]
