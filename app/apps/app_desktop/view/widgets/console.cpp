@@ -99,7 +99,7 @@ void WidgetConsole::onUpdate()
     // Message
     if (HAL::Millis() - _data.msg_update_time_count > _data.msg_update_interval)
     {
-        if (!SharedData::Console().isEmpty())
+        if (!SharedData::Console().isEmpty() && SharedData::GetPowerState() == POWER::state_awake)
         {
             // Remove old cursor
             SharedData::GetConsoleCanvas()->fillRect(SharedData::GetConsoleCanvas()->getCursorX(),
@@ -118,6 +118,9 @@ void WidgetConsole::onUpdate()
                                                      6,
                                                      3,
                                                      TFT_WHITE);
+
+            // Keep awake while typing output
+            SharedData::CupOfCoffee(HAL::Millis());
         }
 
         _data.msg_update_time_count = HAL::Millis();

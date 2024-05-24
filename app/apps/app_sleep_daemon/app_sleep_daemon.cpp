@@ -75,6 +75,20 @@ void AppSleepDaemon::onRunning()
             spdlog::info("going to sleep");
         }
     }
+
+    // Check new msg
+    if (SharedData::GetPowerState() == POWER::state_sleeping)
+    {
+        SharedData::BorrowData();
+        if (!SharedData::Console().isEmpty())
+        {
+            spdlog::info("new msg, wake up");
+            SharedData::SetPowerState(POWER::state_awake);
+            HAL::WakeTheFuckUp();
+            SharedData::CupOfCoffee(HAL::Millis());
+        }
+        SharedData::ReturnData();
+    }
 }
 
 void AppSleepDaemon::onDestroy() { spdlog::info("{} onDestroy", getAppName()); }

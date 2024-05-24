@@ -221,7 +221,9 @@ public:
         std::string value = pCharacteristic->getValue().c_str();
         spdlog::info("message get:\n {}", value);
 
-        SharedData::BorrowData().console_msg_pipe.log("{}", value);
+        SharedData::BorrowData();
+        SharedData::Console().setEnable(true);
+        SharedData::Console().log("{}", value);
         SharedData::ReturnData();
     }
 };
