@@ -57,8 +57,9 @@ void WidgetConsole::onInit()
         SharedData::Console().log("终端创建成功 :)");
         SharedData::Console().setAutoNewLine(true);
 
-        SharedData::Console().log("机会, 烧冻鸡翅!");
-        SharedData::Console().log("我将,\n点燃大海!  >_<");
+        // SharedData::Console().log("机会, 烧冻鸡翅!");
+        // SharedData::Console().log("我将,\n点燃大海!  >_<");
+        SharedData::Console().log("等待连接 -.-");
     }
 }
 

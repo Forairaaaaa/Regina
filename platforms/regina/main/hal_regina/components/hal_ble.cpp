@@ -18,6 +18,7 @@
 #include <BLE2902.h>
 #include <BLECharacteristic.h>
 #include <ArduinoJson.h>
+#include "shared/shared.h"
 
 /* -------------------------------------------------------------------------- */
 /*                                Input status                                */
@@ -160,6 +161,8 @@ public:
             HAL::GetSystemConfig().wifiSsid = doc["wifiSsid"].as<std::string>();
         if (!doc["wifiPassword"].isNull())
             HAL::GetSystemConfig().wifiPassword = doc["wifiPassword"].as<std::string>();
+        if (!doc["unixTimestamp"].isNull())
+            timeConfig(doc["unixTimestamp"].as<std::string>());
 
         HAL::SaveSystemConfig();
     }
@@ -168,6 +171,58 @@ public:
     {
         auto json = HAL::GetSystemConfigJson();
         pCharacteristic->setValue(json.c_str());
+    }
+
+    void timeConfig(const std::string& unixTimestamp)
+    {
+        if (unixTimestamp.empty())
+            return;
+
+        spdlog::info("time config get: {}", unixTimestamp);
+
+        long unix_time_stamp = atol(unixTimestamp.c_str());
+        spdlog::info("unix stamp: {}", unix_time_stamp);
+
+        struct tm* time_info;
+        time_t timestamp_sec = unix_time_stamp;
+        time_info = localtime(&timestamp_sec);
+
+        {
+            char string_buffer[80];
+            strftime(string_buffer, sizeof(string_buffer), "%Y-%m-%d %H:%M:%S", time_info);
+            spdlog::info("get time: {}", string_buffer);
+        }
+
+        HAL::SetSystemTime(*time_info);
+    }
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                   Message                                  */
+/* -------------------------------------------------------------------------- */
+class BleMessage_t : public BLECharacteristicCallbacks
+{
+private:
+    struct Data_t
+    {
+        BLECharacteristic* pCharacteristic = nullptr;
+    };
+    Data_t _data;
+
+public:
+    BleMessage_t(BLEService* pService, const char* uuid)
+    {
+        _data.pCharacteristic = pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_WRITE);
+        _data.pCharacteristic->setCallbacks(this);
+    }
+
+    void onWrite(BLECharacteristic* pCharacteristic) override
+    {
+        std::string value = pCharacteristic->getValue().c_str();
+        spdlog::info("message get:\n {}", value);
+
+        SharedData::BorrowData().console_msg_pipe.log("{}", value);
+        SharedData::ReturnData();
     }
 };
 
@@ -182,6 +237,8 @@ private:
         BleInputStatus_t* input = nullptr;
         BleImuData_t* imu = nullptr;
         BleSystemConfig_t* syscfg = nullptr;
+        BleMessage_t* msg = nullptr;
+        BLEAdvertising* pAdvertising = nullptr;
         bool is_connected = false;
     };
     Data_t _data;
@@ -193,6 +250,7 @@ public:
         delete _data.input;
         delete _data.imu;
         delete _data.syscfg;
+        delete _data.msg;
     }
 
     void init()
@@ -207,23 +265,35 @@ public:
         _data.input = new BleInputStatus_t(pService, "2334");
         _data.imu = new BleImuData_t(pService, "2335", "2336");
         _data.syscfg = new BleSystemConfig_t(pService, "2337");
+        _data.msg = new BleMessage_t(pService, "2338");
 
-        // TODO
-        // time
-        // msg
-
+        // Start service
         pService->start();
 
         // Advertising
-        auto advertising = pServer->getAdvertising();
-        advertising->setAppearance(0x00C0);
-        advertising->addServiceUUID(pService->getUUID());
-        advertising->setScanResponse(false);
-        advertising->start();
+        _data.pAdvertising = pServer->getAdvertising();
+        _data.pAdvertising->setAppearance(0x00C0);
+        _data.pAdvertising->addServiceUUID(pService->getUUID());
+        _data.pAdvertising->setScanResponse(false);
+        _data.pAdvertising->start();
     }
 
-    void onConnect(BLEServer* pServer) override { _data.is_connected = true; }
-    void onDisconnect(BLEServer* pServer) override { _data.is_connected = false; }
+    void onConnect(BLEServer* pServer) override
+    {
+        _data.is_connected = true;
+        SharedData::BorrowData().console_msg_pipe.log("连接成功");
+        SharedData::ReturnData();
+    }
+
+    void onDisconnect(BLEServer* pServer) override
+    {
+        _data.is_connected = false;
+        SharedData::BorrowData().console_msg_pipe.log("连接断开:(");
+        SharedData::ReturnData();
+
+        _data.pAdvertising->start();
+    }
+
     inline bool isConnected() { return _data.is_connected; }
 
     void updateInput(const BLE_KB::InputFrame_t& newInput) { _data.input->updateInput(newInput); }
