@@ -18,7 +18,8 @@
 #include <BLE2902.h>
 #include <BLECharacteristic.h>
 #include <ArduinoJson.h>
-#include "shared/shared.h"
+#include <shared/shared.h>
+#include <assets/assets.h>
 
 /* -------------------------------------------------------------------------- */
 /*                                Input status                                */
@@ -222,8 +223,14 @@ public:
         spdlog::info("message get:\n {}", value);
 
         SharedData::BorrowData();
+
+        // Pipe in
         SharedData::Console().setEnable(true);
         SharedData::Console().log("{}", value);
+
+        // Ring
+        HAL::PlayRingtone();
+
         SharedData::ReturnData();
     }
 };

@@ -69,8 +69,12 @@ public:
 
     bool getButton(GAMEPAD::GamePadButton_t button) override;
     void updateImuData() override;
+
     void beep(float frequency, uint32_t duration) override;
     void beepStop() override;
+    void playRtttl(const char* rtttlMusic) override;
+    void playRingtone() override;
+
     uint8_t getDialValue(DIAL::DialId_t dialId) override;
     int16_t getDialCount(DIAL::DialId_t dialId) override;
     void resetDialCount(DIAL::DialId_t dialId) override;

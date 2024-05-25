@@ -42,6 +42,7 @@ void HAL_Regina::_log_out_system_config()
     spdlog::info(" - wifiPassword: {}", _data.config.wifiPassword);
     spdlog::info(" - autoSleepTimeout: {}", _data.config.autoSleepTimeout);
     spdlog::info(" - mute: {}", _data.config.mute);
+    spdlog::info(" - ringtone: {}", _data.config.ringtone);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -109,6 +110,8 @@ void HAL_Regina::loadSystemConfig()
         _data.config.wifiSsid = doc["wifiSsid"].as<std::string>();
     if (!doc["wifiPassword"].isNull())
         _data.config.wifiPassword = doc["wifiPassword"].as<std::string>();
+    if (!doc["ringtone"].isNull())
+        _data.config.ringtone = doc["ringtone"].as<std::string>();
 
     free(file_content);
     spdlog::info("done");
@@ -125,12 +128,13 @@ std::string HAL_Regina::_create_config_json()
     _config_check_valid();
 
     // Copy
+    doc["mute"] = _data.config.mute;
     doc["dialAPinSwaped"] = _data.config.dialAPinSwaped;
     doc["dialBPinSwaped"] = _data.config.dialBPinSwaped;
+    doc["autoSleepTimeout"] = _data.config.autoSleepTimeout;
     doc["wifiSsid"] = _data.config.wifiSsid;
     doc["wifiPassword"] = _data.config.wifiPassword;
-    doc["autoSleepTimeout"] = _data.config.autoSleepTimeout;
-    doc["mute"] = _data.config.mute;
+    doc["ringtone"] = _data.config.ringtone;
 
     // Serialize
     if (serializeJson(doc, json_content) == 0)
