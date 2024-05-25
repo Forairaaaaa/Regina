@@ -20,6 +20,7 @@
 #include <ArduinoJson.h>
 #include <shared/shared.h>
 #include <assets/assets.h>
+#include <chrono>
 
 /* -------------------------------------------------------------------------- */
 /*                                Input status                                */
@@ -165,7 +166,7 @@ public:
         if (!doc["wifiPassword"].isNull())
             HAL::GetSystemConfig().wifiPassword = doc["wifiPassword"].as<std::string>();
         if (!doc["unixTimestamp"].isNull())
-            timeConfig(doc["unixTimestamp"].as<std::string>());
+            timeConfig(doc["unixTimestamp"]);
 
         HAL::SaveSystemConfig();
         __update_dial_pin_swaped();
@@ -177,27 +178,17 @@ public:
         pCharacteristic->setValue(json.c_str());
     }
 
-    void timeConfig(const std::string& unixTimestamp)
+    void timeConfig(long long unixTimestamp)
     {
-        if (unixTimestamp.empty())
-            return;
-
         spdlog::info("time config get: {}", unixTimestamp);
+        std::time_t unix_timestamp = unixTimestamp / 1000;
 
-        long unix_time_stamp = atol(unixTimestamp.c_str());
-        spdlog::info("unix stamp: {}", unix_time_stamp);
+        spdlog::info("current time: {}:{}", HAL::GetLocalTime()->tm_hour, HAL::GetLocalTime()->tm_min);
 
-        struct tm* time_info;
-        time_t timestamp_sec = unix_time_stamp;
-        time_info = localtime(&timestamp_sec);
+        std::tm* ptm = std::localtime(&unix_timestamp);
+        spdlog::info("get time: {}", std::ctime(&unix_timestamp));
 
-        {
-            char string_buffer[80];
-            strftime(string_buffer, sizeof(string_buffer), "%Y-%m-%d %H:%M:%S", time_info);
-            spdlog::info("get time: {}", string_buffer);
-        }
-
-        HAL::SetSystemTime(*time_info);
+        HAL::SetSystemTime(*ptm);
     }
 };
 

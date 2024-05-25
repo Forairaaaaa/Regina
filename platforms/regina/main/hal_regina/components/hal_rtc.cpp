@@ -70,11 +70,12 @@ void HAL_Regina::_adjust_sys_time()
 {
     spdlog::info("adjust system time");
 
-    auto time = _rtc->getDateTime().get_tm();
-    time_t tv_sec = mktime(&time);
+    auto tm = _rtc->getDateTime().get_tm();
+    spdlog::info("rtc time: {}:{}", tm.tm_hour, tm.tm_min);
 
     struct timeval now;
-    now.tv_sec = tv_sec;
+    now.tv_sec = mktime(&tm);
+    now.tv_usec = 0;
 
     settimeofday(&now, NULL);
 }
