@@ -58,8 +58,11 @@ void WidgetCalendar::onUpdate()
     {
         auto time = HAL::GetLocalTime();
         const char* weekday_list[7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
-        _data.date = fmt::format(
-            "{}/{} {} {}", time->tm_mon + 1, time->tm_mday, weekday_list[time->tm_wday], time->tm_hour > 12 ? "PM" : "AM");
+        _data.date = fmt::format("{}/{} {} {}",
+                                 time->tm_mon + 1,
+                                 time->tm_mday,
+                                 weekday_list[time->tm_wday],
+                                 time->tm_hour > 12 ? "PM" : "AM");
 
         _data.update_time_count = HAL::Millis();
     }

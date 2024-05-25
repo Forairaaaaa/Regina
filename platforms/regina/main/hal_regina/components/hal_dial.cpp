@@ -288,3 +288,11 @@ void HAL_Regina::resetDialCount(DIAL::DialId_t dialId)
 
     _mutex->unlock();
 }
+
+void __update_dial_pin_swaped()
+{
+    _mutex->lock();
+    _dials->setDialAPinSwaped(HAL::GetSystemConfig().dialAPinSwaped);
+    _dials->setDialBPinSwaped(HAL::GetSystemConfig().dialBPinSwaped);
+    _mutex->unlock();
+}

@@ -120,6 +120,8 @@ public:
 /* -------------------------------------------------------------------------- */
 /*                                System config                               */
 /* -------------------------------------------------------------------------- */
+void __update_dial_pin_swaped();
+
 class BleSystemConfig_t : public BLECharacteristicCallbacks
 {
 private:
@@ -166,6 +168,7 @@ public:
             timeConfig(doc["unixTimestamp"].as<std::string>());
 
         HAL::SaveSystemConfig();
+        __update_dial_pin_swaped();
     }
 
     void onRead(BLECharacteristic* pCharacteristic) override

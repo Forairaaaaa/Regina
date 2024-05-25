@@ -16,6 +16,7 @@ BinPackArguments: false
 BinPackParameters: false
 AlwaysBreakTemplateDeclarations: Yes
 SortIncludes: false
+AllowAllArgumentsOnNextLine: false
 # AllowShortBlocksOnASingleLine: Always
 # AllowShortCaseLabelsOnASingleLine: false
 

@@ -332,6 +332,21 @@ public:
     static void BeepStop() { Get()->beepStop(); }
     virtual void beepStop() {}
 
+    /**
+     * @brief Play RTTTL music
+     *
+     * @param rtttlMusic
+     */
+    static void PlayRtttl(const char* rtttlMusic) { Get()->playRtttl(rtttlMusic); }
+    virtual void playRtttl(const char* rtttlMusic) {}
+
+    /**
+     * @brief Play ringtone
+     *
+     */
+    static void PlayRingtone() { Get()->playRingtone(); }
+    virtual void playRingtone() {}
+
     /* -------------------------------------------------------------------------- */
     /*                                   Gamepad                                  */
     /* -------------------------------------------------------------------------- */
@@ -499,11 +514,11 @@ public:
     static bool IsBleConnected() { return Get()->isBleConnected(); }
     virtual bool isBleConnected() { return false; }
 
-    static size_t BleKeyBoardWrite(const uint8_t c) { return Get()->bleKeyBoardWrite(c); }
-    virtual size_t bleKeyBoardWrite(const uint8_t c) { return 0; }
+    static std::size_t BleKeyBoardWrite(const uint8_t c) { return Get()->bleKeyBoardWrite(c); }
+    virtual std::size_t bleKeyBoardWrite(const uint8_t c) { return 0; }
 
-    static size_t BleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return Get()->bleKeyBoardWrite(c); }
-    virtual size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return 0; }
+    static std::size_t BleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return Get()->bleKeyBoardWrite(c); }
+    virtual std::size_t bleKeyBoardWrite(const BLE_KB::MediaKeyReport c) { return 0; }
 
     static void BleUpdateInput(const BLE_KB::InputFrame_t& newInput) { Get()->bleUpdateInput(newInput); }
     virtual void bleUpdateInput(const BLE_KB::InputFrame_t& newInput) {}

@@ -104,6 +104,7 @@ namespace CONFIG
         bool dialBPinSwaped = false;
         std::string wifiSsid = "";
         std::string wifiPassword = "";
+        std::string ringtone = "NokiaTun:d=4,o=5,b=225:8e6,8d6,f#,g#,8c#6,8b,d,e,8b,8a,c#,e,2a";
         uint32_t autoSleepTimeout = 24000;
     };
 } // namespace CONFIG

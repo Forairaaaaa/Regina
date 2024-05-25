@@ -14,6 +14,7 @@
 #include "images/types.h"
 #include "theme/types.h"
 #include "localization/types.h"
+#include "music/types.h"
 #include "../hal/types.h"
 #include "../hal/hal.h"
 
@@ -27,6 +28,7 @@ struct StaticAsset_t
     ImagePool_t Image;
     ColorPool_t Color;
     TextPool_t Text;
+    Music_t Music;
 };
 
 /**
@@ -83,6 +85,7 @@ public:
     static const ColorPool_t& GetColor() { return GetStaticAsset()->Color; }
     static const TextPool_t& GetTextPool() { return GetStaticAsset()->Text; }
     static const LocalTextPoolMap_t& GetText() { return Get()->getText(); }
+    static const Music_t& GetMusic() { return Get()->getStaticAsset()->Music; }
 
     static void SetLocaleCode(LocaleCode_t code) { Get()->setLocaleCode(code); }
     static void SetLocalTextTo(LocaleCode_t code) { Get()->setLocalTextTo(code); }

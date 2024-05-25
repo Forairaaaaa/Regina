@@ -62,8 +62,11 @@ void WidgetBleStatus::onRender()
 
     if (!isPoppedOut() || HAL::IsBleConnected())
     {
-        HAL::GetCanvas()->fillRect(
-            frame.x + _bar_mx, frame.y + _bar_my, frame.w - _bar_mx * 2, frame.h - _bar_my * 2, TFT_WHITE);
+        HAL::GetCanvas()->fillRect(frame.x + _bar_mx,
+                                   frame.y + _bar_my,
+                                   frame.w - _bar_mx * 2,
+                                   frame.h - _bar_my * 2,
+                                   TFT_WHITE);
     }
     else
     {
