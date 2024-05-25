@@ -167,6 +167,8 @@ public:
             HAL::GetSystemConfig().wifiPassword = doc["wifiPassword"].as<std::string>();
         if (!doc["unixTimestamp"].isNull())
             timeConfig(doc["unixTimestamp"]);
+        if (!doc["ringtone"].isNull())
+            HAL::GetSystemConfig().ringtone = doc["ringtone"].as<std::string>();
 
         HAL::SaveSystemConfig();
         __update_dial_pin_swaped();
