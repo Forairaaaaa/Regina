@@ -38,7 +38,7 @@ namespace POWER
 /* -------------------------------------------------------------------------- */
 namespace CONSOLE
 {
-    class ConsolePipe_t : public SmoothUIToolKit::RingBuffer<char, 124>
+    class ConsolePipe_t : public SmoothUIToolKit::RingBuffer<char, 50 * 1024>
     {
     private:
         bool _auto_newline;

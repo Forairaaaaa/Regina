@@ -341,11 +341,41 @@ public:
     virtual void playRtttl(const char* rtttlMusic) {}
 
     /**
+     * @brief Stop RTTTL player
+     *
+     */
+    static void StopPlayingRtttl() { Get()->stopPlayingRtttl(); }
+    virtual void stopPlayingRtttl() {}
+
+    /**
+     * @brief Is rtttl player playing
+     *
+     * @return true
+     * @return false
+     */
+    static bool IsRtttlPlaying() { return Get()->isRtttlPlaying(); }
+    virtual bool isRtttlPlaying() { return false; }
+
+    /**
      * @brief Play ringtone
      *
      */
     static void PlayRingtone() { Get()->playRingtone(); }
     virtual void playRingtone() {}
+
+    /**
+     * @brief Stop playing ringtone
+     *
+     */
+    static void StopPlayingRingtone() { Get()->stopPlayingRtttl(); }
+
+    /**
+     * @brief Is ringtone playing
+     *
+     * @return true
+     * @return false
+     */
+    bool IsRingtonePlaying() { return Get()->isRtttlPlaying(); }
 
     /* -------------------------------------------------------------------------- */
     /*                                   Gamepad                                  */

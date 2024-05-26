@@ -45,8 +45,14 @@ void AppSleepDaemon::onRunning()
         Button::Power()->update();
         if (Button::Power()->wasClicked())
         {
+            // Kill ringtone
+            if (HAL::IsRtttlPlaying())
+            {
+                HAL::StopPlayingRingtone();
+            }
+
             // spdlog::info("pwr button clicked");
-            if (SharedData::GetPowerState() == POWER::state_awake)
+            else if (SharedData::GetPowerState() == POWER::state_awake)
             {
                 // Fire event
                 SharedData::SetPowerState(POWER::state_going_sleep);

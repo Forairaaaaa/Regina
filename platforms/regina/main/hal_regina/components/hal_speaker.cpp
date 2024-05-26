@@ -61,8 +61,9 @@ void HAL_Regina::beepStop() { noTone(HAL_PIN_BUZZ); }
 #include <functional>
 #include <mutex>
 
-static bool _is_playing = false;
 static std::mutex _mutex;
+static bool _is_playing = false;
+static bool _kill_signal = false;
 
 #define NOTE_B0 31
 #define NOTE_C1 33
@@ -232,6 +233,7 @@ static void _music_player(const char* rtttlMusic)
     wholenote = (60 * 1000L / bpm) * 4; // this is the time for whole note (in milliseconds)
 
     // now begin note loop
+    bool is_killed = false;
     while (*rtttlMusic)
     {
         // first, get note duration, if available
@@ -308,6 +310,15 @@ static void _music_player(const char* rtttlMusic)
         if (*rtttlMusic == ',')
             rtttlMusic++; // skip comma for next note (or we may be at the end)
 
+        // Check killer
+        _mutex.lock();
+        is_killed = _kill_signal;
+        if (is_killed)
+            _kill_signal = false;
+        _mutex.unlock();
+        if (is_killed)
+            break;
+
         // now play the note or rest
         if (note)
         {
@@ -333,12 +344,7 @@ static void _music_player(const char* rtttlMusic)
 
 void HAL_Regina::playRtttl(const char* rtttlMusic)
 {
-    // spdlog::info("tempo: {} size: {} addr: {}", tempo, size, (void*)melody);
-
-    _mutex.lock();
-    bool is_playing = _is_playing;
-    _mutex.unlock();
-    if (is_playing)
+    if (isRtttlPlaying())
     {
         spdlog::warn("player is playing");
         return;
@@ -346,6 +352,24 @@ void HAL_Regina::playRtttl(const char* rtttlMusic)
 
     std::thread music_player(_music_player, rtttlMusic);
     music_player.detach();
+}
+
+void HAL_Regina::stopPlayingRtttl()
+{
+    if (!isRtttlPlaying())
+        return;
+
+    _mutex.lock();
+    _kill_signal = true;
+    _mutex.unlock();
+}
+
+bool HAL_Regina::isRtttlPlaying()
+{
+    _mutex.lock();
+    bool is_playing = _is_playing;
+    _mutex.unlock();
+    return is_playing;
 }
 
 void HAL_Regina::playRingtone() { playRtttl(_data.config.ringtone.c_str()); }

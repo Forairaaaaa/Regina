@@ -74,6 +74,8 @@ public:
     void beepStop() override;
     void playRtttl(const char* rtttlMusic) override;
     void playRingtone() override;
+    void stopPlayingRtttl() override;
+    bool isRtttlPlaying() override;
 
     uint8_t getDialValue(DIAL::DialId_t dialId) override;
     int16_t getDialCount(DIAL::DialId_t dialId) override;
