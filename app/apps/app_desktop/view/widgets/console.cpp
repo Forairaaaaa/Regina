@@ -96,6 +96,29 @@ void WidgetConsole::onUpdate()
     if (!isPoppedOut())
         return;
 
+    SharedData::BorrowData();
+    _update_message();
+    SharedData::ReturnData();
+}
+
+void WidgetConsole::onRender()
+{
+    // panel
+    auto frame = getTransition().getValue();
+    HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
+
+    // Console
+    if (isPoppedOut())
+    {
+        SharedData::GetConsoleCanvas()->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
+    }
+}
+
+void WidgetConsole::_update_message()
+{
+    if (SharedData::GetEnableAudioFFTRendering())
+        return;
+
     // Message
     if (HAL::Millis() - _data.msg_update_time_count > _data.msg_update_interval)
     {
@@ -143,15 +166,17 @@ void WidgetConsole::onUpdate()
     }
 }
 
-void WidgetConsole::onRender()
+void WidgetConsole::_update_audio_fft()
 {
-    // panel
-    auto frame = getTransition().getValue();
-    HAL::GetCanvas()->fillRoundRect(frame.x, frame.y, frame.w, frame.h, _panel_r, TFT_BLACK);
+    if (!SharedData::GetEnableAudioFFTRendering())
+        return;
 
-    // Console
-    if (isPoppedOut())
+    SharedData::GetConsoleCanvas()->fillScreen(TFT_BLACK);
+    for (int i = 0; i < SharedData::GetAudioFFTBuffer().size(); i++)
     {
-        SharedData::GetConsoleCanvas()->pushSprite(_panel_x + _canvas_ml, _panel_y + _canvas_mt);
+        // Bar base
+        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 4, 3, 3, 35, TFT_WHITE);
+        // Mask
+        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 4, 3, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
     }
 }

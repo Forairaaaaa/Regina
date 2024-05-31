@@ -162,4 +162,11 @@ public:
     //      * @return std::queue<NOTIF::Notification_t>&
     //      */
     //     std::queue<NOTIF::Notification_t>& GetNotificationPipe() { return GetData().notification_pipe; }
+
+    /* -------------------------------------------------------------------------- */
+    /*                                    Audio                                   */
+    /* -------------------------------------------------------------------------- */
+public:
+    static bool GetEnableAudioFFTRendering() { return GetData().enable_audio_fft_rendering; }
+    static std::vector<uint8_t>& GetAudioFFTBuffer() { return GetData().audio_fft_buffer; }
 };

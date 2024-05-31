@@ -26,6 +26,8 @@ private:
         bool cursor_type = true;
     };
     Data_t _data;
+    void _update_message();
+    void _update_audio_fft();
 
 public:
     ~WidgetConsole();

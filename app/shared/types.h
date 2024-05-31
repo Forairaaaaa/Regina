@@ -105,6 +105,7 @@ namespace SHARED_DATA
         POWER::PowerState_t power_state = POWER::state_awake;
         uint32_t awake_time_count = 0;
 
-        // std::queue<NOTIF::Notification_t> notification_pipe;
+        bool enable_audio_fft_rendering = false;
+        std::vector<uint8_t> audio_fft_buffer;
     };
 } // namespace SHARED_DATA
