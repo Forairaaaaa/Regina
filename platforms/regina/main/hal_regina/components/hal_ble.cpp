@@ -232,6 +232,44 @@ public:
 };
 
 /* -------------------------------------------------------------------------- */
+/*                                    Audio                                   */
+/* -------------------------------------------------------------------------- */
+class BleAudio_t : public BLECharacteristicCallbacks
+{
+private:
+    struct Data_t
+    {
+        BLECharacteristic* pCharacteristic = nullptr;
+    };
+    Data_t _data;
+
+public:
+    BleAudio_t(BLEService* pService, const char* uuid)
+    {
+        _data.pCharacteristic = pService->createCharacteristic(uuid, BLECharacteristic::PROPERTY_WRITE);
+        _data.pCharacteristic->setCallbacks(this);
+    }
+
+    void onWrite(BLECharacteristic* pCharacteristic) override
+    {
+        // std::string value = pCharacteristic->getValue().c_str();
+        // spdlog::info("message get:\n {}", value);
+
+        SharedData::BorrowData();
+
+        SharedData::GetAudioFFTBuffer().clear();
+        for (int i = 0; i < pCharacteristic->getValue().length(); i++)
+        {
+            SharedData::GetAudioFFTBuffer().push_back(pCharacteristic->getValue().c_str()[i]);
+        }
+        if (!SharedData::GetEnableAudioFFTRendering())
+            SharedData::GetEnableAudioFFTRendering() = true;
+
+        SharedData::ReturnData();
+    }
+};
+
+/* -------------------------------------------------------------------------- */
 /*                                   My Shit                                  */
 /* -------------------------------------------------------------------------- */
 class MyBleShit : public BLEServerCallbacks
