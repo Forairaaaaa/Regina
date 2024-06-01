@@ -107,5 +107,6 @@ namespace SHARED_DATA
 
         bool enable_audio_fft_rendering = false;
         std::vector<uint8_t> audio_fft_buffer;
+        uint32_t audio_fft_time_count = 0;
     };
 } // namespace SHARED_DATA

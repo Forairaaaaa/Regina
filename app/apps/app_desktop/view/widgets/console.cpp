@@ -98,6 +98,7 @@ void WidgetConsole::onUpdate()
 
     SharedData::BorrowData();
     _update_message();
+    _update_audio_fft();
     SharedData::ReturnData();
 }
 
@@ -179,4 +180,7 @@ void WidgetConsole::_update_audio_fft()
         // Mask
         SharedData::GetConsoleCanvas()->fillRect(i * 5 + 4, 3, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
     }
+
+    // Keep awake while rendering audio fft
+    SharedData::CupOfCoffee(HAL::Millis());
 }

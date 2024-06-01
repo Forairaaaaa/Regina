@@ -257,13 +257,24 @@ public:
 
         SharedData::BorrowData();
 
+        // Copy data
         SharedData::GetAudioFFTBuffer().clear();
         for (int i = 0; i < pCharacteristic->getValue().length(); i++)
         {
             SharedData::GetAudioFFTBuffer().push_back(pCharacteristic->getValue().c_str()[i]);
         }
+
+        // Reset update time count
         if (!SharedData::GetEnableAudioFFTRendering())
             SharedData::GetEnableAudioFFTRendering() = true;
+        SharedData::GetAudioFFTRenderTimecount() = HAL::Millis();
+
+        // printf("audio: ");
+        // for (const auto& i : SharedData::GetAudioFFTBuffer())
+        // {
+        //     printf("%02d ", i);
+        // }
+        // printf("\n");
 
         SharedData::ReturnData();
     }
@@ -281,6 +292,7 @@ private:
         BleImuData_t* imu = nullptr;
         BleSystemConfig_t* syscfg = nullptr;
         BleMessage_t* msg = nullptr;
+        BleAudio_t* audio = nullptr;
         BLEAdvertising* pAdvertising = nullptr;
         bool is_connected = false;
     };
@@ -294,6 +306,7 @@ public:
         delete _data.imu;
         delete _data.syscfg;
         delete _data.msg;
+        delete _data.audio;
     }
 
     void init()
@@ -308,7 +321,8 @@ public:
         _data.input = new BleInputStatus_t(pService, "2334");
         _data.imu = new BleImuData_t(pService, "2335", "2336");
         _data.syscfg = new BleSystemConfig_t(pService, "2337");
-        _data.msg = new BleMessage_t(pService, "2338");
+        // _data.msg = new BleMessage_t(pService, "2338");
+        _data.audio = new BleAudio_t(pService, "2339");
 
         // Start service
         pService->start();

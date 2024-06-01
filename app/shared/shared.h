@@ -169,4 +169,5 @@ public:
 public:
     static bool& GetEnableAudioFFTRendering() { return GetData().enable_audio_fft_rendering; }
     static std::vector<uint8_t>& GetAudioFFTBuffer() { return GetData().audio_fft_buffer; }
+    static uint32_t& GetAudioFFTRenderTimecount() { return GetData().audio_fft_time_count; }
 };

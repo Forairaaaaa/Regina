@@ -22,6 +22,7 @@ namespace MOONCAKE
             {
                 uint32_t check_pwr_btn_time_count = 0;
                 uint32_t check_pwr_btn_interval = 100;
+                uint32_t audio_fft_timeout_count = 0;
             };
             Data_t _data;
 
