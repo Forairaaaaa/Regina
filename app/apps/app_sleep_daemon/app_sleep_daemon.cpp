@@ -97,8 +97,7 @@ void AppSleepDaemon::onRunning()
     }
 
     // Check audio fft come in
-    if (!SharedData::GetEnableAudioFFTRendering() && SharedData::GetAudioFFTBuffer().size() != 0 &&
-        SharedData::GetPowerState() == POWER::state_sleeping)
+    if (SharedData::GetPowerState() == POWER::state_sleeping && !SharedData::GetAudioFFTBuffer().empty())
     {
         spdlog::info("get audio fft, wake up");
         SharedData::SetPowerState(POWER::state_awake);
@@ -106,7 +105,7 @@ void AppSleepDaemon::onRunning()
         SharedData::CupOfCoffee(HAL::Millis());
     }
     // Check audio fft update timeout
-    else if (SharedData::GetEnableAudioFFTRendering() && SharedData::GetPowerState() == POWER::state_awake)
+    else if (SharedData::GetPowerState() == POWER::state_awake && SharedData::GetEnableAudioFFTRendering())
     {
         // If timeout, fuck back to terminal
         if (HAL::Millis() - SharedData::GetAudioFFTRenderTimecount() > 1000)

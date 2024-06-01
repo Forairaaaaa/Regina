@@ -324,6 +324,8 @@ public:
         // _data.msg = new BleMessage_t(pService, "2338");
         _data.audio = new BleAudio_t(pService, "2339");
 
+        BLEDevice::setMTU(517);
+
         // Start service
         pService->start();
 
@@ -332,6 +334,8 @@ public:
         _data.pAdvertising->setAppearance(0x00C0);
         _data.pAdvertising->addServiceUUID(pService->getUUID());
         _data.pAdvertising->setScanResponse(false);
+        _data.pAdvertising->setMinPreferred(0x06);
+        _data.pAdvertising->setMaxPreferred(0x12);
         _data.pAdvertising->start();
     }
 
