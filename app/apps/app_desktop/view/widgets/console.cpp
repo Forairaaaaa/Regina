@@ -178,10 +178,22 @@ void WidgetConsole::_update_audio_fft()
     SharedData::GetConsoleCanvas()->fillScreen(TFT_BLACK);
     for (int i = 0; i < SharedData::GetAudioFFTBuffer().size(); i++)
     {
-        // Bar base
-        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35, TFT_WHITE);
-        // Mask
-        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
+        // // Bar base
+        // SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35, TFT_WHITE);
+        // // Mask
+        // SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
+
+        if (SharedData::GetAudioFFTBuffer()[i] < 35 / 2)
+        {
+            SharedData::GetConsoleCanvas()->drawRect(i * 5 + 3, 2, 3, 35, TFT_WHITE);
+            SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i] + 1, TFT_WHITE);
+            SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
+        }
+        else
+        {
+            SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35, TFT_WHITE);
+            SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
+        }
 
         // Bricks
         SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 35 - _data.audio_fft_bricks[i], 3, 3, TFT_WHITE);
