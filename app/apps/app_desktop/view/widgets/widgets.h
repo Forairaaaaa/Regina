@@ -23,6 +23,9 @@ private:
         uint32_t msg_update_interval = 20;
         uint32_t cursor_update_time_count = 0;
         uint32_t cursor_update_interval = 500;
+        uint32_t audio_fft_bricks_update_time_count = 0;
+        uint32_t audio_fft_bricks_update_time_interval = 1500 / 35;
+        std::vector<uint8_t> audio_fft_bricks;
         bool cursor_type = true;
     };
     Data_t _data;

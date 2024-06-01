@@ -280,6 +280,7 @@ public:
         SharedData::ReturnData();
 
         // // 120ms 咩雕啊, 1byte and 21bytes is the same
+        // Fixed by interval config shit
         // static uint32_t time_count = 0;
         // printf("%ld\n", HAL::Millis() - time_count);
         // time_count = HAL::Millis();
@@ -337,14 +338,12 @@ public:
         pServer->setCallbacks(this);
 
         // Service
-        BLEService* pService = pServer->createService("2333");
+        BLEService* pService = pServer->createService(BLEUUID("2333"), 30);
         _data.input = new BleInputStatus_t(pService, "2334");
         _data.imu = new BleImuData_t(pService, "2335", "2336");
         _data.syscfg = new BleSystemConfig_t(pService, "2337");
-        _data.audio = new BleAudio_t(pService, "2339");
         _data.msg = new BleMessage_t(pService, "2338");
-
-        BLEDevice::setMTU(517);
+        _data.audio = new BleAudio_t(pService, "2339");
 
         // Start service
         pService->start();

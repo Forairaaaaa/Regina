@@ -61,6 +61,9 @@ void WidgetConsole::onInit()
         // SharedData::Console().log("我将,\n点燃大海!  >_<");
         SharedData::Console().log("等待连接 -.-");
     }
+
+    _data.audio_fft_bricks.clear();
+    _data.audio_fft_bricks.resize(21);
 }
 
 void WidgetConsole::onPopOut()
@@ -179,6 +182,25 @@ void WidgetConsole::_update_audio_fft()
         SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35, TFT_WHITE);
         // Mask
         SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
+
+        // Bricks
+        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 35 - _data.audio_fft_bricks[i], 3, 3, TFT_WHITE);
+    }
+
+    // Update blocks
+    if (HAL::Millis() - _data.audio_fft_bricks_update_time_count > _data.audio_fft_bricks_update_time_interval)
+    {
+        for (int i = 0; i < SharedData::GetAudioFFTBuffer().size(); i++)
+        {
+            // Fall
+            if (_data.audio_fft_bricks[i] != 0)
+                _data.audio_fft_bricks[i]--;
+
+            // Push
+            if (SharedData::GetAudioFFTBuffer()[i] > _data.audio_fft_bricks[i])
+                _data.audio_fft_bricks[i] = SharedData::GetAudioFFTBuffer()[i];
+        }
+        _data.audio_fft_bricks_update_time_count = HAL::Millis();
     }
 
     // Keep awake while rendering audio fft
