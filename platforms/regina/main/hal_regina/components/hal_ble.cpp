@@ -258,10 +258,11 @@ public:
         SharedData::BorrowData();
 
         // Copy data
-        SharedData::GetAudioFFTBuffer().clear();
-        for (int i = 0; i < pCharacteristic->getValue().length(); i++)
+        static const size_t buffer_size = 21;
+        SharedData::GetAudioFFTBuffer().resize(buffer_size);
+        for (int i = 0; i < buffer_size; i++)
         {
-            SharedData::GetAudioFFTBuffer().push_back(pCharacteristic->getValue().c_str()[i]);
+            SharedData::GetAudioFFTBuffer()[i] = pCharacteristic->getValue().c_str()[i];
         }
 
         // Reset update time count
@@ -277,6 +278,11 @@ public:
         // printf("\n");
 
         SharedData::ReturnData();
+
+        // // 120ms 咩雕啊, 1byte and 21bytes is the same
+        // static uint32_t time_count = 0;
+        // printf("%ld\n", HAL::Millis() - time_count);
+        // time_count = HAL::Millis();
     }
 };
 
@@ -321,8 +327,8 @@ public:
         _data.input = new BleInputStatus_t(pService, "2334");
         _data.imu = new BleImuData_t(pService, "2335", "2336");
         _data.syscfg = new BleSystemConfig_t(pService, "2337");
-        // _data.msg = new BleMessage_t(pService, "2338");
         _data.audio = new BleAudio_t(pService, "2339");
+        _data.msg = new BleMessage_t(pService, "2338");
 
         BLEDevice::setMTU(517);
 
@@ -334,8 +340,8 @@ public:
         _data.pAdvertising->setAppearance(0x00C0);
         _data.pAdvertising->addServiceUUID(pService->getUUID());
         _data.pAdvertising->setScanResponse(false);
-        _data.pAdvertising->setMinPreferred(0x06);
-        _data.pAdvertising->setMaxPreferred(0x12);
+        // _data.pAdvertising->setMinPreferred(0x06);
+        // _data.pAdvertising->setMaxPreferred(0x12);
         _data.pAdvertising->start();
     }
 

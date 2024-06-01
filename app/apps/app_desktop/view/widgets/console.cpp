@@ -176,9 +176,9 @@ void WidgetConsole::_update_audio_fft()
     for (int i = 0; i < SharedData::GetAudioFFTBuffer().size(); i++)
     {
         // Bar base
-        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 4, 3, 3, 35, TFT_WHITE);
+        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35, TFT_WHITE);
         // Mask
-        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 4, 3, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
+        SharedData::GetConsoleCanvas()->fillRect(i * 5 + 3, 2, 3, 35 - SharedData::GetAudioFFTBuffer()[i], TFT_BLACK);
     }
 
     // Keep awake while rendering audio fft
