@@ -289,6 +289,20 @@ public:
 /* -------------------------------------------------------------------------- */
 /*                                   My Shit                                  */
 /* -------------------------------------------------------------------------- */
+void gapEventHandler(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t* param)
+{
+    if (event == ESP_GAP_BLE_UPDATE_CONN_PARAMS_EVT)
+    {
+        esp_ble_conn_update_params_t conn_params;
+        memcpy(conn_params.bda, param->update_conn_params.bda, sizeof(esp_bd_addr_t));
+        conn_params.min_int = 0x06; // 最小连接间隔，单位为1.25ms (7.5ms)
+        conn_params.max_int = 0x0C; // 最大连接间隔，单位为1.25ms (15ms)
+        conn_params.latency = 0;    // 从设备延迟
+        conn_params.timeout = 400;  // 连接超时时间，单位为10ms (4s)
+        esp_ble_gap_update_conn_params(&conn_params);
+    }
+}
+
 class MyBleShit : public BLEServerCallbacks
 {
 private:
@@ -343,6 +357,8 @@ public:
         // _data.pAdvertising->setMinPreferred(0x06);
         // _data.pAdvertising->setMaxPreferred(0x12);
         _data.pAdvertising->start();
+
+        BLEDevice::setCustomGapHandler(gapEventHandler);
     }
 
     void onConnect(BLEServer* pServer) override
