@@ -32,6 +32,16 @@ class InputStatus:
         if countDialB is not None:
             self.countDialB = countDialB
 
+    def copy_from(self, other):
+        self.btnA = other.btnA
+        self.btnB = other.btnB
+        self.btnC = other.btnC
+        self.btnD = other.btnD
+        self.valueDialA = other.valueDialA
+        self.valueDialB = other.valueDialB
+        self.countDialA = other.countDialA
+        self.countDialB = other.countDialB
+
     def __repr__(self):
         return (f"InputStatus(btnA={self.btnA}, btnB={self.btnB}, btnC={self.btnC}, btnD={self.btnD}, "
                 f"valueDialA={self.valueDialA}, valueDialB={self.valueDialB}, "
@@ -81,8 +91,12 @@ class Regina:
             except asyncio.CancelledError:
                 print("😎 消息循环结束")
 
+    def _handle_input_status_event_update(self, btnA=None, btnB=None, btnC=None, btnD=None, valueDialA=None, valueDialB=None, countDialA=None, countDialB=None):
+        pass
+
     def on_input_status_update(self, sender, data):
         unpacked_data = struct.unpack('<????BBhh', data)
+        self._handle_input_status_event_update(*unpacked_data)
         self._input_status.update(*unpacked_data)
         # print(self._input_status)
         if self._on_input_status_notify is not None:
