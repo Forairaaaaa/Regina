@@ -53,7 +53,7 @@ def handleInputStatusNotify(intputStatus: InputStatus):
 
 async def main():
     regina = Regina()
-    regina.set_input_status_notify_callback(handleInputStatusNotify)
+    regina.set_input_notify_callback(handleInputStatusNotify)
     await regina.start()
 
 try:
