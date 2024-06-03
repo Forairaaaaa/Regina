@@ -38,7 +38,7 @@ def handleDialsUpdate(intputStatus: InputStatus):
         intputStatus.countDialB, _last_input_status.countDialB, "volumeup", "volumedown")
 
 
-def handleInputStatusNotify(intputStatus: InputStatus):
+def handleInputNotify(intputStatus: InputStatus):
     global _last_input_status
     if _last_input_status is None:
         _last_input_status = InputStatus()
@@ -53,7 +53,7 @@ def handleInputStatusNotify(intputStatus: InputStatus):
 
 async def main():
     regina = Regina()
-    regina.set_input_notify_callback(handleInputStatusNotify)
+    regina.set_input_notify_callback(handleInputNotify)
     await regina.start()
 
 try:

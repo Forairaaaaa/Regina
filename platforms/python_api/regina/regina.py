@@ -50,48 +50,48 @@ class InputStatus:
 
 class IMUAccelStatus:
     def __init__(self):
-        self.accel_x = 0.0
-        self.accel_y = 0.0
-        self.accel_z = 0.0
+        self.accelX = 0.0
+        self.accelY = 0.0
+        self.accelZ = 0.0
 
-    def update(self, accel_x=None, accel_y=None, accel_z=None):
-        if accel_x is not None:
-            self.accel_x = accel_x
-        if accel_y is not None:
-            self.accel_y = accel_y
-        if accel_z is not None:
-            self.accel_z = accel_z
+    def update(self, accelX=None, accelY=None, accelZ=None):
+        if accelX is not None:
+            self.accelX = accelX
+        if accelY is not None:
+            self.accelY = accelY
+        if accelZ is not None:
+            self.accelZ = accelZ
 
     def copy_from(self, other):
-        self.accel_x = other.accel_x
-        self.accel_y = other.accel_y
-        self.accel_z = other.accel_z
+        self.accelX = other.accelX
+        self.accelY = other.accelY
+        self.accelZ = other.accelZ
 
     def __repr__(self):
-        return (f"IMUAccelStatus(accel_x={self.accel_x}, accel_y={self.accel_y}, accel_z={self.accel_z})")
+        return (f"IMUAccelStatus(accelX={self.accelX}, accelY={self.accelY}, accelZ={self.accelZ})")
 
 
 class IMUGyroStatus:
     def __init__(self):
-        self.gyro_x = 0.0
-        self.gyro_y = 0.0
-        self.gyro_z = 0.0
+        self.gyroX = 0.0
+        self.gyroY = 0.0
+        self.gyroZ = 0.0
 
-    def update(self, gyro_x=None, gyro_y=None, gyro_z=None):
-        if gyro_x is not None:
-            self.gyro_x = gyro_x
-        if gyro_y is not None:
-            self.gyro_y = gyro_y
-        if gyro_z is not None:
-            self.gyro_z = gyro_z
+    def update(self, gyroX=None, gyroY=None, gyroZ=None):
+        if gyroX is not None:
+            self.gyroX = gyroX
+        if gyroY is not None:
+            self.gyroY = gyroY
+        if gyroZ is not None:
+            self.gyroZ = gyroZ
 
     def copy_from(self, other):
-        self.gyro_x = other.gyro_x
-        self.gyro_y = other.gyro_y
-        self.gyro_z = other.gyro_z
+        self.gyroX = other.gyroX
+        self.gyroY = other.gyroY
+        self.gyroZ = other.gyroZ
 
     def __repr__(self):
-        return (f"IMUGyroStatus(gyro_x={self.gyro_x}, gyro_y={self.gyro_y}, gyro_z={self.gyro_z})")
+        return (f"IMUGyroStatus(gyroX={self.gyroX}, gyroY={self.gyroY}, gyroZ={self.gyroZ})")
 
 
 _DEVICE_NAME = "Reginaaaa:)"

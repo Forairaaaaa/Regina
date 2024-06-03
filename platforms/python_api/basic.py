@@ -2,13 +2,13 @@ from regina import Regina, InputStatus
 import asyncio
 
 
-def handleInputStatusNotify(intputStatus: InputStatus):
+def handleInputNotify(intputStatus: InputStatus):
     print(intputStatus)
 
 
 async def main():
     regina = Regina()
-    regina.set_input_notify_callback(handleInputStatusNotify)
+    regina.set_input_notify_callback(handleInputNotify)
     await regina.start()
 
 try:

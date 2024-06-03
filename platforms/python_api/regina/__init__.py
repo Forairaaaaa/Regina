@@ -1,1 +1,1 @@
-from .regina import Regina, InputStatus
+from .regina import Regina, InputStatus, IMUAccelStatus, IMUGyroStatus
