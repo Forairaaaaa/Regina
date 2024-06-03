@@ -1,6 +1,6 @@
 # Regina
 
-## BLE API
+## BLE 接口
 
 设备名：`Reginaaaa:)`
 
@@ -60,7 +60,7 @@ unpacked_data = struct.unpack('fff', data)
 
 #### 角速度
 
-特征值：`2336
+特征值：`2336`
 
 其他和加速度一样
 
@@ -72,7 +72,7 @@ unpacked_data = struct.unpack('fff', data)
 
 相关 key 参考[系统配置结构体](https://github.com/Forairaaaaa/Regina/blob/main/app/hal/types.h#L100)
 
-其中铃声为 [RTTTI](https://en.wikipedia.org/wiki/Run-time_type_information) 格式
+其中 `ringtone` 为 [RTTTI](https://en.wikipedia.org/wiki/Run-time_type_information) 格式音频
 
 此外可用特殊 key `unixTimestamp` 来设置 RTC 时间，value 用数字类型 unix 时间戳（ms）
 
