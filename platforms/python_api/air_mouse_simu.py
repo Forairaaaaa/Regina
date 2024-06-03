@@ -5,32 +5,33 @@ import math
 
 
 def handleImuAccelNotify(imuAccelStatus: IMUAccelStatus):
-    print(imuAccelStatus)
-    print(pyautogui.position())
+    # print(imuAccelStatus)
+    # print(pyautogui.position())
 
-    new_possition = pyautogui.position()
-    speed = 5
+    speed = 250
     threshold = 0.5
+    new_x = pyautogui.position().x
+    new_y = pyautogui.position().y
 
     # 😎 x
     if (math.fabs(imuAccelStatus.accelX) > threshold):
         increment = (math.fabs(imuAccelStatus.accelX) - threshold) * speed
         if imuAccelStatus.accelX > 0:
-            new_possition[0] += increment
+            new_x -= increment
         else:
-            new_possition[0] -= increment
+            new_x += increment
 
     # 😎 y
     if (math.fabs(imuAccelStatus.accelY) > threshold):
         increment = (math.fabs(imuAccelStatus.accelY) - threshold) * speed
         if imuAccelStatus.accelY > 0:
-            new_possition[1] += increment
+            new_y += increment
         else:
-            new_possition[2] -= increment
+            new_y -= increment
 
     # 😎 go
-    if new_possition != pyautogui.position():
-        pyautogui.moveTo(new_possition)
+    if new_x != pyautogui.position().x or new_y != pyautogui.position().y:
+        pyautogui.moveTo(new_x, new_y)
 
 
 async def main():

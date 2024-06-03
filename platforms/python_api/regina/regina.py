@@ -146,7 +146,6 @@ class Regina:
 
     def on_input_status_update(self, sender, data):
         unpacked_data = struct.unpack('<????BBhh', data)
-        self._handle_input_status_event_update(*unpacked_data)
         self._input_status.update(*unpacked_data)
         if self._on_input_notify is not None:
             self._on_input_notify(self._input_status)
