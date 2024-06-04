@@ -207,7 +207,7 @@ unpacked_data = struct.unpack('fff', data)
 - 编码开关：[7.4寸贴片，带旋柄，16档](https://detail.tmall.com/item.htm?_u=42bdtj0f1a01&id=608662157272&spm=a1z09.2.0.0.52ce2e8dzg9AZA&skuId=5177216842298)
 
 - 电池：[402728 400毫安](https://detail.tmall.com/item.htm?_u=42bdtj0f77a8&id=632947661144&spm=a1z09.2.0.0.52ce2e8dzg9AZA)
-- 电源管理：[mondraker/axp202](https://oshwhub.com/mondraker/axp202-zeng-ge-yan-zheng)
+- 电源管理：大佬的 [mondraker/axp202](https://oshwhub.com/mondraker/axp202-zeng-ge-yan-zheng)
 
 应该比较好焊，想偷懒可以不焊 RTC、IMU 和 MIC
 
@@ -223,6 +223,6 @@ unpacked_data = struct.unpack('fff', data)
 
 这次没有螺丝，后盖用滑槽和卡扣固定
 
-间隙什么的根据拓竹 a1 mini 0.4 喷嘴调整的，树脂打印的话可能会偏松，没试过
+间隙什么的根据拓竹 a1 mini 0.4 喷嘴调整的，树脂打印的话可能会有点松，没试过
 
 组装时滑槽会有点顶 PCB，需要一些技巧~
