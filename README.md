@@ -1,8 +1,8 @@
 # Regina
 
-![image](https://github.com/Forairaaaaa/Regina/assets/64732721/205de734-b55e-471e-a7d8-7a9f25681cfc)
+![image](https://pic.imgdb.cn/item/665f18615e6d1bfa058950f3.png)
 
-![image](https://github.com/Forairaaaaa/Regina/assets/64732721/ad622139-cfd6-4c09-9cb8-f5d2cea2bfa0)
+![image](https://pic.imgdb.cn/item/665f185f5e6d1bfa05894e66.png)
 
 (=・ω・=) 噻博柆圾.. 僅栱娯泺~
 
