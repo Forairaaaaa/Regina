@@ -221,4 +221,4 @@ unpacked_data = struct.unpack('fff', data)
 
 间隙什么的是根据拓竹 a1 mini 0.4 喷嘴调整的，树脂打印的话可能会偏松，没试过
 
-组装时滑槽会有点顶 PCB，需要一些技巧
+组装时滑槽会有点顶 PCB，需要一些技巧~
