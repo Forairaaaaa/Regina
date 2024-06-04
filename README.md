@@ -1,5 +1,93 @@
 # Regina
 
+## 文件树
+
+```bash
+.
+├── app
+│   ├── apps                      应用层
+│   │   ├── app_desktop             桌面
+│   │   ├── app_input_daemon        输入管理
+│   │   ├── app_sleep_daemon        睡眠管理
+│   │   ├── app_startup_anim        开机动画
+│   │   ├── app_template            App模板
+│   ├── assets                    静态资源
+│   ├── hal                       HAL定义
+│   └── shared                    共享数据定义
+└── platforms
+    ├── desktop                   桌面项目
+    ├── python_api                Python api
+    └── regina                    ESP32C6项目
+```
+
+## 编译
+
+### 下载依赖
+
+```bash
+python ./fetch_repos.py
+```
+
+### 桌面端
+
+#### 工具链
+
+```bash
+sudo apt install build-essential cmake
+```
+
+#### 编译
+
+```bash
+mkdir build && cd build
+```
+```bash
+cmake .. && make
+```
+#### 运行
+
+```bash
+cd desktop
+```
+
+要先 cd 过去，因为序列化时用的相对路径 :(
+
+```bash
+./app_desktop_build
+```
+
+### ESP32 端
+
+#### 工具链
+
+[ESP-IDF v5.1.3](https://docs.espressif.com/projects/esp-idf/en/v5.1.3/esp32s3/index.html)
+
+#### 编译
+
+```bash
+cd platforms/regina
+```
+
+```bash
+idf.py build
+```
+
+#### 上传
+
+```bash
+idf.py -p <YourPort> flash -b 1500000
+```
+
+##### 上传静态资源
+
+```bash
+parttool.py --port <YourPort> write_partition --partition-name=assetpool --input "path/to/AssetPool.bin"
+```
+
+静态资源是桌面端序列化出来的，如果运行过桌面端， `AssetPool.bin` 可以在 `app_desktop_build` 的旁边找到
+
+或者 [release](https://github.com/Forairaaaaa/Regina/releases/latest) 里下一个
+
 ## BLE 接口
 
 设备名：`Reginaaaa:)`
@@ -91,3 +179,9 @@ unpacked_data = struct.unpack('fff', data)
 数据格式：21 个 `uint8`
 
 对应屏幕从左到右 21 个矩形，其中数值为 `0~35` ，对应该矩形的高度
+
+## 懒得TODO
+
+- 现在不是真正的睡眠，只是关屏幕
+- 字库非完整，用完整字库的话字体识别的高度不对，直接用lgfx的换行就寄了，懒得写了
+- 启动器、设置、打砖块
