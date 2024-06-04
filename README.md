@@ -6,6 +6,8 @@
 
 自定义服务：`2333`
 
+JS web api [参考](https://github.com/Forairaaaaa/Phalange/blob/main/app/page.tsx#L40)，Python api [参考](https://github.com/Forairaaaaa/Regina/tree/main/platforms/python_api)，具体如下：
+
 ### 输入
 
 特征值：`2334`
