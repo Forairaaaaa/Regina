@@ -90,6 +90,8 @@ parttool.py --port <YourPort> write_partition --partition-name=assetpool --input
 
 ## BLE 接口
 
+**在线接口测试 ->** [点我 :)](https://phalange.vercel.app/)
+
 设备名：`Reginaaaa:)`
 
 自定义服务：`2333`
