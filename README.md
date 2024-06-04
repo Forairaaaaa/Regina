@@ -1,5 +1,9 @@
 # Regina
 
+![image](https://github.com/Forairaaaaa/Regina/assets/64732721/205de734-b55e-471e-a7d8-7a9f25681cfc)
+
+![image](https://github.com/Forairaaaaa/Regina/assets/64732721/ad622139-cfd6-4c09-9cb8-f5d2cea2bfa0)
+
 (=・ω・=) 噻博柆圾.. 僅栱娯泺~
 
 ## 文件树
