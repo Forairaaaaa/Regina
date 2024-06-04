@@ -1,5 +1,7 @@
 # Regina
 
+(╯°□°)╯︵◓ 噻博柆圾.. 僅栱娯泺~
+
 ## 文件树
 
 ```bash
@@ -187,3 +189,36 @@ unpacked_data = struct.unpack('fff', data)
 - 现在不是真正的睡眠，只是关屏幕
 - 字库非完整，用完整字库的话字体识别的高度不对，直接用lgfx的换行就寄了，懒得写了
 - 启动器、设置、打砖块
+
+## 硬件
+
+**立创链接 ->** [点我 :)](https://oshwhub.com/eedadada/phalange)
+
+板厚1MM
+
+- 主控：[ESP32C6](https://item.taobao.com/item.htm?_u=42bdtj0fc30b&id=745245326098&spm=a1z09.2.0.0.52ce2e8dzg9AZA)
+
+- 屏幕：[中景园1.3寸OLED](https://item.taobao.com/item.htm?_u=42bdtj0f8fa9&id=634786783290&spm=a1z09.2.0.0.52ce2e8dzg9AZA)
+
+- 编码开关：[7.4寸贴片，带旋柄，16档](https://detail.tmall.com/item.htm?_u=42bdtj0f1a01&id=608662157272&spm=a1z09.2.0.0.52ce2e8dzg9AZA&skuId=5177216842298)
+
+- 电池：[402728 400毫安](https://detail.tmall.com/item.htm?_u=42bdtj0f77a8&id=632947661144&spm=a1z09.2.0.0.52ce2e8dzg9AZA)
+- 电源管理：[mondraker/axp202](https://oshwhub.com/mondraker/axp202-zeng-ge-yan-zheng)
+
+应该比较好焊，想偷懒可以不焊 RTC、IMU 和 MIC
+
+我是铁板烧的屏幕这一面
+
+如果编码开关方向焊反了，可以在程序里设置反转，具体在BLE接口的系统配置部分
+
+麦克风用的模拟麦，不知道是我焊烂了还是电路不对，波形异常的平静~
+
+## 结构
+
+**STL 文件 ->** [点我 :)](https://github.com/Forairaaaaa/Regina/releases/latest)
+
+这次没有螺丝，后盖用滑槽和卡扣固定
+
+间隙什么的是根据拓竹 a1 mini 0.4 喷嘴调整的，树脂打印的话可能会偏松，没试过
+
+组装时滑槽会有点顶 PCB，需要一些技巧
