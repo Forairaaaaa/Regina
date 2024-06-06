@@ -1,5 +1,3 @@
-# Regina
-
 ![image](https://pic.imgdb.cn/item/665f18615e6d1bfa058950f3.png)
 
 （￣へ￣）噻博柆圾.. 僅栱娯泺~
