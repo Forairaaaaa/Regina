@@ -2,9 +2,7 @@
 
 ![image](https://pic.imgdb.cn/item/665f18615e6d1bfa058950f3.png)
 
-![image](https://pic.imgdb.cn/item/665f185f5e6d1bfa05894e66.png)
-
-(=・ω・=) 噻博柆圾.. 僅栱娯泺~
+（￣へ￣）噻博柆圾.. 僅栱娯泺~
 
 ## 文件树
 
