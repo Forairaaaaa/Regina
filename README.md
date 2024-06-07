@@ -2,6 +2,8 @@
 
 （￣へ￣）噻博柆圾.. 僅栱娯泺~
 
+**视频链接 ->** [点我 :)](https://www.bilibili.com/video/BV1tx4y1b7KE/?vd_source=41e972935dc94b8ab0a69374e4b2e86d)
+
 ## 文件树
 
 ```bash
