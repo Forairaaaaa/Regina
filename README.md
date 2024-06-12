@@ -1,4 +1,5 @@
-![image](https://pic.imgdb.cn/item/665f18615e6d1bfa058950f3.png)
+![171883a83c2ac5a0baaa2217a24b923a5f38bbda](https://github.com/Forairaaaaa/Regina/assets/64732721/ec72d96b-537c-4282-b92e-eec89295ed91)
+
 
 （￣へ￣）噻博柆圾.. 僅栱娯泺~
 
