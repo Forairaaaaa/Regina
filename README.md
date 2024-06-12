@@ -1,9 +1,8 @@
 ![171883a83c2ac5a0baaa2217a24b923a5f38bbda](https://github.com/Forairaaaaa/Regina/assets/64732721/ec72d96b-537c-4282-b92e-eec89295ed91)
 
-
-（￣へ￣）噻博柆圾.. 僅栱娯泺~
-
 **视频链接 ->** [点我 :)](https://www.bilibili.com/video/BV1tx4y1b7KE/?vd_source=41e972935dc94b8ab0a69374e4b2e86d)
+
+噻博柆圾.. 僅栱娯泺~（￣へ￣）
 
 ## 文件树
 
